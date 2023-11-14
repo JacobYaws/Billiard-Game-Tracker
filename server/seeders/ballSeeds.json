@@ -1,0 +1,12 @@
+[
+    {
+    "number": 1,
+    "style": "stripe",
+    "selected": false
+},
+{
+    "number": 2,
+    "style": "solid",
+    "selected": false
+}
+]

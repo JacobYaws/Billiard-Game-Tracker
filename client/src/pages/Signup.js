@@ -10,14 +10,16 @@ function Signup(props) {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    console.log(formState);
     const mutationResponse = await addUser({
       variables: {
         email: formState.email,
         password: formState.password,
-        firstName: formState.firstName,
-        lastName: formState.lastName,
+        fullname: formState.fullname,
+        username: formState.username,
       },
     });
+    
     const token = mutationResponse.data.addUser.token;
     Auth.login(token);
   };
@@ -37,42 +39,42 @@ function Signup(props) {
       <h2>Signup</h2>
       <form onSubmit={handleFormSubmit}>
         <div className="flex-row space-between my-2">
-          <label htmlFor="firstName">First Name:</label>
+          <label htmlFor="firstName">Full Name: </label>
           <input
-            placeholder="First"
-            name="firstName"
-            type="firstName"
-            id="firstName"
+            // placeholder="First"
+            name="fullname"
+            type="text"
+            value={formState.fullname}
             onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
-          <label htmlFor="lastName">Last Name:</label>
+          <label htmlFor="lastName">Username:</label>
           <input
-            placeholder="Last"
-            name="lastName"
-            type="lastName"
-            id="lastName"
+            // placeholder="Last"
+            name="username"
+            type="text"
+            value={formState.username}
             onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
           <label htmlFor="email">Email:</label>
           <input
-            placeholder="youremail@test.com"
+            // placeholder="youremail@test.com"
             name="email"
             type="email"
-            id="email"
+            value={formState.email}
             onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
           <label htmlFor="pwd">Password:</label>
           <input
-            placeholder="******"
+            // placeholder="******"
             name="password"
             type="password"
-            id="pwd"
+            value={formState.password}
             onChange={handleChange}
           />
         </div>
@@ -85,3 +87,5 @@ function Signup(props) {
 }
 
 export default Signup;
+
+

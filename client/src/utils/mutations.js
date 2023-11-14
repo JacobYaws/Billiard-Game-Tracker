@@ -16,12 +16,13 @@ export const LOGIN_USER = gql`
 
 // Mutation used for user signup. It is used to add a username, email, password (all required), token and user with the correct parameters in the database.
 export const ADD_USER = gql`
-  mutation addUser($username: String!, $email: String!, $password: String!) {
-    addUser(username: $username, email: $email, password: $password) {
+  mutation addUser($email: String!, $password: String!, $fullname: String, $username: String!) {
+    addUser(email: $email, password: $password, fullname: $fullname, username: $username) {
       token
       user {
         _id
         username
+        fullname
         email
       }
     }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import SignUpForm from './Signup';
-import LoginForm from './Login';
+import SignUpForm from '../../pages/Signup';
+import LoginForm from '../../pages/Login';
 
-import Auth from '../utils/auth';
+import Auth from '../../utils/auth';
 
 const AppNavbar = () => {
   // set modal display state
@@ -15,15 +15,15 @@ const AppNavbar = () => {
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
           <Navbar.Brand as={Link} to='/'>
-            Cuthroat
+            Cutthroat
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
               <Nav.Link as={Link} to='/'>
-                Cuthroat
+                Home
               </Nav.Link>
-              {/* if user is logged in show saved books and logout */}
+              {/* if user is logged in show saved games and logout */}
               {Auth.loggedIn() ? (
                 <>
                   <Nav.Link as={Link} to='/games'>
