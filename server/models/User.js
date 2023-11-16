@@ -27,7 +27,7 @@ const userSchema = new Schema(
     fullname: {
       type: String,
       required: false,
-    }
+    },
     // set savedBooks to be an array of data that adheres to the bookSchema
     // savedBooks: [bookSchema],
   },
@@ -38,6 +38,10 @@ const userSchema = new Schema(
   //   },
   // }
 );
+
+// userSchema.virtual('gameBalls').get(function () {
+//   return this.
+// });
 
 // hash user password
 userSchema.pre('save', async function (next) {

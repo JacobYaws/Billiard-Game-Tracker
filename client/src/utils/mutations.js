@@ -29,6 +29,17 @@ export const ADD_USER = gql`
   }
 `;
 
+export const CREATE_GAME = gql`
+  mutation createGame($users: [ID!], $balls: [Ballinput!], $gametype: String!) {
+    createGame(users: $users, balls: $balls, gametype: $gametype) {
+      game {
+        users
+        balls
+        gametype
+      }
+    }
+  }
+`
 // This block belongs in the ADD_USER mutation, placed below email (user)
 // bookCount
         // savedBooks {

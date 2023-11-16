@@ -67,7 +67,7 @@
 // module.exports = resolvers;
 
 const { AuthenticationError } = require('apollo-server-express')
-const { User } = require('../models');
+const { User, Ball, Game } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -110,7 +110,70 @@ Mutation: {
       const token = signToken(user);
       return { token, user };
     },
+    createGame: async(parent, { users, gametype }) => {
+      const ballCount = 16;
+      const balls = [{}];
+      let numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+      let index = 0;
+      let cutThroatRandomize = false
+      let userCount = users.length
+      let ballValue = numArr[index]
+      let assignedUserId = null
+      let assignedUserIndex = 0
+
+      if (gametype == 'nineball') {
+        ballCount = 10;
+        numArr.slice(9)
+        console.log("Nineball Array: " + numArr)
+      }
+      
+      let ballsPerUser = ballCount/userCount
+
+      if (gametype == 'cutthroat') {
+        cutThroatRandomize = true
+      }
+
+      let iterations = 0
+      while (numArr.length !== 0) {  
+      
+          
+          let type;
+
+          if (cutThroatRandomize) {
+            index = Math.floor(Math.random() * numArr.length)
+            
+            if (iterations % ballsPerUser == 0) {
+              assignedUserId = User.findById(users[assignedUserIndex]) // assumes users at assignedUserIndex is being passed in as the id of the user
+              assignedUserIndex += 1
+            }
+          }
+
+          if (ballValue > 8 && ballValue <= 15) {
+            type = "stripe"
+          } else if (ballValue == 8) {
+            type = "solid" // can change if desired in the future 8 ball
+          } else {
+            type = "solid"
+          }
+
+          ballValue = numArr[index]
+          
+          balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId});
+          numArr.splice(index, 1)
+          iterations++
+        }
+
+        // if want to detect cue ball getting scratched, push cue ball here
+        // if (trackCue) {
+        //   balls.push({number: 16, type: "Cue", status: false, assigneduser: null})
+        // }
+        
+          return Game.create({ users, balls, gametype })
+        
+    }
+  
 },
+
 };
 
 module.exports = resolvers;

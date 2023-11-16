@@ -56,8 +56,11 @@ const Home = () => {
     //     </div>
     //   </div>
     // </main>
+      
       <>
+      {Auth.loggedIn() ? (
       <Container fluid>
+        
       <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button>
 
       <Modal
@@ -96,6 +99,12 @@ const Home = () => {
       </Modal>
     
       </Container>
+      ) : (
+        <Container fluid>
+          Welcome to cutthroat. Please login or signup to start playing.
+        </Container>
+        
+      )}
       </>
 
 

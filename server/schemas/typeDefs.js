@@ -68,9 +68,33 @@ type User {
     user: User
   }
 
+  type Game {
+    _id: ID
+    users: [ID!]
+    balls: [Ball!]
+    gametype: String!
+  }
+
+  input Ballinput {
+    number: Int!
+    type: String!
+    status: Boolean!
+    assigneduser: ID!
+    color: String
+  }
+
+  type Ball {
+    number: Int!
+    type: String!
+    status: Boolean!
+    assigneduser: ID!
+    color: String
+  }
+
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(email: String!, password: String!, fullname: String, username: String!): Auth
+    createGame(users: [ID!], balls: [Ballinput], gametype: String!): Game
   }
 `;
 

@@ -7,14 +7,22 @@ const ballSchema = new Schema(
             required: true,
             unique: true
         },
-        style: {
+        type: {
             type: String,
             required: true 
         },
-        selected: {
+        status: {
             type: Boolean,
             required: true
-        }
+        },
+        assigneduser: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+        },
+        color: {
+            type: String,
+            required: false,
+        },
     }
 )
 
