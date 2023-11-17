@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
+// import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
 import { Navbar, Nav, Container, Modal, Tab, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 // import Signup from '../components/Signup';
 // import UserList from '../components/UserList/UserList' uncomment for userList
 
-import { QUERY_USERS } from '../utils/queries';
+// import { QUERY_USERS } from '../utils/queries';
 
 const Home = () => {
   // const { loading, data } = useQuery(QUERY_USERS); Uncomment for userList
@@ -59,6 +59,7 @@ const Home = () => {
       
       <>
       {Auth.loggedIn() ? (
+        
       <Container fluid>
         
       <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button>
@@ -106,9 +107,6 @@ const Home = () => {
         
       )}
       </>
-
-
-
   );
 };
 

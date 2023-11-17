@@ -96,7 +96,6 @@ Mutation: {
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
       if (!user) {
         throw new AuthenticationError('No user with this email found!');
       }
@@ -111,14 +110,16 @@ Mutation: {
       return { token, user };
     },
     createGame: async(parent, { users, gametype }) => {
+
+      
       const ballCount = 16;
-      const balls = [{}];
+      const balls = [];
       let numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
       let index = 0;
       let cutThroatRandomize = false
       let userCount = users.length
       let ballValue = numArr[index]
-      let assignedUserId = null
+      let assignedUserId = 0
       let assignedUserIndex = 0
 
       if (gametype == 'nineball') {
@@ -141,9 +142,11 @@ Mutation: {
 
           if (cutThroatRandomize) {
             index = Math.floor(Math.random() * numArr.length)
+
             
             if (iterations % ballsPerUser == 0) {
-              assignedUserId = User.findById(users[assignedUserIndex]) // assumes users at assignedUserIndex is being passed in as the id of the user
+              let assignedUser = await User.findById(users[assignedUserIndex])// assumes users at assignedUserIndex is being passed in as the id of the user
+              assignedUserId = assignedUser._id
               assignedUserIndex += 1
             }
           }
@@ -162,13 +165,14 @@ Mutation: {
           numArr.splice(index, 1)
           iterations++
         }
-
         // if want to detect cue ball getting scratched, push cue ball here
         // if (trackCue) {
         //   balls.push({number: 16, type: "Cue", status: false, assigneduser: null})
         // }
+
+        let game = await Game.create({ users, balls, gametype })
         
-          return Game.create({ users, balls, gametype })
+          return game
         
     }
   

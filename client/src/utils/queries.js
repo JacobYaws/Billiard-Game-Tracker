@@ -24,8 +24,7 @@ export const QUERY_USERS = gql`
   query singleUser($userId: ID!) {
     user(userId: $userId) {
       _id
-      name
-      skills
+      username
     }
   }
 `;

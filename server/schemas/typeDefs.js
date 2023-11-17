@@ -54,6 +54,7 @@ type Query {
   users: [User]!
   user(userId: ID!): User
   me: User
+ 
   }
 
 type User {
@@ -94,7 +95,7 @@ type User {
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(email: String!, password: String!, fullname: String, username: String!): Auth
-    createGame(users: [ID!], balls: [Ballinput], gametype: String!): Game
+    createGame(users: [ID!], gametype: String!): Game
   }
 `;
 
