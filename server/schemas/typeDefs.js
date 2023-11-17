@@ -95,6 +95,7 @@ type User {
     login(email: String!, password: String!): Auth
     addUser(email: String!, password: String!, fullname: String, username: String!): Auth
     createGame(users: [ID!], balls: [Ballinput], gametype: String!): Game
+    createLobby(users: [ID!], gametype: String!, maxsize: Number!)
   }
 `;
 

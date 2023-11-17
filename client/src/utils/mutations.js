@@ -40,6 +40,12 @@ export const CREATE_GAME = gql`
     }
   }
 `
+
+export const CREATE_LOBBY = gql`
+  mutation createLobby($users: [ID!], $gametype: String!, $maxSize: Number!) {
+    createLobby(users: $users, gametype: $gametype, maxsize: $maxsize)
+  }
+`
 // This block belongs in the ADD_USER mutation, placed below email (user)
 // bookCount
         // savedBooks {

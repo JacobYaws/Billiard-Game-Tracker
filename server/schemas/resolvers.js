@@ -110,6 +110,24 @@ Mutation: {
       const token = signToken(user);
       return { token, user };
     },
+    createLobby: async (parent, { users, gametype }) => {
+      let maxsize = 2;
+      if (gametype == "cutthroat") {
+        maxsize = 5
+      }
+      return Lobby.create({ users, gametype, maxsize })
+    },
+    // inLobby: async(parent, { some, thing }) => {
+    //   let lobbyCount = 0;
+      
+    //   if (gametype == "cutthroat") {
+    //     if (lobbyCount == 3 || lobbyCount == 5) {
+    //       return Lobby.create({ users, gametype })
+    //     }
+    //   } else {
+    //     return "Cannot start game"
+    //   }
+    // }
     createGame: async(parent, { users, gametype }) => {
       const ballCount = 16;
       const balls = [{}];
