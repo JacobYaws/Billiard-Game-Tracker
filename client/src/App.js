@@ -7,10 +7,11 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import Navbar from './components/NavBar';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Navbar from './components/NavBar/NavBar';
 import Home from './pages/Home';
+import CutThroat from './pages/cutThroat';
 
 // Creates a link to graphql at the /graphql endpoint.
 const httpLink = createHttpLink({
@@ -44,6 +45,9 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/cutthroat" component={CutThroat} />
+          {/* <Route exact path="/login" component={Login} /> */}
+          <Route path="/users/:userId"/>
           <Route render={() => <h1 className='display-2'>Wrong Page!</h1>} />
           </Switch>
       </>

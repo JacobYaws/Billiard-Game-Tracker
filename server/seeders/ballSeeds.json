@@ -1,0 +1,12 @@
+[
+    {
+    "number": 1,
+    "type": "stripe",
+    "status": false
+},
+{
+    "number": 2,
+    "type": "solid",
+    "status": false
+}
+]

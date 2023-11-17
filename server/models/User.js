@@ -24,16 +24,24 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    fullname: {
+      type: String,
+      required: false,
+    },
     // set savedBooks to be an array of data that adheres to the bookSchema
     // savedBooks: [bookSchema],
   },
   // set this to use virtual below
-  {
-    toJSON: {
-      virtuals: true,
-    },
-  }
+  // {
+  //   toJSON: {
+  //     virtuals: true,
+  //   },
+  // }
 );
+
+// userSchema.virtual('gameBalls').get(function () {
+//   return this.
+// });
 
 // hash user password
 userSchema.pre('save', async function (next) {

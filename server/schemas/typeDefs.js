@@ -51,23 +51,51 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
 
 type Query {
-    me: User
-  }
-
-  type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
+  users: [User]!
+  user(userId: ID!): User
+  me: User
+ 
   }
 
 type User {
-    _id: ID!
-    username: String!
-    email: String!
+    _id: ID
+    username: String
+    email: String
+    fullname: String
   }
 
   type Auth {
     token: ID!
     user: User
+  }
+
+  type Game {
+    _id: ID
+    users: [ID!]
+    balls: [Ball!]
+    gametype: String!
+  }
+
+  input Ballinput {
+    number: Int!
+    type: String!
+    status: Boolean!
+    assigneduser: ID!
+    color: String
+  }
+
+  type Ball {
+    number: Int!
+    type: String!
+    status: Boolean!
+    assigneduser: ID!
+    color: String
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): Auth
+    addUser(email: String!, password: String!, fullname: String, username: String!): Auth
+    createGame(users: [ID!], gametype: String!): Game
   }
 `;
 
