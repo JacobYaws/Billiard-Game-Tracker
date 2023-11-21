@@ -1,110 +1,159 @@
 import React, { useState } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Navbar, Nav, Container, Modal, Tab, Card, Button } from 'react-bootstrap';
+import { Container, Modal, Button } from 'react-bootstrap';
+// import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-
-// Change these to imports of whatever page will be shown on the homepage
-// import ThoughtList from '../components/ThoughtList';       
-// import ThoughtForm from '../components/ThoughtForm';
-// import Login from '../components/Login';
-// import Signup from '../components/Signup';
-// import UserList from '../components/UserList/UserList' uncomment for userList
-
-// import { QUERY_USERS } from '../utils/queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
+// import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {
-  // const { loading, data } = useQuery(QUERY_USERS); Uncomment for userList
-  // const users = data?.users || []; uncomment for userList
-  const [showModal, setShowModal] = useState(false);
+  
+  const [showModal, setShowModal] = useState(undefined);
+  const handleClose = () => setShowModal(undefined);
+  const handleShow = (id) => setShowModal(id)
+  const [lobbyId, setLobbyId] = useState('');
+  const [gameId, setGameId] = useState('');
+  const [createLobby, { error }] = useMutation(CREATE_LOBBY);
+  const [joinLobby] = useMutation(JOIN_LOBBY);
+  const [joinGame] = useMutation(JOIN_GAME);
+  const joinAGame = 'joingame';
+  const joinALobby = 'joinlobby'
 
+  
+
+  // const [formState, setFormState] = useState({
+  //   lobbyId: '',
+  // });
+
+  // const handleChange = (event) => {
+  //   const { lobbyId, value } = event.target;
+
+  //   setFormState({
+  //     ...formState,
+  //     [lobbyId]: value,
+  //   });
+  // };
+
+
+
+
+
+  const createLobbySubmit = async (event) => {
+    const userId = Auth.getUser().data._id;
+    let gametype = "cutthroat"
+    const users = [userId]
+
+    console.log(users)
+    try {
+        const  mutationResponse  = await createLobby({
+            variables: { users: users, gametype: gametype }
+        })
+
+        let newLobby = mutationResponse.data;
+        console.log(mutationResponse)
+        console.log(newLobby.data)
+    } catch (e) {
+        console.error(e)
+        return {
+          code: e.extensions.response.status,
+          success: false,
+          message: e.extensions.response.body,
+          track: null
+        };
+    }
+  }
+
+  const joinGameSubmit = async (event) => {
+    const users = Auth.getUser().data._id;
+    // event.preventDefault();
+    try {
+      const { data } = await joinGame({
+        variables: { users, gameId },
+      });
+    console.log(data)
+    setGameId('')
+    
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const joinLobbySubmit = async (event) => {
+    const users = Auth.getUser().data._id;
+    // event.preventDefault();
+    try {
+      const { data } = await joinLobby({
+        variables: { users, lobbyId },
+      });
+    console.log(data)
+    setLobbyId('');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  // if (loading) {
+  //   return <div>Loading...</div>
+  // }
   return (
-    // <main>
-    //   <div className="flex-row justify-center">
-    //     <div
-    //       className="col-12 col-md-10 mb-3 p-3"
-    //       style={{ border: '1px dotted #1a1a1a' }}
-    //     >
-    //       {/* <ThoughtForm /> */}
-    //     </div>
-    //     <div className="col-12 col-md-8 mb-3">
-    //       <Button variant="success">Start a new game</Button>
-        
-    //       {/* {loading ? (
-    //         <div>Loading...</div>
-    //       ) : (
-    //         <UserList
-    //           users={users}
-    //           title="Some Feed for Thought(s)..."
-    //         />
-    //       )} */}
-    //       {Auth.loggedIn() ? (
-    //             <Card style={{ width: '18rem' }}>
-    //             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-    //             <Card.Body>
-    //               <Card.Title>Previous Match</Card.Title>
-    //               <Card.Text>
-    //                 Make this show the stats of the previous n (10) games, overall stats, handicap score, etc.
-    //               </Card.Text>
-    //               <Button variant="primary">Go somewhere</Button>
-    //             </Card.Body>
-    //           </Card>
-    //           ) : (
-    //             <Nav.Link >Login/Sign Up</Nav.Link>
-    //           )}
-    //     </div>
-    //   </div>
-    // </main>
-      
       <>
       {Auth.loggedIn() ? (
-        
       <Container fluid>
-        
-      <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button>
-
+       {/* <Link to="/lobbies/:lobbyid" relative="path">  */}
+       <Link to="/lobby" relative="path"> 
+      <Button variant="success" onClick={createLobbySubmit}>Select a game to play</Button>
+      {/* <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button> */}
+      </Link>
+     
+        <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a lobby</Button>
       <Modal
-        size='lg'
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby='game-selector-modal'>
-        {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey='standard'>
-          <Modal.Header closeButton>
-            <Modal.Title id='game-selector'>
-              <Nav variant='pills'>
-                <Nav.Item>
-                  <Nav.Link eventKey='standard'>Standard</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey='nineball'>9-Ball</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link as={Link} to='/cutthroat' eventKey='cutthroat'>Cutthroat</Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Tab.Content>
-              <Tab.Pane eventKey='login'>
-                {/* <LoginForm handleModalClose={() => setShowModal(false)} /> */}
-              </Tab.Pane>
-              <Tab.Pane eventKey='signup'>
-                {/* <SignUpForm handleModalClose={() => setShowModal(false)} /> */}
-              </Tab.Pane>
-            </Tab.Content>
-          </Modal.Body>
-        </Tab.Container>
-      </Modal>
-    
+      size='lg'
+      show={showModal === joinALobby}
+      onHide={() => handleClose()}
+      aria-labelledby='join-lobby'>
+        <Modal.Header closeButton>
+        </Modal.Header>
+
+        <div className="col-12 col-lg-9">
+            <input
+              placeholder="Enter your lobby invite code"
+              value={lobbyId}
+              className="form-input w-100"
+              onChange={(event) => setLobbyId(event.target.value)}
+            />
+          <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
+          </div>
+
+          </Modal>
+
+
+
+      <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a game</Button>
+      <Modal
+      size='lg'
+      show={showModal === joinAGame}
+      onHide={() => handleClose()}
+      aria-labelledby='join-game'>
+        <Modal.Header closeButton>
+        </Modal.Header>
+
+      <div className="col-12 col-lg-9">
+            <input
+              placeholder="Enter your game invite code"
+              value={gameId}
+              className="form-input w-100"
+              onChange={(event) => setGameId(event.target.value)}
+            />
+          <Button variant="success" onClick={joinGameSubmit}>Join</Button>
+
+          </div>
+          </Modal>
       </Container>
       ) : (
         <Container fluid>
           Welcome to cutthroat. Please login or signup to start playing.
         </Container>
-        
       )}
       </>
   );

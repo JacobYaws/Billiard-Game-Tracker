@@ -28,3 +28,30 @@ export const QUERY_USERS = gql`
     }
   }
 `;
+
+export const QUERY_SINGLE_LOBBY = gql`
+query singleLobby($lobbyId: ID!) {
+  lobby(lobbyId: $lobbyId) {
+    _id
+    users
+    gametype
+    maxsize
+  }
+}`
+
+export const QUERY_SINGLE_GAME = gql`
+query singleGame($gameId: ID!) {
+  game(gameId: $gameId) {
+    _id
+    users
+    balls {
+      number
+        type
+        status
+        assigneduser
+        color
+      }
+    
+    gametype
+  }
+}`

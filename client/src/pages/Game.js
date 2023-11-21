@@ -8,7 +8,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_GAME } from '../utils/mutations';
 import  Auth  from '../utils/auth'
 
-const CutThroat = () => {
+const Game = () => {
     const gametype = 'cutthroat'
   const [showModal, setShowModal] = useState(false);
 
@@ -23,10 +23,10 @@ const CutThroat = () => {
     //     } catch (e) {
     //         console.log(error)
     //     }
-        event.preventDefault();
+        // event.preventDefault();
         const users = [userId]
         
-        
+        console.log(userId)
         try {
             const  mutationResponse  = await createGame({
                 variables: { users: users, gametype: gametype }
@@ -43,40 +43,10 @@ const CutThroat = () => {
         }
      }
 
-
-//   const startGameSubmit = async (event) => {
-//     event.preventDefault();
-//     // const users = "ObjectId('" + userId + "')";
-//     const users = userId
-//     // console.log(users)
-//     // event.preventDefault();
-//     console.log(createGame())
-//     try {
-//         const { data } = await createGame({
-//             users: users,
-//             gametype: gametype
-//         })
-//         .then(console.log("hello"))
-//         // const { data } = await createGame({
-//         //    variables: { users, gametype }
-//         // });
-
-//         console.log("Hello")
-//     } catch (e) {
-//         // console.error(e);
-//         return {
-//             code: e.extensions.response.status,
-//             success: false,
-//             message: e.extensions.response.body,
-//             track: null
-        //   };
-    // }
-//    
-//   }
 return(
     <>
     <Container>
-        <Button onClick={() => setShowModal(true)}>Start your game</Button>
+        <Button onClick={() => setShowModal(true)}>Start a new game</Button>
         <Modal
         size='lg'
         show={showModal}
@@ -104,4 +74,4 @@ return(
         </>
 )}
 
-export default CutThroat
+export default Game

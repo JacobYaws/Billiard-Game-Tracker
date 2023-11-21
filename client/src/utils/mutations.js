@@ -59,8 +59,71 @@ export const CREATE_GAME = gql`
     }
   }
 `
+export const CREATE_LOBBY = gql`
+  mutation createLobby($users: [ID!], $gametype: String!) {
+    createLobby(users: $users, gametype: $gametype) {
+      _id
+      users
+      gametype
+      maxsize
+  }
+}
+`
+export const JOIN_GAME = gql`
+  mutation joinGame($users: ID!, $gameId: ID!) {
+    joinGame(users: $users, gameId: $gameId) {
+      _id
+      users
+      balls {
+        number
+        type
+        status
+        assigneduser
+        color
+      }
+      gametype
+    }
+  }
+`
 
+export const JOIN_LOBBY = gql`
+  mutation joinLobby($users: ID!, $lobbyId: ID!) {
+    joinLobby(users: $users, lobbyId: $lobbyId) {
+      _id
+      users
+      gametype
+      maxsize
+  }
+}
+`
 
+export const LEAVE_GAME = gql`
+  mutation leaveGame($users: ID!, $gameId: ID!) {
+    leaveGame(users: $users, gameId: $gameId) {
+      _id
+      users
+      balls {
+        number
+        type
+        status
+        assigneduser
+        color
+      }
+      gametype
+    }
+  }
+`
+
+export const LEAVE_LOBBY = gql`
+  mutation leaveLobby($users: ID!, $lobbyId: ID!) {
+    leaveLobby(users: $users, lobbyId: $lobbyId) {
+      _id
+      users
+      gametype
+      maxsize
+  }
+}
+`
 
 
 
