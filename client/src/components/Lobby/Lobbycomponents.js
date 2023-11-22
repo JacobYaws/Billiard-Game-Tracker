@@ -1,4 +1,6 @@
 import React, {Component} from "react"
+import { useQuery } from '@apollo/client';
+import { QUERY_SINGLE_LOBBY } from "../../utils/queries";
 
 
 class LobbyContainer extends Component {
@@ -9,12 +11,17 @@ class LobbyContainer extends Component {
             console.log(`TODO: Join game ${game.gametype}`)
         }
     }
+
     render() {
+        // if (loading) return 'Loading...';
+        // if (error) return `Error ${error.message}`;
         // const games = [];
+    //    console.log(data)
+
 
         return (
             <div className="c-lobby">
-                <p>Lobby</p>
+                <p>Lobby homepage</p>
                 {/* <GameList games={games} joinGame={this._joinGame} /> */}
             </div>
     )
@@ -24,8 +31,6 @@ class LobbyContainer extends Component {
 class LobbySidebar extends Component {
     constructor(props) {
         super(props);
-
-       
 
         this._login = () => {
             console.log("TODO: Put login here")
@@ -37,22 +42,19 @@ class LobbySidebar extends Component {
     }
 
     render() {
-        const canLogin = true;
         const canCreateGame = true;
         const createGameInProgress = false;
 
         return (
             <section className="c-lobby-sidebar">
                 <div className="m-sidebar-actions">
-                    {!canLogin ? null :
-                    <button className="m-button primary" onClick={this._login}>Login</button>}
-
+                    
                     {!canCreateGame ? null :
                         <button
                         onClick={this._createGame}
                         disabled={createGameInProgress}
                         className="m-button good">
-                            Create Game
+                            Create Game Button
                         </button> 
                         }
                 </div>

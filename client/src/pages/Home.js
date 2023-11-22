@@ -38,8 +38,6 @@ const Home = () => {
 
 
 
-
-
   const createLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
     let gametype = "cutthroat"
@@ -52,8 +50,10 @@ const Home = () => {
         })
 
         let newLobby = mutationResponse.data;
+        let newLobbyId = newLobby.createLobby._id
         console.log(mutationResponse)
-        console.log(newLobby.data)
+        console.log(newLobbyId)
+        window.location.href = "lobby/" + newLobbyId
     } catch (e) {
         console.error(e)
         return {
@@ -96,60 +96,58 @@ const Home = () => {
   // if (loading) {
   //   return <div>Loading...</div>
   // }
+
   return (
       <>
       {Auth.loggedIn() ? (
       <Container fluid>
-       {/* <Link to="/lobbies/:lobbyid" relative="path">  */}
-       <Link to="/lobby" relative="path"> 
-      <Button variant="success" onClick={createLobbySubmit}>Select a game to play</Button>
+      
+      <Button variant="success" onClick={createLobbySubmit}>Start a new game</Button>
+        
       {/* <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button> */}
-      </Link>
+      {/* </Link> */}
      
-        <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a lobby</Button>
-      <Modal
-      size='lg'
-      show={showModal === joinALobby}
-      onHide={() => handleClose()}
-      aria-labelledby='join-lobby'>
-        <Modal.Header closeButton>
-        </Modal.Header>
 
-        <div className="col-12 col-lg-9">
-            <input
-              placeholder="Enter your lobby invite code"
-              value={lobbyId}
-              className="form-input w-100"
-              onChange={(event) => setLobbyId(event.target.value)}
-            />
-          <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
-          </div>
-
-          </Modal>
+    <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a lobby</Button>
+        <Modal
+        size='lg'
+        show={showModal === joinALobby}
+        onHide={() => handleClose()}
+        aria-labelledby='join-lobby'>
+          <Modal.Header closeButton>
+          </Modal.Header>
+          <div className="col-12 col-lg-9">
+              <input
+                placeholder="Enter your lobby invite code"
+                value={lobbyId}
+                className="form-input w-100"
+                onChange={(event) => setLobbyId(event.target.value)}
+              />
+            <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
+            </div>
+            </Modal>
 
 
 
       <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a game</Button>
-      <Modal
-      size='lg'
-      show={showModal === joinAGame}
-      onHide={() => handleClose()}
-      aria-labelledby='join-game'>
-        <Modal.Header closeButton>
-        </Modal.Header>
-
-      <div className="col-12 col-lg-9">
-            <input
-              placeholder="Enter your game invite code"
-              value={gameId}
-              className="form-input w-100"
-              onChange={(event) => setGameId(event.target.value)}
-            />
-          <Button variant="success" onClick={joinGameSubmit}>Join</Button>
-
-          </div>
-          </Modal>
-      </Container>
+          <Modal
+          size='lg'
+          show={showModal === joinAGame}
+          onHide={() => handleClose()}
+          aria-labelledby='join-game'>
+            <Modal.Header closeButton>
+            </Modal.Header>
+          <div className="col-12 col-lg-9">
+                <input
+                  placeholder="Enter your game invite code"
+                  value={gameId}
+                  className="form-input w-100"
+                  onChange={(event) => setGameId(event.target.value)}
+                />
+              <Button variant="success" onClick={joinGameSubmit}>Join</Button>
+              </div>
+              </Modal>
+          </Container>
       ) : (
         <Container fluid>
           Welcome to cutthroat. Please login or signup to start playing.

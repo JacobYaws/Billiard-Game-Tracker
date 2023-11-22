@@ -11,8 +11,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/NavBar/NavBar';
 import Home from './pages/Home';
-import lobby from './pages/lobby';
-import {LobbyContainer, LobbySidebar} from './components/Lobby/Lobby';
+import Lobby from './pages/Lobby';
+import {LobbyContainer, LobbySidebar} from './components/Lobby/Lobbycomponents';
 import Game from './pages/Game';
 // import Gamestart from './pages/Gamestart';
 
@@ -48,7 +48,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/lobby" component={lobby} />
+          <Route exact path="/lobby/:lobbyId" component={Lobby} />
           {/* <Route 
           // path="/lobbies/:lobbyId" 
           element={<Lobby />} /> */}
