@@ -40,8 +40,8 @@ const Home = () => {
 
   const createLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
-    let gametype = "cutthroat"
-    const users = [userId]
+    let gametype = "cutthroat";
+    const users = [userId];
 
     console.log(users)
     try {
