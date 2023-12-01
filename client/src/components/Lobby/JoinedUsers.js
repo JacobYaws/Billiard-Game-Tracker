@@ -65,18 +65,61 @@
 // export { LobbyContainer, LobbySidebar }
 
 
-import React from 'react'
+import React, { useState } from 'react'
+import { useMutation, useQuery } from '@apollo/client';
+import { QUERY_MULTIPLE_USERS, QUERY_SINGLE_USER, QUERY_USERS } from '../../utils/queries';
+
 
 function JoinedUsers(props) {
-    return (
-        <ul className="list-group">
-        {props.users.map((users) => (
-            <li className="list-group-item" key={users.id}>
+    console.log("props: ")
+    console.log(props)    
+    const userData = useQuery(
+            props.users?.length > 1 ? QUERY_MULTIPLE_USERS : QUERY_SINGLE_USER,
+            {
+                variables: {userId: props.users},
+                
+                // fetchPolicy: 'network-only'
+            }
+            ); 
 
+            // if (loading) return "Loading..."
+            // if (error) return `Error  ${error.message}`
+            let users = []
+            if (userData !== undefined && userData.data !== undefined) {
+                console.log(userData)
+                users = userData.data.multipleUsers
+            }
+            // console.log(userData.data)
+    
+    console.log(userData)
+    console.log(users)
+    console.log("props: " + props)
+    console.log(props)
+    console.log("JoinedUsersComponent")
+    // let userArray = userData.data.multipleUsers
+    return (
+        <>
+        <div className="flex-row justify-center">
+            {users.length === 0 ? (
+            // {userData !== undefined && userData.data !== undefined && userData.data.multipleUsers !== undefined ? (
+                <div>Loading... L</div>
+            ) : (
+        <div>
+            <h1>gjjkldsa;jgs</h1>
+        <ul className="list-group">
+        {users.map((user) => (
+            <li className="list-group-item" key={user.username}>
+                {`${user.username}`}
             </li>
             
         ))}
+        
         </ul>
+        
+        </div>
+        )}
+        </div>
+        </>
     )
 }
 

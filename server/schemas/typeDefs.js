@@ -52,6 +52,7 @@ const typeDefs = gql`
 
 type Query {
   users: [User]!
+  multipleUsers(userId: [ID]!): [User]
   user(userId: ID!): User
   me: User
   game(gameId: ID!): Game

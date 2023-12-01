@@ -7,8 +7,11 @@ const resolvers = {
         users: async () => {
           return User.find();
         },
-
+        multipleUsers: async(parent, { userId }) => {
+          return User.find({ _id: userId })
+        },
         user: async (parent, { userId }) => {
+          // console.log(userId)
           return User.findOne({ _id: userId});
         },
 
@@ -19,6 +22,7 @@ const resolvers = {
           throw new AuthenticationError('You need to be logged in!');
         },
         lobby: async(parent, { lobbyId }) => {
+          // console.log(lobbyId)
           return Lobby.findOne({ _id: lobbyId })
         },
         game: async(parent, { gameId }) => {
