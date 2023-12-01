@@ -88,7 +88,7 @@ const Home = () => {
         variables: { users, lobbyId },
       });
     console.log(data)
-    setLobbyId('');
+    window.location.href = "/lobby/" + lobbyId
     } catch (e) {
       console.error(e);
     }

@@ -1,4 +1,5 @@
-import { LobbyContainer, LobbySidebar } from '../components/Lobby/Lobbycomponents';
+// import { LobbyContainer, LobbySidebar } from '../components/Lobby/JoinedUsers';
+import JoinedUsers from '../components/Lobby/JoinedUsers';
 import React, { useState } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
@@ -14,6 +15,14 @@ const Lobby = () => {
 
 const { lobbyId } = useParams();
 const [createGame] = useMutation(CREATE_GAME);
+const [users, setUsers] = useState([]);
+
+// const showUsers = async (query) => {
+//     const response = await search(query);
+//     console.log(response)
+//     setUsers(response.data._id);
+// }
+
 const { loading, error, data } = useQuery(
     lobbyId ? QUERY_SINGLE_LOBBY : QUERY_SINGLE_USER,
     {
@@ -27,6 +36,8 @@ const { loading, error, data } = useQuery(
         console.log(data)
         console.log("lobbyUserData: " + lobbyUserData)
         console.log(lobbyUserData.length)
+
+        
 
 
     const createGameSubmit = async (event) => {
@@ -65,13 +76,18 @@ return (
         {loading ? (
             <div>Loading...</div>
         ) : (
+            // <div>
+            // <LobbyContainer>
+            //     <Button onClick={createGameSubmit}>gkldj;safj</Button>
+            //     {/* <ul>{userList}</ul> */}
+            //     </LobbyContainer>
+            // <LobbySidebar />
+            // </div>
+
             <div>
-            <LobbyContainer>
-                <Button onClick={createGameSubmit}>gkldj;safj</Button>
-                {/* <ul>{userList}</ul> */}
-                </LobbyContainer>
-            <LobbySidebar />
+                <JoinedUsers users={users} />
             </div>
+
     )}
     </div>
     </>
