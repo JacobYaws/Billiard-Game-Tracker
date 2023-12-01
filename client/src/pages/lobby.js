@@ -8,13 +8,14 @@ import { Container, Modal, Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
-import { CREATE_GAME } from '../utils/mutations';
+import { CREATE_GAME, LEAVE_LOBBY } from '../utils/mutations';
 
 
 
 const Lobby = () => {
 const { lobbyId } = useParams();
 const [createGame] = useMutation(CREATE_GAME);
+const [leaveLobby] = useMutation(LEAVE_LOBBY);
 
 const { loading, error, data } = useQuery(
     lobbyId ? QUERY_SINGLE_LOBBY : QUERY_SINGLE_USER,
@@ -48,16 +49,36 @@ console.log("users: " + users)
 let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
 
 
-    const listUsers = () => {
-        // console.log("testestsestestest")
-        // console.log("test: " + data.lobby.users)
-        // // setUsers(test)
-        // console.log("Users: " + users)
-        // console.log(users)
+    // const listUsers = () => {
+    //     // console.log("testestsestestest")
+    //     // console.log("test: " + data.lobby.users)
+    //     // // setUsers(test)
+    //     // console.log("Users: " + users)
+    //     // console.log(users)
         
-        setUsers(data.lobby.users)
+    //     setUsers(data.lobby.users)
 
-    //    setUsers(lobbyUserData)
+    // //    setUsers(lobbyUserData)
+    // }
+
+    const leaveLobbySubmit = async (event) => {
+        const userId = Auth.getUser().data._id;
+        console.log(userId);
+        try {
+            const mutationResponse = await leaveLobby({
+                variables: { users: userId, lobbyId: lobbyId}
+            })
+            console.log(mutationResponse)
+            
+        } catch (e) {
+            console.error(e)
+            return {
+                code: e.extensions.response.status,
+                success: false,
+                message: e.extensions.response.body,
+                track: null
+            };
+        }
     }
 
 
@@ -98,20 +119,18 @@ return (
         {loading ? (
             <div>Loading.....................</div>
         ) : (
-            // <div>
-            // <LobbyContainer>
-            //     <Button onClick={createGameSubmit}>gkldj;safj</Button>
-            //     {/* <ul>{userList}</ul> */}
-            //     </LobbyContainer>
-            // <LobbySidebar />
-            // </div>
-            
+                       
             <div>
-                <Button onClick={listUsers}> listUsers</Button>
+                <div>
+                {/* <Button onClick={listUsers}> listUsers</Button> */}
                 <JoinedUsers users={users} />
                 {/* <JoinedUsers onLoad={() => users={users}} /> */}
-
+                </div>
+                <div>
+                    <Button as={Link} to="/" onClick={leaveLobbySubmit}>Leave lobby</Button> 
+                    </div>
             </div>
+            
 
     )}
     </div>
