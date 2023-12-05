@@ -1,14 +1,17 @@
 // import { LobbyContainer, LobbySidebar } from '../components/Lobby/JoinedUsers';
 import JoinedUsers from '../components/Lobby/JoinedUsers';
+import GameSelect from '../components/Lobby/GameSelect';
 import React, { useState, useEffect } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Container, Modal, Button } from 'react-bootstrap';
+import { Container, Modal, Button, Row, Col } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
 import { CREATE_GAME, LEAVE_LOBBY } from '../utils/mutations';
+// import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 
 
@@ -114,27 +117,34 @@ let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
 
 
 return (
-    <>
+  
     <div className="flex-row justify-center">
         {loading ? (
             <div>Loading.....................</div>
-        ) : (
-                       
-            <div>
-                <div>
-                {/* <Button onClick={listUsers}> listUsers</Button> */}
-                <JoinedUsers users={users} />
-                {/* <JoinedUsers onLoad={() => users={users}} /> */}
-                </div>
-                <div>
-                    <Button as={Link} to="/" onClick={leaveLobbySubmit}>Leave lobby</Button> 
-                    </div>
+        ) : (   
+        <div class="container px-4 text-center">
+        
+            <GameSelect />
+            {/* </GameSelect> */}
+            
+            <div class="col-md-3 p-3">
+                    <JoinedUsers users={users} />
             </div>
             
+            <div class="row gx-5">
+                <div class="col-md-3 p-3">
+                    <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
+                </div>
 
+                <div class = "col-md-3 p-3">
+                    <Button onClick={createGameSubmit} className="start-button">Start game</Button>
+                </div>
+            </div> 
+        </div>
+      
     )}
     </div>
-    </>
+   
 )
 }
 

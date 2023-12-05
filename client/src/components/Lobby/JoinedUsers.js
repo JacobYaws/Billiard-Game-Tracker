@@ -68,6 +68,7 @@
 import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_MULTIPLE_USERS, QUERY_SINGLE_USER, QUERY_USERS } from '../../utils/queries';
+import '../styles/JoinedUsers.css'
 
 
 function JoinedUsers(props) {
@@ -99,27 +100,28 @@ function JoinedUsers(props) {
     // let userArray = userData.data.multipleUsers
     return (
         <>
-        <div className="flex-row justify-center">
+    <div className="flex-row justify-center">
+
             {users.length === 0 ? (
             // {userData !== undefined && userData.data !== undefined && userData.data.multipleUsers !== undefined ? (
-                <div>Loading... L</div>
+                <div>Loading for whatever reason.</div>
+
             ) : (
+
         <div>
-            <h1>gjjkldsa;jgs</h1>
+            <h2>Joined Users</h2>
         <ul className="list-group">
         {users.map((user) => (
             <li className="list-group-item" key={user.username}>
                 {`${user.username}`}
             </li>
-            
         ))}
-        
         </ul>
-        
         </div>
         )}
-        </div>
-        </>
+
+    </div>
+    </>
     )
 }
 

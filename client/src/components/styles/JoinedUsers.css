@@ -1,0 +1,12 @@
+.leave-button {
+    background-color: var(--leave);
+    border-color: var(--leave);
+    opacity: 80%;
+    margin-bottom:  10%
+  }
+  
+  .start-button {
+    background-color: var(--continue);
+    border-color: var(--continue);
+    opacity: 80%;
+  }

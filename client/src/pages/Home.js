@@ -101,56 +101,133 @@ const Home = () => {
       <>
       {Auth.loggedIn() ? (
       <Container fluid>
-      
-      <Button variant="success" onClick={createLobbySubmit}>Start a new game</Button>
-        
-      {/* <Button variant="success" onClick={() => setShowModal(true)}>Select a game to play</Button> */}
-      {/* </Link> */}
-     
-
-    <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a lobby</Button>
-        <Modal
-        size='lg'
-        show={showModal === joinALobby}
-        onHide={() => handleClose()}
-        aria-labelledby='join-lobby'>
-          <Modal.Header closeButton>
-          </Modal.Header>
-          <div className="col-12 col-lg-9">
-              <input
-                placeholder="Enter your lobby invite code"
-                value={lobbyId}
-                className="form-input w-100"
-                onChange={(event) => setLobbyId(event.target.value)}
-              />
-            <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
+      {/* <div class="container px-4 text-center p-3">
+        <Button variant="success" onClick={createLobbySubmit}>Start a New Game</Button>
+          <div class="p-3">
+            <div class="m-3">
+              <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
+                <Modal
+                size='lg'
+                show={showModal === joinALobby}
+                onHide={() => handleClose()}
+                aria-labelledby='join-lobby'>
+                  <Modal.Header closeButton>
+                  </Modal.Header>
+                    <div className="col-12 col-lg-9">
+                      <input
+                        placeholder="Enter your lobby invite code"
+                        value={lobbyId}
+                        className="form-input w-100"
+                        onChange={(event) => setLobbyId(event.target.value)}
+                      />
+                        <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
+                    </div>
+                </Modal>
             </div>
-            </Modal>
+              <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
+                <Modal
+                size='lg'
+                show={showModal === joinAGame}
+                onHide={() => handleClose()}
+                aria-labelledby='join-game'>
+                  <Modal.Header closeButton>
+                  </Modal.Header>
+                    <div className="col-12 col-lg-9">
+                      <input
+                        placeholder="Enter your game invite code"
+                        value={gameId}
+                        className="form-input w-100"
+                        onChange={(event) => setGameId(event.target.value)}
+                      />
+                        <Button variant="success" onClick={joinGameSubmit}>Join</Button>
+                    </div>
+                </Modal>
+          </div>
+      </div>
+               */}
 
-
-
-      <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a game</Button>
+  <div class="col">
+    <div class="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Create a New Game</h5>
+          <p class="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
+          you would like to play. Once the enough people have joined for your game type, you can start tracking your score!</p>
+          <Button variant="success" onClick={createLobbySubmit}>Start a Lobby</Button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 p-3 text-center mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Join a Lobby</h5>
+          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the lobby.</p>
+          <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
           <Modal
           size='lg'
-          show={showModal === joinAGame}
+          show={showModal === joinALobby}
           onHide={() => handleClose()}
-          aria-labelledby='join-game'>
+          aria-labelledby='join-lobby'>
             <Modal.Header closeButton>
+              <h2 class="mx-5">Join a Lobby</h2>
             </Modal.Header>
-          <div className="col-12 col-lg-9">
+            <div className="col-12 col-lg-9 mx-auto text-center">
                 <input
-                  placeholder="Enter your game invite code"
-                  value={gameId}
-                  className="form-input w-100"
-                  onChange={(event) => setGameId(event.target.value)}
+                  placeholder="Enter your lobby invite code"
+                  value={lobbyId}
+                  className="form-input w-100 text-center m-3"
+                  onChange={(event) => setLobbyId(event.target.value)}
                 />
-              <Button variant="success" onClick={joinGameSubmit}>Join</Button>
+              <Button variant="success" className="m-3" onClick={joinLobbySubmit}>Join</Button>
+            </div>
+          </Modal>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 p-3 text-center mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Join a Game</h5>
+          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the game.</p>
+          <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
+            <Modal
+            size='lg'
+            show={showModal === joinAGame}
+            onHide={() => handleClose()}
+            aria-labelledby='join-game'>
+              <Modal.Header closeButton>
+                <h2 class="mx-5">Join a Game</h2>
+              </Modal.Header>
+            <div className="col-12 col-lg-9 mx-auto text-center" >
+                  <input
+                    placeholder="Enter your game invite code"
+                    value={gameId}
+                    className="form-input w-100 text-center m-3"
+                    onChange={(event) => setGameId(event.target.value)}
+                  />
+                <Button variant="success" className="m-3" onClick={joinGameSubmit}>Join</Button>
               </div>
-              </Modal>
+            </Modal>
+        </div>
+      </div>
+    </div>
+  </div>
           </Container>
       ) : (
-        <Container fluid>
+        <Container fluid className="p-5">
+          <div class="card text-center mx-auto col-sm-6 p-3">
+            <div class="card-body">
           Welcome to cutthroat. Please login or signup to start playing.
+            </div>
+            {/* <div class="col-sm-6 text-center mx-auto">
+              <div class="col">
+                <Button onClick={() => setShowModal(true)} className="mx-3">Login</Button>
+                <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button>
+              </div>
+            </div> */}
+          </div>
+         
         </Container>
       )}
       </>
