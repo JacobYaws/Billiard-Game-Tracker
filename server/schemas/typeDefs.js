@@ -52,9 +52,11 @@ const typeDefs = gql`
 
 type Query {
   users: [User]!
+  multipleUsers(userId: [ID]!): [User]
   user(userId: ID!): User
   me: User
- 
+  game(gameId: ID!): Game
+  lobby(lobbyId: ID!): Lobby
   }
 
 type User {
@@ -74,6 +76,13 @@ type User {
     users: [ID!]
     balls: [Ball!]
     gametype: String!
+  }
+
+  type Lobby {
+    _id: ID
+    users: [ID!]
+    gametype: String!
+    maxsize: Int!
   }
 
   input Ballinput {
@@ -96,6 +105,11 @@ type User {
     login(email: String!, password: String!): Auth
     addUser(email: String!, password: String!, fullname: String, username: String!): Auth
     createGame(users: [ID!], gametype: String!): Game
+    createLobby(users: [ID!], gametype: String!): Lobby
+    joinGame(users: ID!, gameId: ID!): Game
+    joinLobby(users: ID!, lobbyId: ID!): Lobby
+    leaveGame(users: ID!, gameId: ID!): Game
+    leaveLobby(users: ID!, lobbyId: ID!): Lobby
   }
 `;
 

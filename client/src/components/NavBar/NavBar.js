@@ -10,11 +10,12 @@ const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
 
+  
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
-          <Navbar.Brand as={Link} to='/'>
+          <Navbar.Brand as={Link} to='/' className="p-3">
             Cutthroat
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />

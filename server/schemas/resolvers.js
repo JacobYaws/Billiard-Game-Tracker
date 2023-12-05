@@ -1,73 +1,5 @@
-// const { AuthenticationError } = require('apollo-server-express')
-// const { User } = require('../models');
-// const { signToken } = require('../utils/auth');
-
-// const resolvers = {
-//     Query: {
-//       // This will query 'me' which will make sure that all data being changed is for the user that is logged in. It will search for the user's data by their _id.
-//         me: async (parent, args, context) => {
-//           if (context.user) {
-//             return User.findOne({ _id: context.user._id });
-//           }
-//           throw new AuthenticationError('You need to be logged in!');
-//         },
-//         },
-
-// Mutation: {
-//   // This is the mutation used for adding a new user to the database. It requires a username, email, and password. Once successful, the user will be created with a unique authorization token.
-//     addUser: async (parent, { username, email, password }) => {
-//       const user = await User.create({ username, email, password });
-//       const token = signToken(user);
-//       return { token, user };
-//     },
-//     // This is the mutation for logging in, which requires an email and password to verify with the database. If successful, the user will be logged in to their account.
-//     login: async (parent, { email, password }) => {
-//       const user = await User.findOne({ email });
-
-//       if (!user) {
-//         throw new AuthenticationError('No user with this email found!');
-//       }
-
-//       const correctPw = await user.isCorrectPassword(password);
-
-//       if (!correctPw) {
-//         throw new AuthenticationError('Incorrect password!');
-//       }
-
-//       const token = signToken(user);
-//       return { token, user };
-//     },
-
-//     // This is the mutation for saving a book to the user's savedBooks array. newBook holds the data for the book to be saved and will be added to the specific user's savedBooks array. runValidators is used to prevent duplicate entries.
-//     saveBook: async (parent, { newBook }, context) => {
-//       if (context.user) {
-//         return User.findOneAndUpdate(
-//           { _id: context.user._id },
-//           { $addToSet: { savedBooks: newBook } },
-//           { new: true, runValidators: true }
-//         )
-//         }
-//         throw new AuthenticationError('You need to be logged in!');
-//     },
-
-//     // This is the mutation for removing a book from a user's savedBooks array. It will search the user's savedBooks array and remove the entry that matches with the book-to-be-deleted's bookId.
-//     removeBook: async (parent, { bookId }, context) => {
-//       if (context.user) {
-//         return User.findOneAndUpdate(
-//             { _id: context.user._id },
-//             { $pull: { savedBooks: { bookId: bookId } } },
-//             { new: true }
-//         );
-//         }
-//         throw new AuthenticationError('You need to be logged in!');
-//     },
-// },
-// };
-
-// module.exports = resolvers;
-
 const { AuthenticationError } = require('apollo-server-express')
-const { User, Ball, Game } = require('../models');
+const { User, Ball, Game, Lobby } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -75,8 +7,11 @@ const resolvers = {
         users: async () => {
           return User.find();
         },
-
+        multipleUsers: async(parent, { userId }) => {
+          return User.find({ _id: userId })
+        },
         user: async (parent, { userId }) => {
+          // console.log(userId)
           return User.findOne({ _id: userId});
         },
 
@@ -85,6 +20,13 @@ const resolvers = {
             return User.findOne({ _id: context.user._id });
           }
           throw new AuthenticationError('You need to be logged in!');
+        },
+        lobby: async(parent, { lobbyId }) => {
+          // console.log(lobbyId)
+          return Lobby.findOne({ _id: lobbyId })
+        },
+        game: async(parent, { gameId }) => {
+          return Game.findOne({ _id: gameId })
         },
         },
 
@@ -109,6 +51,74 @@ Mutation: {
       const token = signToken(user);
       return { token, user };
     },
+    joinLobby: async (parent, { users, lobbyId }) => {
+       return await Lobby.findOneAndUpdate(
+        { _id: lobbyId },
+         {
+          $addToSet: { users: users },
+        },
+        {
+          new: true,
+          runValidators: true,
+        });
+       
+
+    },
+    leaveLobby: async (parent, { users, lobbyId }) => {
+      return await Lobby.findOneAndUpdate(
+        { _id: lobbyId, users: { $elemMatch: { $eq: users } } },
+         {
+          $pull: { users: users },
+        },
+        {
+          new: true,
+          runValidators: true,
+        });
+    },
+    joinGame: async (parent, { users, gameId }) => {
+      return await Game.findOneAndUpdate(
+        
+        { _id: gameId },
+        {
+         $addToSet: { users: users },
+       },
+       {
+         new: true,
+         runValidators: true,
+       },
+       );
+       
+   },
+
+   leaveGame: async (parent, { users, gameId }) => {
+     return await Game.findOneAndUpdate(
+       { _id: gameId, users: { $elemMatch: { $eq: users } } },
+        {
+         $pull: { users: users },
+       },
+       {
+         new: true,
+         runValidators: true,
+       });
+   },
+    createLobby: async (parent, { users, gametype }) => {
+      let maxsize = 2;
+      if (gametype == "cutthroat") {
+        maxsize = 5
+      }
+      return await Lobby.create({ users, gametype, maxsize })
+    },
+    // inLobby: async(parent, { some, thing }) => {
+    //   let lobbyCount = 0;
+      
+    //   if (gametype == "cutthroat") {
+    //     if (lobbyCount == 3 || lobbyCount == 5) {
+    //       return Lobby.create({ users, gametype })
+    //     }
+    //   } else {
+    //     return "Cannot start game"
+    //   }
+    // }
     createGame: async(parent, { users, gametype }) => {
 
       
