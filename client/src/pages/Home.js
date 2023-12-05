@@ -74,6 +74,9 @@ const Home = () => {
       });
     console.log(data)
     setGameId('')
+    window.location.href = (window.location.origin + "/game/" + gameId)
+
+    // window.location.href = "/game/" + gameId
     
     } catch (e) {
       console.error(e);
@@ -88,7 +91,9 @@ const Home = () => {
         variables: { users, lobbyId },
       });
     console.log(data)
-    window.location.href = "/lobby/" + lobbyId
+    window.location.href = (window.location.origin + "/lobby/" + lobbyId)
+
+    // window.location.href = "/lobby/" + lobbyId
     } catch (e) {
       console.error(e);
     }
@@ -154,6 +159,7 @@ const Home = () => {
           <p class="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
           you would like to play. Once the enough people have joined for your game type, you can start tracking your score!</p>
           <Button variant="success" onClick={createLobbySubmit}>Start a Lobby</Button>
+          
         </div>
       </div>
     </div>

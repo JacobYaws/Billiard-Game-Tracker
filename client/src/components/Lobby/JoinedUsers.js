@@ -75,7 +75,7 @@ function JoinedUsers(props) {
     console.log("props: ")
     console.log(props)    
     const userData = useQuery(
-            props.users?.length > 1 ? QUERY_MULTIPLE_USERS : QUERY_SINGLE_USER,
+            props.users?.length > 0 ? QUERY_MULTIPLE_USERS : QUERY_SINGLE_USER,
             {
                 variables: {userId: props.users},
                 

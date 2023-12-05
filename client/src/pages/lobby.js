@@ -19,7 +19,6 @@ const Lobby = () => {
 const { lobbyId } = useParams();
 const [createGame] = useMutation(CREATE_GAME);
 const [leaveLobby] = useMutation(LEAVE_LOBBY);
-
 const { loading, error, data } = useQuery(
     lobbyId ? QUERY_SINGLE_LOBBY : QUERY_SINGLE_USER,
     {
@@ -49,7 +48,7 @@ console.log("users: " + users)
     console.log(typeof lobbyUserData)
 
              
-let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
+// let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
 
 
     // const listUsers = () => {
@@ -84,13 +83,11 @@ let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
         }
     }
 
-
-
+  
     const createGameSubmit = async (event) => {
             const userId = Auth.getUser().data._id;
             const gametype = 'cutthroat'
             const users = [userId];
-            console.log(users);
             try {
                 const mutationResponse = await createGame({
                     variables: { users: users, gametype: gametype}
@@ -98,9 +95,10 @@ let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
                 
                 let newGame = mutationResponse.data;
                 let newGameId = newGame.createGame._id;
-                console.log(mutationResponse);
-                console.log(newGameId)
-                window.location.href = "game/" + newGameId
+                // console.log(mutationResponse);
+                // console.log(newGameId)
+                window.location.href = (window.location.origin + "/game/" + newGameId)
+                
             } catch (e) {
                 console.error(e)
                 return {
@@ -111,9 +109,6 @@ let test = ["655d2f157fd43b865afd0e6c", "655d7a617fd43b865afd0ea2"]
                 };
             }
         }
-// const userList = lobbyUserData.map((users) =>
-// <li>{users}</li>
-// );
 
 
 return (
@@ -126,6 +121,7 @@ return (
         
             <GameSelect />
             {/* </GameSelect> */}
+        
             
             <div class="col-md-3 p-3">
                     <JoinedUsers users={users} />

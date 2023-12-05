@@ -54,7 +54,7 @@ function App() {
           {/* <Route 
           // path="/lobbies/:lobbyId" 
           element={<Lobby />} /> */}
-          <Route exact path="/game" component={Game} />
+          <Route exact path="/game/:gameId" component={Game} />
           <Route path="/users/:userId"/>
           <Route render={() => <h1 className='display-2'>Wrong Page!</h1>} />
           </Switch>
