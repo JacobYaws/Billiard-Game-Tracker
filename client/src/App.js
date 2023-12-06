@@ -51,9 +51,6 @@ function App() {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/lobby/:lobbyId" component={Lobby} />
-          {/* <Route 
-          // path="/lobbies/:lobbyId" 
-          element={<Lobby />} /> */}
           <Route exact path="/game/:gameId" component={Game} />
           <Route path="/users/:userId"/>
           <Route render={() => <h1 className='display-2'>Wrong Page!</h1>} />

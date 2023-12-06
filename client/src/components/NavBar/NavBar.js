@@ -3,14 +3,34 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from '../../pages/Signup';
 import LoginForm from '../../pages/Login';
+import { QUERY_STATUS, QUERY_SINGLE_USER, QUERY_USERS } from '../../utils/queries';
+import { useMutation, useQuery } from '@apollo/client';
+
 
 import Auth from '../../utils/auth';
 
 const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
-
-  
+  const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
+    const { loading, error, data } = useQuery(
+      QUERY_STATUS,
+      {
+          // variables: {userId: Auth.getUser().data._id},
+          variables: {userId: userId},
+          pollInterval: 500,
+      }
+      );
+  // console.log(data.inGame._id)
+  let gameId = data?.inGame?._id
+      console.log(gameId)
+      console.log(window.location)
+      let pathName = window.location.pathname;
+      console.log(pathName)
+      if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
+  window.location.href = (window.location.origin + "/game/" + gameId)
+      }
+  // window
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>

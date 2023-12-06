@@ -28,6 +28,13 @@ const resolvers = {
         game: async(parent, { gameId }) => {
           return Game.findOne({ _id: gameId })
         },
+        inGame: async(parent, { userId }) => {
+          // console.log("inGame: " + userId)
+          if (userId === null) {
+            return {}
+          }
+          return Game.findOne({ users: { $all: [userId] }, status: "inProgress" })
+        }
         },
 
 Mutation: {
@@ -61,8 +68,6 @@ Mutation: {
           new: true,
           runValidators: true,
         });
-       
-
     },
     leaveLobby: async (parent, { users, lobbyId }) => {
       return await Lobby.findOneAndUpdate(
@@ -87,9 +92,7 @@ Mutation: {
          runValidators: true,
        },
        );
-       
    },
-
    leaveGame: async (parent, { users, gameId }) => {
      return await Game.findOneAndUpdate(
        { _id: gameId, users: { $elemMatch: { $eq: users } } },
@@ -120,8 +123,6 @@ Mutation: {
     //   }
     // }
     createGame: async(parent, { users, gametype }) => {
-
-      
       const ballCount = 16;
       const balls = [];
       let numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -179,15 +180,11 @@ Mutation: {
         // if (trackCue) {
         //   balls.push({number: 16, type: "Cue", status: false, assigneduser: null})
         // }
-
-        let game = await Game.create({ users, balls, gametype })
-        
-          return game
-        
+        let status = "inProgress"
+        let game = await Game.create({ users, balls, gametype, status })
+        return game
     }
-  
 },
-
 };
 
 module.exports = resolvers;

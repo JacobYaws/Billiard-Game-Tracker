@@ -11,6 +11,13 @@ export const QUERY_ME = gql`
   }
 `;
 
+export const QUERY_STATUS = gql`
+query inGame($userId: ID) {
+  inGame(userId: $userId) {
+    _id
+  }
+}`
+
 export const QUERY_USERS = gql`
   query allUsers {
     users {

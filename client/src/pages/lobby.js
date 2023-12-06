@@ -38,7 +38,10 @@ const [users, setUsers] = useState(data?.lobby.users);
     if (loading) return "Loading.........................."
     if (error) return `Error  ${error.message}`
 
-    
+   function joinAllUsers() {
+    console.log("JoinAllUsers: " + data)
+    console.log(data)
+   }
 
  
 console.log("users: " + users)
@@ -87,10 +90,10 @@ console.log("users: " + users)
     const createGameSubmit = async (event) => {
             const userId = Auth.getUser().data._id;
             const gametype = 'cutthroat'
-            const users = [userId];
+            const userIds = users;
             try {
                 const mutationResponse = await createGame({
-                    variables: { users: users, gametype: gametype}
+                    variables: { users: userIds, gametype: gametype}
                 })
                 
                 let newGame = mutationResponse.data;
@@ -110,7 +113,7 @@ console.log("users: " + users)
             }
         }
 
-
+joinAllUsers()
 return (
   
     <div className="flex-row justify-center">

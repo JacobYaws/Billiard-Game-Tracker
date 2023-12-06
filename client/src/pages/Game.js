@@ -5,7 +5,7 @@ import BallList from '../components/BallList/BallList';
 import { Container, Button, Modal } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_GAME } from '../utils/mutations';
+import { LEAVE_GAME } from '../utils/mutations';
 import { QUERY_SINGLE_GAME, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
 import { Link, useParams } from 'react-router-dom';
 import JoinedUsers from '../components/Lobby/JoinedUsers'
@@ -16,6 +16,7 @@ import  Auth  from '../utils/auth'
 const Game = () => {
     
 const { gameId } = useParams();
+const [leaveGame] = useMutation(LEAVE_GAME)
 const gametype = 'cutthroat'
 const [showModal, setShowModal] = useState(false);
 const { loading, error, data } = useQuery(
@@ -25,54 +26,45 @@ const { loading, error, data } = useQuery(
         pollInterval: 500,
     }
     );
-
 // Potentially set as imported data instead of done in the page?
 const userId = Auth.getUser().data._id;
-// const [createGame, { error }] = useMutation(CREATE_GAME);
-//   console.log(Auth.getUser())
 
 const [users, setUsers] = useState(data?.game.users);
 
-    useEffect(() => {
-        if (data) {
-            setUsers(data.game.users)
-        }
-    // }, [])
-    }, [loading, data])
 
-    if (loading) return "Loading.........................."
-    if (error) return `Error  ${error.message}`
+useEffect(() => {
+    if (data) {
+        setUsers(data.game.users)
+    }
+// }, [])
+}, [loading, data])
 
-    //  const startGameSubmit = async (event) => {
-    // //    try {
-    // //     await console.log(userData)
-    // //     } catch (e) {
-    // //         console.log(error)
-    // //     }
-    //     // event.preventDefault();
-    //     const users = [userId]
-        
-    //     console.log(userId)
-    //     try {
-    //         const  mutationResponse  = await createGame({
-    //             variables: { users: users, gametype: gametype }
-    //         })
-    //         console.log(mutationResponse)
-    //     } catch (e) {
-    //         console.error(e)
-    //         return {
-    //                         code: e.extensions.response.status,
-    //                         success: false,
-    //                         message: e.extensions.response.body,
-    //                         track: null
-    //                       };
-    //     }
-    //  }
+if (loading) return "Loading.........................."
+if (error) return `Error  ${error.message}`
+
+const leaveGameSubmit = async (event) => {
+    console.log(userId)
+    try {
+        const mutationResponse = await leaveGame({
+            variables: { users: userId, gameId: gameId }
+        })
+        window.location.href = "/"
+        console.log(mutationResponse)
+    } catch (e) {
+        console.log(e)
+        return {
+            code: e.extensions.response.status,
+            success: false,
+            message: e.extensions.response.body,
+            track: null
+        };
+    }
+}
 
 return(
     <>
     <Container>
-    <div class="col-md-3 p-3">
+    <div className="col-md-3 p-3">
                     <JoinedUsers users={users} />
             </div>
         {/* <Button onClick={() => setShowModal(true)}>Start a new game</Button>
@@ -89,6 +81,8 @@ return(
             <div className='mb2' id="select-ball">
             </div>
         </Modal> */}
+
+        <Button onClick={leaveGameSubmit}>Leave Game</Button>
         </Container>
         {error && (
             <div className="col-12 my-3 bg-danger text-white p-3">

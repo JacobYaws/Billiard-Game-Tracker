@@ -17,6 +17,10 @@ const gameSchema = new Schema(
         gametype: {
             type: String,
             required: true,
+        },
+        status: {
+            type: String,
+            required: true,
         }
     }
 )

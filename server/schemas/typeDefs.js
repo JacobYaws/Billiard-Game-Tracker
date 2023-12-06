@@ -57,6 +57,7 @@ type Query {
   me: User
   game(gameId: ID!): Game
   lobby(lobbyId: ID!): Lobby
+  inGame(userId: ID): Game
   }
 
 type User {
@@ -76,6 +77,7 @@ type User {
     users: [ID!]
     balls: [Ball!]
     gametype: String!
+    status: String!
   }
 
   type Lobby {

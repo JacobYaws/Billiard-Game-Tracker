@@ -72,8 +72,8 @@ import '../styles/JoinedUsers.css'
 
 
 function JoinedUsers(props) {
-    console.log("props: ")
-    console.log(props)    
+    // console.log("props: ")
+    // console.log(props)    
     const userData = useQuery(
             props.users?.length > 0 ? QUERY_MULTIPLE_USERS : QUERY_SINGLE_USER,
             {
@@ -87,16 +87,16 @@ function JoinedUsers(props) {
             // if (error) return `Error  ${error.message}`
             let users = []
             if (userData !== undefined && userData.data !== undefined) {
-                console.log(userData)
+                // console.log(userData)
                 users = userData.data.multipleUsers
             }
             // console.log(userData.data)
     
-    console.log(userData)
-    console.log(users)
-    console.log("props: " + props)
-    console.log(props)
-    console.log("JoinedUsersComponent")
+    // console.log(userData)
+    // console.log(users)
+    // console.log("props: " + props)
+    // console.log(props)
+    // console.log("JoinedUsersComponent")
     // let userArray = userData.data.multipleUsers
     return (
         <>
@@ -104,7 +104,7 @@ function JoinedUsers(props) {
 
             {users.length === 0 ? (
             // {userData !== undefined && userData.data !== undefined && userData.data.multipleUsers !== undefined ? (
-                <div>Loading for whatever reason.</div>
+                <div>Loading...</div>
 
             ) : (
 
