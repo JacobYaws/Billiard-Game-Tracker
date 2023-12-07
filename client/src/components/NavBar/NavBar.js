@@ -23,16 +23,16 @@ const AppNavbar = () => {
           fetchPolicy: "network-only",
           refectOnWindowFocus: true,
           onCompleted: (data) => {
-            console.log("success")
-            console.log(data)
+            // console.log("success")
+            // console.log(data)
             let pathName = window.location.pathname;
-            console.log(data.inGame._id)
+            // console.log(data.inGame._id)
             let gameId = (data.inGame._id)
             // setGameId(data?.inGame?._id);
-            console.log(gameId)
+            // console.log(gameId)
 
           if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
-            console.log("please work")
+            // console.log("please work")
              window.location.href = (window.location.origin + "/game/" + gameId)
 
           }

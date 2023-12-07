@@ -1,15 +1,31 @@
 import React, {Component} from "react"
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_GAME } from "../../utils/queries";
-
+import Auth from '../../utils/auth'
 const GameContainer = (props) => {
+    const userId = Auth.getUser().data._id
     console.log(props)
-    console.log(props.length)
+    let userArray = props.users;
+    let ballArray = props.balls;
+    console.log(userArray);
+    console.log(ballArray);
+    let userBallArray = [];
+
+
+    if (userArray !== undefined) {
+    for (let i = 0; i < ballArray.length; i++) {
+        console.log(ballArray[i].assigneduser)
+        if (ballArray[i].assigneduser == userId) {
+        userBallArray.push(ballArray[i])
+        }
+    }
+    }
+    console.log(userBallArray)
         return (
             <>
             <div className="flex-row justify-center">
         
-                    {props.balls == undefined ? (
+                    {props.balls === undefined ? (
                     // {userData !== undefined && userData.data !== undefined && userData.data.multipleUsers !== undefined ? (
                         <div>Loading...</div>
         
@@ -17,11 +33,11 @@ const GameContainer = (props) => {
         
                 <div>
                     <h2>Ball Array</h2>
-                    <div className="row">
+                    <div className="row" style={{maxWidth: '50%'}}>
                 <div className="row">
-                {props.balls.map((ball) => (
+                {userBallArray.map((ball) => (
                     
-                    <div className="card ball" key={ball.number}>
+                    <div className="card ball" key={ball.number} style={{backgroundColor: ball.color}}>
                         {`${ball.number}`}
                     </div>
                 ))}

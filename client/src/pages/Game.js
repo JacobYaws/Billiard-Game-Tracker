@@ -20,16 +20,17 @@ const { gameId } = useParams();
 const [leaveGame] = useMutation(LEAVE_GAME)
 let gametype
 const [showModal, setShowModal] = useState(false);
+const userId = Auth.getUser().data._id;
+
 const { loading, error, data } = useQuery(
     gameId ? QUERY_SINGLE_GAME : QUERY_SINGLE_USER,
     {
-        variables: {gameId: gameId},
+        variables: {gameId: gameId, userId: [userId]},
         pollInterval: 500,
     }
     );
 // Potentially set as imported data instead of done in the page?
-const userId = Auth.getUser().data._id;
-
+console.log(data)
 const [users, setUsers] = useState(data?.game.users);
 // console.log(data)
 const [balls, setBalls] = useState(data?.game.balls);
@@ -86,7 +87,7 @@ return(
         <div>
                 Gametype: {data.game.gametype}
             </div>
-            <GameContainer balls={balls} />
+            <GameContainer balls={balls} users={users} userId={userId}/>
 
             {/* </GameContainer> */}
     <div className="col-md-3 p-3">
