@@ -17,15 +17,15 @@ const GameContainer = (props) => {
         
                 <div>
                     <h2>Ball Array</h2>
-                    <div className="col">
-                <ul className="list-group">
+                    <div className="row">
+                <div className="row">
                 {props.balls.map((ball) => (
                     
-                    <li className="list-group-item ball" key={ball.number}>
+                    <div className="card ball" key={ball.number}>
                         {`${ball.number}`}
-                    </li>
+                    </div>
                 ))}
-                </ul>
+                </div>
                 </div>
                 
                 </div>

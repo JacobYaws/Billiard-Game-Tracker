@@ -12,10 +12,22 @@ min-height: 100vh;
 }
 
 .ball {
-  text-align: center;
-  max-height: 50px;
-  max-width: 50px;
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1%;
+  padding: 1%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%
+}
+
+.stripe {
+
+}
+
+.solid {
+  
 }
 
 
