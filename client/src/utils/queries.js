@@ -62,10 +62,10 @@ query singleGame($gameId: ID!) {
     users
     balls {
       number
-        type
-        status
-        assigneduser
-        color
+      type
+      status
+      assigneduser
+      color
       }
     
     gametype

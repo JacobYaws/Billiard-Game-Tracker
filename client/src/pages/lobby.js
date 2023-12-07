@@ -136,32 +136,29 @@ return (
             <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#nineball-select" aria-expanded="false" aria-controls="collapseExample">
                 Nine-Ball
             </button>
-
             <div class="collapse" id="nineball-select">
                 <div class="card card-body">
                     Info about nine-ball plus a button to select the gametype
                 </div>
                 <Button onClick={(getGametype)} id="nineball">Select</Button>
-                
             </div>
         </div>
         </div>
     </div>
     <div class="col-md-3 p-3">
-            <JoinedUsers users={users} />
+    <JoinedUsers users={users} />
     </div> 
     <Button onClick={(checkGametype)}>Test</Button>
     <div class="row gx-5">
         <div class="col-md-3 p-3">
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
         </div>
-
         <div class = "col-md-3 p-3">
             <Button onClick={createGameSubmit} className="start-button">Start game</Button>
         </div>
-    </div> 
+    </div>
 </div>
-      
+
     )}
     </div>
    

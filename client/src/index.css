@@ -11,4 +11,11 @@ height: 100vh;
 min-height: 100vh;
 }
 
+.ball {
+  text-align: center;
+  max-height: 50px;
+  max-width: 50px;
+  border-radius: 50%;
+}
+
 

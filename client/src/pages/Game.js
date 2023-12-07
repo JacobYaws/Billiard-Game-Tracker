@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GameContainer } from '../components/Game/Gamecomponents';
 // import { useParams } from "react-router-dom"
 import BallList from '../components/BallList/BallList';
 // import BallArray from '../utils/ballArray'
@@ -30,17 +31,35 @@ const { loading, error, data } = useQuery(
 const userId = Auth.getUser().data._id;
 
 const [users, setUsers] = useState(data?.game.users);
-console.log(data)
-
+// console.log(data)
+const [balls, setBalls] = useState(data?.game.balls);
 useEffect(() => {
     if (data) {
-        setUsers(data.game.users)
+        setUsers(data.game.users);
+        setBalls(data.game.balls);
     }
-// }, [])
 }, [loading, data])
 
 if (loading) return "Loading.........................."
 if (error) return `Error  ${error.message}`
+// if (loading) return "Loading.........................."
+// if (error) return `Error  ${error.message}`
+console.log(balls, users)
+
+const ballResultContainer = (event) => {
+
+
+    console.log(balls)
+   
+}
+
+// useEffect(() => {
+//     if (data) {
+//         setUsers(data.game.users)
+//     }
+// // }, [])
+// }, [loading, data])
+
 
 const leaveGameSubmit = async (event) => {
     console.log(userId)
@@ -67,6 +86,9 @@ return(
         <div>
                 Gametype: {data.game.gametype}
             </div>
+            <GameContainer balls={balls} />
+
+            {/* </GameContainer> */}
     <div className="col-md-3 p-3">
                     <JoinedUsers users={users} />
             </div>

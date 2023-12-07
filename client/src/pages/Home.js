@@ -21,8 +21,6 @@ const Home = () => {
   const joinAGame = 'joingame';
   const joinALobby = 'joinlobby'
 
-  
-
   // const [formState, setFormState] = useState({
   //   lobbyId: '',
   // });
@@ -40,14 +38,18 @@ const Home = () => {
 
   const createLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
-    let gametype = "cutthroat";
+    let gametype = "";
     const users = [userId];
 
     console.log(users)
+    // try {
+    //     const  mutationResponse  = await createLobby({
+    //         variables: { users: users, gametype: gametype }
+    //     })
     try {
-        const  mutationResponse  = await createLobby({
-            variables: { users: users, gametype: gametype }
-        })
+      const  mutationResponse  = await createLobby({
+          variables: { users: users, gametype: gametype }
+      })
 
         let newLobby = mutationResponse.data;
         let newLobbyId = newLobby.createLobby._id
@@ -151,23 +153,23 @@ const Home = () => {
       </div>
                */}
 
-  <div class="col">
-    <div class="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Create a New Game</h5>
-          <p class="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
+  <div className="col">
+    <div className="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Create a New Game</h5>
+          <p className="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
           you would like to play. Once the enough people have joined for your game type, you can start tracking your score!</p>
           <Button variant="success" onClick={createLobbySubmit}>Start a Lobby</Button>
           
         </div>
       </div>
     </div>
-    <div class="col-sm-6 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Join a Lobby</h5>
-          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the lobby.</p>
+    <div className="col-sm-6 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Join a Lobby</h5>
+          <p className="card-text">If you have a lobby invite, click below to join and you will be placed in the lobby.</p>
           <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
           <Modal
           size='lg'
@@ -175,7 +177,7 @@ const Home = () => {
           onHide={() => handleClose()}
           aria-labelledby='join-lobby'>
             <Modal.Header closeButton>
-              <h2 class="mx-5">Join a Lobby</h2>
+              <h2 className="mx-5">Join a Lobby</h2>
             </Modal.Header>
             <div className="col-12 col-lg-9 mx-auto text-center">
                 <input
@@ -191,11 +193,11 @@ const Home = () => {
       </div>
     </div>
 
-    <div class="col-sm-6 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Join a Game</h5>
-          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the game.</p>
+    <div className="col-sm-6 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Join a Game</h5>
+          <p className="card-text">If you have a lobby invite, click below to join and you will be placed in the game.</p>
           <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
             <Modal
             size='lg'
@@ -203,7 +205,7 @@ const Home = () => {
             onHide={() => handleClose()}
             aria-labelledby='join-game'>
               <Modal.Header closeButton>
-                <h2 class="mx-5">Join a Game</h2>
+                <h2 className="mx-5">Join a Game</h2>
               </Modal.Header>
             <div className="col-12 col-lg-9 mx-auto text-center" >
                   <input
@@ -222,8 +224,8 @@ const Home = () => {
           </Container>
       ) : (
         <Container fluid className="p-5">
-          <div class="card text-center mx-auto col-sm-6 p-3">
-            <div class="card-body">
+          <div className="card text-center mx-auto col-sm-6 p-3">
+            <div className="card-body">
           Welcome to cutthroat. Please login or signup to start playing.
             </div>
             {/* <div class="col-sm-6 text-center mx-auto">

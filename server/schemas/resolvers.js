@@ -123,7 +123,7 @@ Mutation: {
     //   }
     // }
     createGame: async(parent, { users, gametype }) => {
-      const ballCount = 16;
+      let ballCount = 16;
       const balls = [];
       let numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
       let index = 0;
@@ -135,7 +135,7 @@ Mutation: {
 
       if (gametype == 'nineball') {
         ballCount = 10;
-        numArr.slice(9)
+        numArr = numArr.slice(0, 9)
         console.log("Nineball Array: " + numArr)
       }
       
@@ -161,7 +161,7 @@ Mutation: {
               assignedUserIndex += 1
             }
           }
-
+            ballValue = numArr[index]
           // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
@@ -171,7 +171,7 @@ Mutation: {
             type = "solid"
           }
 
-          ballValue = numArr[index]
+          
           
           balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId});
           numArr.splice(index, 1)

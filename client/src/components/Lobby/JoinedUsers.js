@@ -1,70 +1,3 @@
-// import React, {Component} from "react"
-// import { useQuery } from '@apollo/client';
-// import { QUERY_SINGLE_LOBBY } from "../../utils/queries";
-
-
-// class LobbyContainer extends Component {
-// //     constructor(props) {
-// //         super(props);
-
-// //         this._joinGame = (game) => {
-// //             console.log(`TODO: Join game ${game.gametype}`)
-// //         }
-// //     }
-
-// //     render() {
-// //         // if (loading) return 'Loading...';
-// //         // if (error) return `Error ${error.message}`;
-// //         // const games = [];
-// //     //    console.log(data)
-
-
-// //         return (
-// //             <div className="c-lobby">
-// //                 <p>Lobby homepage</p>
-// //                 {/* <GameList games={games} joinGame={this._joinGame} /> */}
-// //             </div>
-// //     )
-// // }
-// }
-
-// class LobbySidebar extends Component {
-//     // constructor(props) {
-//     //     super(props);
-
-//     //     this._login = () => {
-//     //         console.log("TODO: Put login here")
-//     //     }
-
-//     //     this._createGame = () => {
-//     //         console.log("TODO: Put createGame here")
-//     //     }
-//     // }
-
-//     // render() {
-//     //     const canCreateGame = true;
-//     //     const createGameInProgress = false;
-
-//     //     return (
-//     //         <section className="c-lobby-sidebar">
-//     //             <div className="m-sidebar-actions">
-                    
-//     //                 {!canCreateGame ? null :
-//     //                     <button
-//     //                     onClick={this._createGame}
-//     //                     disabled={createGameInProgress}
-//     //                     className="m-button good">
-//     //                         Create Game Button
-//     //                     </button> 
-//     //                     }
-//     //             </div>
-//     //         </section>
-//     //     )
-//     // }
-// }
-// export { LobbyContainer, LobbySidebar }
-
-
 import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_MULTIPLE_USERS, QUERY_SINGLE_USER, QUERY_USERS } from '../../utils/queries';
@@ -72,6 +5,7 @@ import '../styles/JoinedUsers.css'
 
 
 function JoinedUsers(props) {
+    console.log("JoinedUsers: " + props)
     // console.log("props: ")
     // console.log(props)    
     const userData = useQuery(
@@ -92,7 +26,7 @@ function JoinedUsers(props) {
             }
             // console.log(userData.data)
     
-    console.log(userData)
+    // console.log(userData)
     // console.log(users)
     // console.log("props: " + props)
     // console.log(props)
