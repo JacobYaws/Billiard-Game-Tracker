@@ -17,7 +17,7 @@ const Game = () => {
     
 const { gameId } = useParams();
 const [leaveGame] = useMutation(LEAVE_GAME)
-const gametype = 'cutthroat'
+let gametype
 const [showModal, setShowModal] = useState(false);
 const { loading, error, data } = useQuery(
     gameId ? QUERY_SINGLE_GAME : QUERY_SINGLE_USER,
@@ -30,7 +30,7 @@ const { loading, error, data } = useQuery(
 const userId = Auth.getUser().data._id;
 
 const [users, setUsers] = useState(data?.game.users);
-
+console.log(data)
 
 useEffect(() => {
     if (data) {
@@ -64,9 +64,13 @@ const leaveGameSubmit = async (event) => {
 return(
     <>
     <Container>
+        <div>
+                Gametype: {data.game.gametype}
+            </div>
     <div className="col-md-3 p-3">
                     <JoinedUsers users={users} />
             </div>
+            
         {/* <Button onClick={() => setShowModal(true)}>Start a new game</Button>
         <Modal
         size='lg'

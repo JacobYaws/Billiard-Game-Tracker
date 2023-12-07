@@ -162,6 +162,7 @@ Mutation: {
             }
           }
 
+          // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
           } else if (ballValue == 8) {

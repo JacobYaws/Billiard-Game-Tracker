@@ -13,6 +13,7 @@ const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
   const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
+  // let inGameStatus = ""
     const { loading, error, data } = useQuery(
       QUERY_STATUS,
       {
@@ -21,14 +22,16 @@ const AppNavbar = () => {
           pollInterval: 500,
       }
       );
+      console.log(data)
   // console.log(data.inGame._id)
-  let gameId = data?.inGame?._id
+      let gameId = data?.inGame?._id
       console.log(gameId)
-      console.log(window.location)
+      // console.log(window.location)
       let pathName = window.location.pathname;
-      console.log(pathName)
+      // console.log(pathName)
       if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
-  window.location.href = (window.location.origin + "/game/" + gameId)
+         window.location.href = (window.location.origin + "/game/" + gameId)
+         return "hello world"
       }
   // window
   return (

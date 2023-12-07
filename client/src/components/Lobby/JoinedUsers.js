@@ -92,7 +92,7 @@ function JoinedUsers(props) {
             }
             // console.log(userData.data)
     
-    // console.log(userData)
+    console.log(userData)
     // console.log(users)
     // console.log("props: " + props)
     // console.log(props)

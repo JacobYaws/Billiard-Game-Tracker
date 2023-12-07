@@ -21,6 +21,7 @@ function GameSelect() {
                     <div class="card card-body">
                         Info about cutthroat plus a button to select the gametype
                     </div>
+                    <Button>Select</Button>
                 </div>
             </div>
         </div>
@@ -35,6 +36,7 @@ function GameSelect() {
                     <div class="card card-body">
                         Info about regular pool plus a button to select the gametype
                     </div>
+                    <Button>Select</Button>
                 </div>
             </div>
         </div>
@@ -49,6 +51,7 @@ function GameSelect() {
                     <div class="card card-body">
                         Info about nine-ball plus a button to select the gametype
                     </div>
+                    <Button>Select</Button>
                 </div>
             </div>
         </div>
