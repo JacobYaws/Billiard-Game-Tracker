@@ -139,7 +139,7 @@ Mutation: {
         console.log("Nineball Array: " + numArr)
       }
       
-      let ballsPerUser = ballCount/userCount
+      let ballsPerUser = (ballCount - 1)/userCount
 
       if (gametype == 'cutthroat') {
         cutThroatRandomize = true
@@ -156,6 +156,9 @@ Mutation: {
 
             
             if (iterations % ballsPerUser == 0) {
+              console.log("running")
+              console.log(iterations);
+              console.log(ballsPerUser)
               let assignedUser = await User.findById(users[assignedUserIndex])// assumes users at assignedUserIndex is being passed in as the id of the user
               assignedUserId = assignedUser._id
               assignedUserIndex += 1

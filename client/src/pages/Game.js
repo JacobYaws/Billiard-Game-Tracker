@@ -15,25 +15,25 @@ import JoinedUsers from '../components/Lobby/JoinedUsers'
 import  Auth  from '../utils/auth'
 
 const Game = () => {
-    
+let gametype = ""
 const { gameId } = useParams();
 const [leaveGame] = useMutation(LEAVE_GAME)
-let gametype
+
 const [showModal, setShowModal] = useState(false);
 const userId = Auth.getUser().data._id;
 
 const { loading, error, data } = useQuery(
     gameId ? QUERY_SINGLE_GAME : QUERY_SINGLE_USER,
     {
-        variables: {gameId: gameId, userId: [userId]},
+        variables: {gameId: gameId, userId: [userId], gametype: gametype},
         pollInterval: 500,
     }
     );
-// Potentially set as imported data instead of done in the page?
 console.log(data)
 const [users, setUsers] = useState(data?.game.users);
 // console.log(data)
 const [balls, setBalls] = useState(data?.game.balls);
+const [gametypeData, setGametype] = useState(data?.game.gametype)
 useEffect(() => {
     if (data) {
         setUsers(data.game.users);
@@ -87,7 +87,7 @@ return(
         <div>
                 Gametype: {data.game.gametype}
             </div>
-            <GameContainer balls={balls} users={users} userId={userId}/>
+            <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData}/>
 
             {/* </GameContainer> */}
     <div className="col-md-3 p-3">

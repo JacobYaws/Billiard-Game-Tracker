@@ -7,12 +7,13 @@ const GameContainer = (props) => {
     console.log(props)
     let userArray = props.users;
     let ballArray = props.balls;
+    let gametype = props.gametype;
     console.log(userArray);
     console.log(ballArray);
     let userBallArray = [];
-
-
+    
     if (userArray !== undefined) {
+        // if (gametype == 'cutthroat') {}
     for (let i = 0; i < ballArray.length; i++) {
         console.log(ballArray[i].assigneduser)
         if (ballArray[i].assigneduser == userId) {
