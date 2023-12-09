@@ -9,14 +9,16 @@ import { Container, Modal, Button, Row, Col } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
-import { CREATE_GAME, LEAVE_LOBBY } from '../utils/mutations';
+import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS } from '../utils/mutations';
+import { handleError } from '@apollo/client/link/http/parseAndCheckHttpResponse';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Lobby = () => {
-let gametype
+let gametype = "";
 const { lobbyId } = useParams();
 const [createGame] = useMutation(CREATE_GAME);
 const [leaveLobby] = useMutation(LEAVE_LOBBY);
+const [removeUsers] = useMutation(REMOVE_LOBBY_USERS)
 const { loading, error, data } = useQuery(
     lobbyId ? QUERY_SINGLE_LOBBY : QUERY_SINGLE_USER,
     {
@@ -24,25 +26,98 @@ const { loading, error, data } = useQuery(
         pollInterval: 500,
     }
     );
-const getGametype = (event) => {
-    let text = (event.target.id)
-    gametype = text.toString();
-    console.log(gametype)
-    return gametype = gametype
-}
 
-
+const [lobbySize, setLobbySize] = useState(data?.lobby.users);
+const [lobbyGametype, setGametype] = useState("cutthroat")
+const [disableButton, setDisableButton] = useState(true);
 const [users, setUsers] = useState(data?.lobby.users);
     useEffect(() => {
         if (data) {
             setUsers(data.lobby.users)
+            setLobbySize(data.lobby.users.length)
         }
+        // setLobbySize(lobbySize)
     // }, [])
     }, [loading, data])
-
     if (loading) return "Loading.........................."
     if (error) return `Error  ${error.message}`
-const leaveLobbySubmit = async (event) => {
+    // console.log(typeof lobbySize)
+
+    // let startButton = document.getElementsByClassName("start-button");
+    // const getGametype = (event) => {
+    //     event.preventDefault();
+    //     let text = (event.target.id)
+    //     gametype = text.toString();
+    //     console.log(gametype)
+    //     return gametype = gametype
+    // }
+
+    function check() {
+        console.log('check')
+    }
+    const getGametype = (event) => {
+        event.persist();
+        // event.preventDefault();
+        console.log(users.length)
+        console.log(lobbySize)
+        console.log(lobbyGametype)
+        let text = (event.target.id)
+        gametype = text.toString();
+        setLobbySize(users.length)
+        setGametype(gametype)
+        console.log(lobbySize)
+        console.log(gametype)
+        
+
+        if (lobbySize !== "") {
+            console.log("lobbysize empty")
+        if (gametype == "cutthroat") {
+            console.log(lobbySize)
+            console.log("working")
+            if (lobbySize == 3 || lobbySize == 5) {
+                setDisableButton(false);
+            } else {
+                setDisableButton(true)
+            }
+
+        
+    } else if (gametype !== "cutthroat" && lobbySize === 2) {
+        setDisableButton(false) 
+    } else {
+        setDisableButton(true)
+    }
+}
+   
+
+console.log(lobbySize)
+console.log(disableButton)
+        
+    }
+    // console.log(lobbySize)
+// if (gametype == "cutthroat" && lobbySize !== 0) {
+//     console.log(lobbySize)
+//     console.log("working")
+//     if (lobbySize == 3 || lobbySize == 5) {
+//         setDisableButton(true)
+//     } else {
+//         setDisableButton(false)
+//     }
+// }
+        // if (users.length == 3 || users.length == 5) {
+        //     console.log(users)
+        //     console.log("valid cutthroat lobby")
+            
+        //     console.log(startButton)
+        //     startButton.removeAttribute("disabled")
+
+        // } else {
+        //     startButton.addAttribute("disabled", "");
+        // }
+
+
+    // }
+    let gametypeUpper = (lobbyGametype.slice(0, 1).toUpperCase() + lobbyGametype.slice(1));
+    const leaveLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
     console.log(userId);
     try {
@@ -61,6 +136,22 @@ const leaveLobbySubmit = async (event) => {
         };
     }
 }
+
+
+// Potential fix for the disabled button issue
+// const validate = () => {
+//     if (gametype == "cutthroat" && users !== undefined) {
+//         console.log(lobbySize)
+//         console.log("working")
+//         if (lobbySize == 3 || lobbySize == 5) {
+//             setDisableButton(true)
+//         } else {
+//             setDisableButton(false)
+//         }
+//     }
+//     return false
+// }
+
 const createGameSubmit = async (event) => {
     // console.log(gametype)
         const userId = Auth.getUser().data._id;
@@ -69,7 +160,7 @@ const createGameSubmit = async (event) => {
         const userIds = users;
         try {
             const mutationResponse = await createGame({
-                variables: { users: userIds, gametype: gametype}
+                variables: { users: userIds, gametype: lobbyGametype}
             })
             
             let newGame = mutationResponse.data;
@@ -88,10 +179,27 @@ const createGameSubmit = async (event) => {
                 track: null
             };
         }
+        try {
+            const mutationResponse = await removeUsers({
+                variables: { users: userIds, lobbyId: lobbyId}
+            })
+
+            console.log(mutationResponse)
+        } catch (e) {
+            console.log(gametype)
+            console.error(e)
+            return {
+                code: e.extensions.response.status,
+                success: false,
+                message: e.extensions.response.body,
+                track: null
+            };
     }
+ 
     const checkGametype = (event) => {
         console.log(gametype)
     }
+}
 return (
   
     <div className="flex-row justify-center">
@@ -99,7 +207,7 @@ return (
             <div>Loading.....................</div>
         ) : (   
         <div class="container px-4 text-center">
-        
+        {/* <div>{`${lobbyGametype}`}</div> */}
             {/* <GameSelect /> */}
             {/* </GameSelect> */}
             <div class="row">
@@ -110,9 +218,10 @@ return (
                 </button>
                 <div class="collapse" id="cutthroat-select">
                     <div class="card card-body">
-                        Info about cutthroat plus a button to select the gametype
+                        A 3 or 5 player game where each user will get a group of balls (5 for 3 players, 3 for 5 players). 
+                        Pocket your opponents balls before yours are pocketed. 
                     </div>
-                    <Button onClick={(getGametype)} id="cutthroat">Select</Button>
+                    <Button onClick={(e) => getGametype(e)} id="cutthroat">Select</Button>
                 </div>
             </div>
         </div>
@@ -125,9 +234,10 @@ return (
 
                 <div class="collapse" id="standard-select">
                     <div class="card card-body">
-                        Info about regular pool plus a button to select the gametype
+                        A two-player game where each player has to pocket their set of balls (solid or striped). 
+                        The game ends once a player pockets their set of balls and then the 8 ball.
                     </div>
-                    <Button onClick={(getGametype)} id="standard">Select</Button>
+                    <Button onClick={(e) => getGametype(e)} id="standard">Select</Button>
                 </div>
             </div>
         </div>
@@ -138,9 +248,9 @@ return (
             </button>
             <div class="collapse" id="nineball-select">
                 <div class="card card-body">
-                    Info about nine-ball plus a button to select the gametype
+                    A two-player game where the objective is to pocket each ball in numerical order. 
                 </div>
-                <Button onClick={(getGametype)} id="nineball">Select</Button>
+                <Button onClick={(e) => getGametype(e)} id="nineball">Select</Button>
             </div>
         </div>
         </div>
@@ -148,13 +258,16 @@ return (
     <div class="col-md-3 p-3">
     <JoinedUsers users={users} />
     </div> 
-    <Button onClick={(checkGametype)}>Test</Button>
+    {/* <Button onClick={(checkGametype)}>Test</Button> */}
     <div class="row gx-5">
         <div class="col-md-3 p-3">
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
         </div>
         <div class = "col-md-3 p-3">
-            <Button onClick={createGameSubmit} className="start-button">Start game</Button>
+            <Button onClick={createGameSubmit} className="start-button" disabled={disableButton}>Start game
+            <div>
+             <strong>{`${gametypeUpper}`}</strong>
+            </div></Button>
         </div>
     </div>
 </div>

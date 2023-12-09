@@ -22,12 +22,25 @@ min-height: 100vh;
   border-radius: 50%
 }
 
-.stripe {
+.ballNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #efefef;
+  border-radius: 50%;
+  height: 35%;
+  width: 35%;
+}
 
+.stripe {
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  width: 100px
 }
 
 .solid {
-  
+
 }
 
 

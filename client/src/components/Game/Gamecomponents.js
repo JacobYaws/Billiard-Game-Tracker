@@ -33,13 +33,20 @@ const GameContainer = (props) => {
                     ) : (
         
                 <div>
-                    <h2>Ball Array</h2>
+                    <h1>Ball Array</h1>
                     <div className="row" style={{maxWidth: '50%'}}>
                 <div className="row">
                 {userBallArray.map((ball) => (
+
                     
-                    <div className="card ball" key={ball.number} style={{backgroundColor: ball.color}}>
-                        {`${ball.number}`}
+                    
+                    <div className="card ball stripe" key={ball.number} style={{backgroundColor: ball.color} }>
+                        <div className="ballNumber">
+                            <div className={`${ball.type}`}>
+                                {`${ball.number}`}
+                                
+                            </div>
+                            </div>
                     </div>
                 ))}
                 </div>

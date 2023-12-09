@@ -125,6 +125,15 @@ export const LEAVE_LOBBY = gql`
 }
 `
 
+export const REMOVE_LOBBY_USERS = gql`
+mutation removeAllUsersLobby($users: [ID!], $lobbyId: ID!) {
+  removeAllUsersLobby(users: $users, lobbyId: $lobbyId) {
+    _id
+    users
+  }
+}
+`
+
 
 
 // This block belongs in the ADD_USER mutation, placed below email (user)

@@ -111,6 +111,20 @@ Mutation: {
       }
       return await Lobby.create({ users, gametype, maxsize })
     },
+    removeAllUsersLobby: async (parent, { lobbyId, users }) => {
+      console.log(lobbyId, users)
+
+      return await Lobby.findOneAndUpdate(
+        { _id: lobbyId, users: users },
+        {
+         $set: {users: []},
+       },
+       {
+         new: true,
+         runValidators: true,
+       }
+      )
+    },
     // inLobby: async(parent, { some, thing }) => {
     //   let lobbyCount = 0;
       
@@ -165,7 +179,8 @@ Mutation: {
             }
           }
             ballValue = numArr[index]
-          // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
+            let color = "";
+            // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
           } else if (ballValue == 8) {
@@ -174,9 +189,32 @@ Mutation: {
             type = "solid"
           }
 
+          if (ballValue == 8) {
+            color = "#000000"
+          }
+          if (ballValue == 1 || ballValue == 9) {
+            color = "#ffff00"
+          }
+          if (ballValue == 2 || ballValue == 10) {
+            color = "#291dec"
+          }
+          if (ballValue == 3 || ballValue == 11) {
+            color = "#fd0f10"
+          }
+          if (ballValue == 4 || ballValue == 12) {
+            color = "#4c4976"
+          } 
+          if (ballValue == 5 || ballValue == 13) {
+            color = "#f7931e"
+          }
+          if (ballValue == 6 || ballValue == 14) {
+            color = "#36594a"
+          }
+          if (ballValue == 7 || ballValue == 15) {
+            color = "#a2402c"
+          }
           
-          
-          balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId});
+          balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId, color: color});
           numArr.splice(index, 1)
           iterations++
         }

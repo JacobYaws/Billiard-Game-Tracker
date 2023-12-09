@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Container, Modal, Button } from 'react-bootstrap';
+import { Container, Modal, Button, Tab, Nav } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
+import LoginForm from './Login'
+import SignUpForm from './Signup'
 // import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {
@@ -108,51 +110,6 @@ const Home = () => {
       <>
       {Auth.loggedIn() ? (
       <Container fluid>
-      {/* <div class="container px-4 text-center p-3">
-        <Button variant="success" onClick={createLobbySubmit}>Start a New Game</Button>
-          <div class="p-3">
-            <div class="m-3">
-              <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
-                <Modal
-                size='lg'
-                show={showModal === joinALobby}
-                onHide={() => handleClose()}
-                aria-labelledby='join-lobby'>
-                  <Modal.Header closeButton>
-                  </Modal.Header>
-                    <div className="col-12 col-lg-9">
-                      <input
-                        placeholder="Enter your lobby invite code"
-                        value={lobbyId}
-                        className="form-input w-100"
-                        onChange={(event) => setLobbyId(event.target.value)}
-                      />
-                        <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
-                    </div>
-                </Modal>
-            </div>
-              <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
-                <Modal
-                size='lg'
-                show={showModal === joinAGame}
-                onHide={() => handleClose()}
-                aria-labelledby='join-game'>
-                  <Modal.Header closeButton>
-                  </Modal.Header>
-                    <div className="col-12 col-lg-9">
-                      <input
-                        placeholder="Enter your game invite code"
-                        value={gameId}
-                        className="form-input w-100"
-                        onChange={(event) => setGameId(event.target.value)}
-                      />
-                        <Button variant="success" onClick={joinGameSubmit}>Join</Button>
-                    </div>
-                </Modal>
-          </div>
-      </div>
-               */}
-
   <div className="col">
     <div className="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
       <div className="card">
@@ -228,16 +185,49 @@ const Home = () => {
             <div className="card-body">
           Welcome to cutthroat. Please login or signup to start playing.
             </div>
-            {/* <div class="col-sm-6 text-center mx-auto">
+            <div class="col-sm-6 text-center mx-auto">
               <div class="col">
-                <Button onClick={() => setShowModal(true)} className="mx-3">Login</Button>
-                <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button>
+                <Button onClick={() => setShowModal(true)} className="mx-3">Login or Sign Up</Button>
+                {/* <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button> */}
               </div>
-            </div> */}
+            </div>
           </div>
          
         </Container>
       )}
+       {/* <Modal
+        size='lg'
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        aria-labelledby='signup-modal'>
+
+        tab container to do either signup or login component
+        
+        <Tab.Container defaultActiveKey='login'>
+          <Modal.Header closeButton>
+            <Modal.Title id='signup-modal'>
+              <Nav variant='pills'>
+                <Nav.Item>
+                  <Nav.Link eventKey='login'>Login</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Tab.Content>
+              <Tab.Pane eventKey='login'>
+                <LoginForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+              <Tab.Pane eventKey='signup'>
+                <SignUpForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+            </Tab.Content>
+          </Modal.Body>
+        </Tab.Container>
+      </Modal> */}
       </>
   );
 };

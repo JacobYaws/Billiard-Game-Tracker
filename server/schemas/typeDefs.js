@@ -112,6 +112,7 @@ type User {
     joinLobby(users: ID!, lobbyId: ID!): Lobby
     leaveGame(users: ID!, gameId: ID!): Game
     leaveLobby(users: ID!, lobbyId: ID!): Lobby
+    removeAllUsersLobby(lobbyId: ID!, users: [ID!]): Lobby
   }
 `;
 
