@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GameContainer } from '../components/Game/Gamecomponents';
 // import { useParams } from "react-router-dom"
-import BallList from '../components/BallList/BallList';
+// import BallList from '../components/BallList/BallList';
 // import BallArray from '../utils/ballArray'
 import { Container, Button, Modal } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
@@ -29,7 +29,7 @@ const { loading, error, data } = useQuery(
         pollInterval: 500,
     }
     );
-console.log(data)
+// console.log(data)
 const [users, setUsers] = useState(data?.game.users);
 // console.log(data)
 const [balls, setBalls] = useState(data?.game.balls);
@@ -46,13 +46,6 @@ if (error) return `Error  ${error.message}`
 // if (loading) return "Loading.........................."
 // if (error) return `Error  ${error.message}`
 console.log(balls, users)
-
-const ballResultContainer = (event) => {
-
-
-    console.log(balls)
-   
-}
 
 // useEffect(() => {
 //     if (data) {

@@ -225,7 +225,33 @@ Mutation: {
         let status = "inProgress"
         let game = await Game.create({ users, balls, gametype, status })
         return game
-    }
+    },
+    changeBallStatus: async (parent, { ball, gameId }) => {
+        console.log("GameId: " + gameId);
+        let number = ball.number;
+        let status = ball.status;
+        console.log(number)
+        console.log(status)
+        console.log(ball)
+        if (status == true) {
+          console.log('true')
+        } else if (status == false) {
+          console.log('false')
+        }
+      // console.log(error)
+        return await Game.findOneAndUpdate(
+          { _id: gameId, "balls.number": ball.number },
+          // { _id: gameId, balls: ball },
+          // { _id: gameId, balls: { $elemMatch: { $eq: number } }},
+          {
+           $set: {"balls.$.status": status},
+         },
+         {
+           new: true,
+           runValidators: true,
+         }
+        )
+      },
 },
 };
 

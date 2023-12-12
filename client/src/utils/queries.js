@@ -67,7 +67,6 @@ query singleGame($gameId: ID!) {
       assigneduser
       color
       }
-    
     gametype
   }
 }`

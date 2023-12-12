@@ -113,6 +113,7 @@ type User {
     leaveGame(users: ID!, gameId: ID!): Game
     leaveLobby(users: ID!, lobbyId: ID!): Lobby
     removeAllUsersLobby(lobbyId: ID!, users: [ID!]): Lobby
+    changeBallStatus(gameId: ID!, ball: Ballinput): Game
   }
 `;
 

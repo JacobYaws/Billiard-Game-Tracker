@@ -134,6 +134,20 @@ mutation removeAllUsersLobby($users: [ID!], $lobbyId: ID!) {
 }
 `
 
+export const CHANGE_BALL_STATUS = gql`
+mutation changeBallStatus($gameId: ID!, $ball: Ballinput) {
+  changeBallStatus(gameId: $gameId, ball: $ball) {
+    _id
+    ball {
+    number
+    type
+    status
+    assigneuser
+    color 
+    }
+  }
+}`
+
 
 
 // This block belongs in the ADD_USER mutation, placed below email (user)
