@@ -38,6 +38,7 @@ useEffect(() => {
     if (data) {
         setUsers(data.game.users);
         setBalls(data.game.balls);
+        setGametype(data.game.gametype)
     }
 }, [loading, data])
 
@@ -53,7 +54,7 @@ console.log(balls, users)
 //     }
 // // }, [])
 // }, [loading, data])
-
+console.log(gametypeData)
 
 const leaveGameSubmit = async (event) => {
     console.log(userId)

@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, {Component, useState, useEffect} from "react";
 
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_GAME } from "../../utils/queries";
@@ -41,46 +41,59 @@ const GameContainer = (props) => {
     
     const gameId = useParams();
     const userId = Auth.getUser().data._id
+    // const [showGameBalls, setGameBallShow] = useState(false)
+    // useEffect(() => {
+    //     setGameBallShow((showGameBalls) => !showGameBalls)
+    // })
     let userArray = props.users;
     let ballArray = props.balls;
     let gametype = props.gametype;
     let userBallArray = [];
-
-    const [changeStatus] = useMutation(CHANGE_BALL_STATUS)
-    // const [isToggled, setToggled] = useState(false)
-
+    const [changeStatus] = useMutation(CHANGE_BALL_STATUS);
+    let gameBallArray = [];
     if (userArray !== undefined) {
-    for (let i = 0; i < ballArray.length; i++) {
-        if (ballArray[i].assigneduser == userId) {   
-        userBallArray.push(ballArray[i])
+        if (gametype == 'standard') {
+            // setGameBallShow(showGameBalls);
+            // userBallArray.push(ballArray)
+            for (let i = 0; i< ballArray.length; i++) {
+                gameBallArray.push(ballArray[i]) 
+            }
+        // if ()
         }
-    }
+        if (gametype == 'nineball') {
+        for (let i = 0; i < ballArray.length; i++) {
+            userBallArray.push(ballArray[i])
+        }
+        }
+        if (gametype === 'cutthroat') {
+        for (let i = 0; i < ballArray.length; i++) {
+            if (ballArray[i].assigneduser == userId) {   
+            userBallArray.push(ballArray[i])
+            }
+        }
+        }
     }  
     
     // let toggleOpacity = !isToggled ? 1 : 0.5;
     const handleClick = async (e) => {
-        e.preventDefault()
-        console.log(e.currentTarget)
+        e.preventDefault();
+        e.persist()
         let currTarget = e.currentTarget;
         let checkOpacity 
-        checkOpacity = currTarget.style.opacity 
         let number = currTarget.innerText
-        console.log(number)
-        console.log(props)
+        checkOpacity = currTarget.style.opacity
 
         let selectedBall = userBallArray.find((currentValue) => {
             return currentValue.number == number
-            // if (currentValue.number == number) {
-            //     console.log(currentValue)
-            //     return true
-            // } else {
-            //     return false
-            // }
         });
-        console.log(selectedBall)
+
+        let newGameId = gameId.gameId
+        
+        // Removing __typename from the ball object. The mutation response will error out if it is not removed.
+        let newSelectedBall = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
         try {
             const mutationResponse = await changeStatus({
-                variables: { gameId: gameId, ball: selectedBall }
+                variables: { gameId: newGameId, ball: newSelectedBall }
             })
             console.log(mutationResponse)
         } catch (error) {
@@ -92,49 +105,12 @@ const GameContainer = (props) => {
                 track: null
         }
     }
-
         if (checkOpacity == 0.5) {
-            return e.currentTarget.style.opacity = 1
-            
-            
-          
+            return currTarget.style.opacity = 1   
         } else if (checkOpacity == 1 || checkOpacity == "") {
-
-            return e.currentTarget.style.opacity = 0.5
-           
+            return currTarget.style.opacity = 0.5
         }
-        // setToggled(toggleOpacity)
     }
-    console.log(userBallArray)
-
-    // const setBallOpacity = (props) => {
-    //     console.log('started')
-    //     console.log(props)
-    //     for (let j = 0; j < userBallArray.length ; j++) {
-    //         if (userBallArray[j].status == false) {
-    //             console.log(false)
-    //             return 1
-    //         } else {
-    //             console.log(true)
-    //             return 0
-    //         }
-    //     }
-    // }
-
-    
-    // class ballClass extends React.Component {
-    //     render() {
-    //         return                   
-    //             <button className={`card ball`} key={ball.number} style={{backgroundColor: ball.color, opacity: 1}}  onClick={handleClick}>
-    //             <div className={`${ball.type}`}> {/* Solid or stripe element */}
-    //                 <div className="ballNumber" style={{backgroundColor: ball.color}}>
-    //                         {`${ball.number}`}
-                            
-    //                     </div>
-    //                     </div>
-    //             </button>
-    //     }
-    // }
     
 
         return (
@@ -152,21 +128,21 @@ const GameContainer = (props) => {
                     <h1>Ball Array</h1>
                     <div className="row" style={{maxWidth: '50%'}}>
                     {/* <BallArray /> */}
+                    <div>
+                        {/* {showGameBalls ? <div>Hello</div> : <div></div>} */}
                       <div className="row"> 
                         {userBallArray.map((ball) => (         
                           <button className={`card ball`} key={ball.number} style={{backgroundColor: ball.color, opacity: ball.status ? 0.5 : 1 }}  onClick={handleClick}> 
                            <div className={`${ball.type}`}> 
                               <div className="ballNumber" style={{backgroundColor: ball.color}}> 
                                         {`${ball.number}`} 
-                                        
                                     </div> 
                                     </div>
                              </button> 
-
-
-
                         ))}
+                        
                         </div> 
+                        </div>
                     </div>
                 </div>
                 )}

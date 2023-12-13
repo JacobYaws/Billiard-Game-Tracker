@@ -138,15 +138,13 @@ export const CHANGE_BALL_STATUS = gql`
 mutation changeBallStatus($gameId: ID!, $ball: Ballinput) {
   changeBallStatus(gameId: $gameId, ball: $ball) {
     _id
-    ball {
-    number
-    type
-    status
-    assigneuser
-    color 
+    balls {
+      number
+      status
     }
   }
-}`
+}
+`
 
 
 
