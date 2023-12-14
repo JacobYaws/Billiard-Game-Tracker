@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GameContainer } from '../components/Game/Gamecomponents';
+import { GameContainer, GameSidebar } from '../components/Game/Gamecomponents';
 // import { useParams } from "react-router-dom"
 // import BallList from '../components/BallList/BallList';
 // import BallArray from '../utils/ballArray'
@@ -46,7 +46,7 @@ if (loading) return "Loading.........................."
 if (error) return `Error  ${error.message}`
 // if (loading) return "Loading.........................."
 // if (error) return `Error  ${error.message}`
-console.log(balls, users)
+
 
 // useEffect(() => {
 //     if (data) {
@@ -54,7 +54,7 @@ console.log(balls, users)
 //     }
 // // }, [])
 // }, [loading, data])
-console.log(gametypeData)
+
 
 const leaveGameSubmit = async (event) => {
     console.log(userId)
@@ -81,6 +81,7 @@ return(
         <div>
                 Gametype: {data.game.gametype}
             </div>
+            {/* <GameSidebar balls={balls} gametype={gametypeData}/> */}
             <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData}/>
 
             {/* </GameContainer> */}

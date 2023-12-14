@@ -184,7 +184,7 @@ Mutation: {
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
           } else if (ballValue == 8) {
-            type = "solid" // can change if desired in the future 8 ball
+            type = "special" // can change if desired in the future 8 ball: changed from solid to special
           } else {
             type = "solid"
           }
@@ -252,6 +252,23 @@ Mutation: {
          }
         )
       },
+    selectBallStyle: async (parent, { ball, gameId, users }) => {
+      
+      let ballType = ball[0].type;
+      console.log(ballType)
+      console.log(gameId)
+      console.log(users)
+      return await Game.findOneAndUpdate(
+        { _id: gameId, "balls.type": ballType, users: users},
+        {
+          $set: { "balls.$[].assigneduser": users }
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      )
+    }
 },
 };
 
