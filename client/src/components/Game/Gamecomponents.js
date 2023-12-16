@@ -7,43 +7,9 @@ import Auth from '../../utils/auth'
 import { Link, useParams } from 'react-router-dom';
 
 const GameContainer = (props) => {
-    // class App extends React.Component {
-    //     render() {
-    //         return <h1>App {this.props.data}</h1>
-    //     }
-    // }
-    // class BallArray extends React.Component {
-    //     constructor(props) {
-    //         super(props);
-    //         console.log(props.balls)
-    //         // this.state = props.balls.status
-            
-    //         }
-    //         render() {
-    //             return (
-    //                 // <div>Hello {this.state}</div>
-    //                 <div className="row">
-    //                     {userBallArray.map((ball) => (                   
-    //                         <button className={`card ball`} key={ball.number} style={{backgroundColor: ball.color, opacity: 1}}  onClick={handleClick}>
-    //                         <div className={`${ball.type}`}> {/* Solid or stripe element */}
-    //                             <div className="ballNumber" style={{backgroundColor: ball.color}}>
-    //                                 {`${ball.number}`}
-    //                             </div>
-    //                         </div>
-    //                         </button>
-    //                     ))}
-    //                     </div>
-    //             )
-    //         }
-    //     }
-
-    
+ 
     const gameId = useParams();
     const userId = Auth.getUser().data._id
-    // const [showGameBalls, setGameBallShow] = useState(false)
-    // useEffect(() => {
-    //     setGameBallShow((showGameBalls) => !showGameBalls)
-    // })
     let userArray = props.users;
     let ballArray = props.balls;
     let gametype = props.gametype;
@@ -51,7 +17,6 @@ const GameContainer = (props) => {
     const [changeStatus] = useMutation(CHANGE_BALL_STATUS);
     const [updateBallStyleSelection] = useMutation(BALL_TYPE_SELECTION); // requires gameId, userId, ball number array
     let gameBallArray = [];
-    // let newUserBallArray = [];
 
     const [showUserBalls, setShowUserBalls] = useState(false)
     const [selectUserBallArray, setSelectUserBallArray] = useState([])
@@ -69,8 +34,6 @@ const GameContainer = (props) => {
     
     if (userArray !== undefined) {
         if (gametype == 'standard') {
-            // setGameBallShow(showGameBalls);
-            // userBallArray.push(ballArray)
             for (let i = 0; i< ballArray.length; i++) {
                 gameBallArray.push(ballArray[i]) 
             }
@@ -81,7 +44,7 @@ const GameContainer = (props) => {
             }
         }
         if (gametype === 'cutthroat') {
-            // showUserBalls = true
+
             for (let i = 0; i < ballArray.length; i++) {
                 if (ballArray[i].assigneduser == userId) {   
                 userBallArray.push(ballArray[i])
@@ -117,6 +80,7 @@ const GameContainer = (props) => {
                 track: null
         }
     }
+
         if (checkOpacity == 0.5) {
             return currTarget.style.opacity = 1   
         } else if (checkOpacity == 1 || checkOpacity == "") {
@@ -124,22 +88,23 @@ const GameContainer = (props) => {
         }
     }
 
+
+
+
+
     const selectUserArray = async (event) => {
         event.preventDefault()
         let ballStyle = event.target.innerText.toLowerCase();
         let solids = ballArray.filter(ball => ball.type === "solid");
         let stripes = ballArray.filter(ball => ball.type === "stripe");
-        
         let newGameId = gameId.gameId // See if this can be set to a global variable without breaking everything.
         if (ballStyle === 'solid') {
            for (let i = 0; i < solids.length; i++) {
-            // delete solids[i].__typename
             userBallArray.push(solids[i]);
            }
         } else {
             console.log(stripes)
             for (let i = 0; i < stripes.length; i++) {
-                // delete stripes[i].__typename
                 userBallArray.push(stripes[i]);
                }        
         }
@@ -150,6 +115,7 @@ const GameContainer = (props) => {
             newUserBallArray.push(newBallObject)
         })
         console.log(newUserBallArray)
+
         try {
             console.log(newGameId, userId, newUserBallArray)
             const mutationResponse = await updateBallStyleSelection({

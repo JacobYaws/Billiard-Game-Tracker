@@ -255,19 +255,62 @@ Mutation: {
     selectBallStyle: async (parent, { ball, gameId, users }) => {
       
       let ballType = ball[0].type;
-      console.log(ballType)
-      console.log(gameId)
-      console.log(users)
-      return await Game.findOneAndUpdate(
-        { _id: gameId, "balls.type": ballType, users: users},
+      let oppBallType = (ballType === 'stripe') ? 'solid' : 'stripe'
+      // console.log(oppBallType)
+      // console.log(ballType)
+     
+      
+      // console.log(ballType);
+      // console.log(ball)
+      // let newBallType = `"${ballType}"`
+      // console.log(newBallType)
+      // console.log(gameId)
+      // console.log(users) ----> string
+      // return await Game.findOneAndUpdate(
+        try {
+        // const assignBalls =  
+        return await Game.findOneAndUpdate(
+        { _id: gameId },
         {
-          $set: { "balls.$[].assigneduser": users }
-        },
+          // $set: { "balls.$.assigneduser" : users },
+          $set: {"balls.$[type].assigneduser": users},
+        }, 
         {
+          arrayFilters: [ 
+            { 
+              "type.type": ballType,
+              "type.assigneduser": 0,
+
+            },
+         ], 
           new: true,
           runValidators: true,
         }
-      )
+
+
+
+
+      //   { arrayFilters: [ 
+      //     { 
+      //       "ball.type": { $not: { $regex: "stripe"} } ,
+      //     },
+      //  ], 
+      //  new: true,
+      //     runValidators: true,
+      // },
+      
+        // {
+          // new: true,
+          // runValidators: true,
+        // }
+      )} catch (error) {
+        console.log("hello")
+        console.log(error)
+      }
+      // console.log(assignBalls)
+      console.log("hellosuccess")
+
+      // return assignBalls
     }
 },
 };
