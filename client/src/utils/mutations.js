@@ -159,6 +159,14 @@ mutation selectBallStyle($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
   }
 }`
 
+export const CLOSE_GAME = gql`
+mutation closeGame($gameId: ID!, $status: String!) {
+  closeGame(gameId: $gameId, status: $status) {
+    _id
+    status
+  }
+}`
+
 
 
 // This block belongs in the ADD_USER mutation, placed below email (user)

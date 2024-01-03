@@ -115,6 +115,7 @@ type User {
     removeAllUsersLobby(lobbyId: ID!, users: [ID!]): Lobby
     changeBallStatus(gameId: ID!, ball: Ballinput): Game
     selectBallStyle(gameId: ID!, ball: [Ballinput], users: ID!): Game
+    closeGame(gameId: ID!, status: String!): Game
   }
 `;
 

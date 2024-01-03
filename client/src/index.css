@@ -49,6 +49,26 @@ min-height: 100vh;
   width: 30px;
 }
 
-.solid {
-background-color: white;
+.solid, .eight-ball-standard {
+/* background-color: white; */
+
 }
+.endModalTitle {
+  margin-left: 5%;
+}
+
+.endModalBody {
+  font-size: 18px;
+  margin: 2% 5% 2% 5%;
+}
+
+.endGameButton {
+  
+  border: none;
+  border-radius: 1vh;
+  border-color: var(--continue);
+  background-color: var(--continue);
+  padding: 2%;
+}
+
+

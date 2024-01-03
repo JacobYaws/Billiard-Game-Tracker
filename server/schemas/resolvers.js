@@ -230,19 +230,15 @@ Mutation: {
         console.log("GameId: " + gameId);
         let number = ball.number;
         let status = ball.status;
-        console.log(number)
-        console.log(status)
-        console.log(ball)
+        
         if (status == true) {
           console.log('true')
         } else if (status == false) {
           console.log('false')
         }
-      // console.log(error)
+   
         return await Game.findOneAndUpdate(
           { _id: gameId, "balls.number": ball.number },
-          // { _id: gameId, balls: ball },
-          // { _id: gameId, balls: { $elemMatch: { $eq: number } }},
           {
            $set: {"balls.$.status": status},
          },
@@ -255,24 +251,11 @@ Mutation: {
     selectBallStyle: async (parent, { ball, gameId, users }) => {
       
       let ballType = ball[0].type;
-      let oppBallType = (ballType === 'stripe') ? 'solid' : 'stripe'
-      // console.log(oppBallType)
-      // console.log(ballType)
-     
-      
-      // console.log(ballType);
-      // console.log(ball)
-      // let newBallType = `"${ballType}"`
-      // console.log(newBallType)
-      // console.log(gameId)
-      // console.log(users) ----> string
-      // return await Game.findOneAndUpdate(
-        try {
-        // const assignBalls =  
+      console.log(ballType);
+        // try {
         return await Game.findOneAndUpdate(
         { _id: gameId },
         {
-          // $set: { "balls.$.assigneduser" : users },
           $set: {"balls.$[type].assigneduser": users},
         }, 
         {
@@ -280,37 +263,28 @@ Mutation: {
             { 
               "type.type": ballType,
               "type.assigneduser": 0,
-
             },
          ], 
           new: true,
           runValidators: true,
         }
-
-
-
-
-      //   { arrayFilters: [ 
-      //     { 
-      //       "ball.type": { $not: { $regex: "stripe"} } ,
-      //     },
-      //  ], 
-      //  new: true,
-      //     runValidators: true,
-      // },
-      
-        // {
-          // new: true,
-          // runValidators: true,
-        // }
-      )} catch (error) {
-        console.log("hello")
-        console.log(error)
-      }
-      // console.log(assignBalls)
-      console.log("hellosuccess")
-
-      // return assignBalls
+      )
+    // } catch (error) {
+    //     console.log(error)
+    //   }
+    },
+    closeGame: async (parent, { gameId, status }) => {
+      console.log("GameId: " + gameId)
+      return await Game.findOneAndUpdate(
+        { _id: gameId },
+        {
+         $set: {status: status},
+       },
+       {
+         new: true,
+         runValidators: true,
+       }
+      )
     }
 },
 };

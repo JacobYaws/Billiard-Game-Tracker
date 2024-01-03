@@ -15,17 +15,18 @@ import JoinedUsers from '../components/Lobby/JoinedUsers'
 import  Auth  from '../utils/auth'
 
 const Game = () => {
-let gametype = ""
+let gametype = "";
 const { gameId } = useParams();
 const [leaveGame] = useMutation(LEAVE_GAME)
 
 const [showModal, setShowModal] = useState(false);
 const userId = Auth.getUser().data._id;
+let status = "";
 
 const { loading, error, data } = useQuery(
     gameId ? QUERY_SINGLE_GAME : QUERY_SINGLE_USER,
     {
-        variables: {gameId: gameId, userId: [userId], gametype: gametype},
+        variables: {gameId: gameId, userId: [userId], gametype: gametype, status: status},
         pollInterval: 500,
     }
     );
@@ -34,11 +35,13 @@ const [users, setUsers] = useState(data?.game.users);
 // console.log(data)
 const [balls, setBalls] = useState(data?.game.balls);
 const [gametypeData, setGametype] = useState(data?.game.gametype)
+const [gameStatus, setGameStatus] = useState(data?.game.status)
 useEffect(() => {
     if (data) {
         setUsers(data.game.users);
         setBalls(data.game.balls);
-        setGametype(data.game.gametype)
+        setGametype(data.game.gametype);
+        setGameStatus(data.game.status);
     }
 }, [loading, data])
 
@@ -46,7 +49,7 @@ if (loading) return "Loading.........................."
 if (error) return `Error  ${error.message}`
 // if (loading) return "Loading.........................."
 // if (error) return `Error  ${error.message}`
-
+console.log(gameStatus)
 
 // useEffect(() => {
 //     if (data) {
@@ -82,7 +85,7 @@ return(
                 Gametype: {data.game.gametype}
             </div>
             {/* <GameSidebar balls={balls} gametype={gametypeData}/> */}
-            <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData}/>
+            <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData} status={gameStatus}/>
 
             {/* </GameContainer> */}
     <div className="col-md-3 p-3">

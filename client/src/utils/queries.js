@@ -68,5 +68,6 @@ query singleGame($gameId: ID!) {
       color
       }
     gametype
+    status
   }
 }`

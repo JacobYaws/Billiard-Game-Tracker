@@ -24,7 +24,7 @@ const AppNavbar = () => {
           refectOnWindowFocus: true,
           onCompleted: (data) => {
             // console.log("success")
-            // console.log(data)
+            console.log(data)
             let pathName = window.location.pathname;
             // console.log(data.inGame._id)
             let gameId = (data.inGame._id)
@@ -34,7 +34,6 @@ const AppNavbar = () => {
           if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
             // console.log("please work")
              window.location.href = (window.location.origin + "/game/" + gameId)
-
           }
           }
       },
