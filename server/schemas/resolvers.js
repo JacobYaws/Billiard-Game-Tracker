@@ -14,6 +14,13 @@ const resolvers = {
           // console.log(userId)
           return User.findOne({ _id: userId});
         },
+        multipleGames: async(parent, { userId }) => {
+          console.log("MultipleGames passthrough")
+          return Game.find({"balls.assigneduser": userId } )
+          // return Game.find({"balls.$[].assigneduser": userId } )
+          // return Game.find()
+
+        },
 
         me: async (parent, args, context) => {
           if (context.user) {

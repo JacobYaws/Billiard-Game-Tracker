@@ -111,7 +111,6 @@ const GameContainer = (props) => {
             let newUserBallArray = [];
             newUserBallArray.push(newBallObject)
             if (gametype === 'cutthroat' && checkStatusFalseLength === 1) {
-                console.log("You've reached the endgame");
                 setShowEndModal(true);
             }
             if (selectAssigneduser == 0) {

@@ -58,6 +58,7 @@ type Query {
   game(gameId: ID!): Game
   lobby(lobbyId: ID!): Lobby
   inGame(userId: ID): Game
+  multipleGames(userId: ID!): [Game]
   }
 
 type User {

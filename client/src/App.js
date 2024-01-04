@@ -14,7 +14,10 @@ import Home from './pages/Home';
 import Lobby from './pages/Lobby';
 // import {LobbyContainer, LobbySidebar} from './components/Lobby/Lobbycomponents';
 import Game from './pages/Game';
-// import Gamestart from './pages/Gamestart';
+import StatPage from './pages/Statpage'
+
+// import { Login, Signup, Home, Lobby, Game, StatPage } from './pages' ***Have not tested this yet***
+
 
 // Creates a link to graphql at the /graphql endpoint.
 const httpLink = createHttpLink({
@@ -52,6 +55,7 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/lobby/:lobbyId" component={Lobby} />
           <Route exact path="/game/:gameId" component={Game} />
+          <Route exact path="/stats" component={StatPage} />
           <Route path="/users/:userId"/>
           <Route render={() => <h1 className='display-2'>Wrong Page!</h1>} />
           </Switch>
