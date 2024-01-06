@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Container, Card, Col, Row, Button } from 'react-bootstrap';
+import React from 'react'
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../styles/GameSelect.css'
+import '../Styles/GameSelect.css'
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 
 function GameSelect() {

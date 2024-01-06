@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Container, Modal, Button, Tab, Nav } from 'react-bootstrap';
+import { Container, Modal, Button } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
+// import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
-import LoginForm from './Login'
-import SignUpForm from './Signup'
+// import LoginForm from './Login'
+// import SignUpForm from './Signup'
 // import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {

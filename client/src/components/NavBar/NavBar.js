@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from '../../pages/Signup';
 import LoginForm from '../../pages/Login';
-import { QUERY_STATUS, QUERY_SINGLE_USER, QUERY_USERS } from '../../utils/queries';
-import { useMutation, useQuery } from '@apollo/client';
+import { QUERY_STATUS } from '../../utils/queries';
+import { useQuery } from '@apollo/client';
 
 
 import Auth from '../../utils/auth';
@@ -13,7 +13,7 @@ const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
   const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
-  let pathName = window.location.pathname;
+  // let pathName = window.location.pathname;
     const { loading, error, data } = useQuery(
       QUERY_STATUS,
       {

@@ -8,8 +8,8 @@ const StatComponent = (props) => {
     console.log(gamedata);
     let gameIdArray = [];
     let gametypeArray = [];
-    let gameballArray = [];
-    let cleanDataArray = [];
+    // let gameballArray = [];
+    // let cleanDataArray = [];
     let totalPocketedCount = 0;
     let totalOnTableCount = 0;
     let totalBallCount = 0;

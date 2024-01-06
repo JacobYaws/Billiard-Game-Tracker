@@ -159,6 +159,7 @@ mutation selectBallStyle($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
   }
 }`
 
+// Maybe an unnecessary mutation. Remove when the app is running.
 export const FINAL_BALL_ASSIGNMENT = gql`
 mutation assignFinalBall($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
   assignFinalBall(gameId: $gameId, ball: $ball, users: $users) {

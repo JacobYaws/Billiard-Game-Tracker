@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from "react";
 import { Modal, Tab } from "react-bootstrap"
-import { useMutation, useQuery } from '@apollo/client';
-import { QUERY_SINGLE_GAME } from "../../utils/queries";
+import { useMutation } from '@apollo/client';
+// import { QUERY_SINGLE_GAME } from "../../utils/queries";
 import { CHANGE_BALL_STATUS, BALL_TYPE_SELECTION, CLOSE_GAME } from "../../utils/mutations";
 import Auth from '../../utils/auth'
-import { Link, useParams } from 'react-router-dom';
-import { Navbar } from '../NavBar/NavBar';
+import { useParams } from 'react-router-dom';
+
 
 const GameContainer = (props) => {
     const gameId = useParams();
@@ -15,7 +15,7 @@ const GameContainer = (props) => {
     let ballArray = props.balls;
     let gametype = props.gametype;
     const eightBall = props.balls ? props.balls[7] : {}
-    const nineBall = props.balls ? props.balls[8] : {}
+    // const nineBall = props.balls ? props.balls[8] : {}
     const gameStatus = props.status;
     let gameBallArray = [];
     let userBallArray = [];
@@ -56,14 +56,14 @@ const GameContainer = (props) => {
                     gameBallArray.push(ballArray[i]) 
                 }
             }
-            if (gametype == 'nineball') {
+            if (gametype === 'nineball') {
                 for (let i = 0; i < ballArray.length; i++) {
                     userBallArray.push(ballArray[i])
                 }
             }
             if (gametype === 'cutthroat') {
                 for (let i = 0; i < ballArray.length; i++) {
-                    if (ballArray[i].assigneduser == userId) {   
+                    if (ballArray[i].assigneduser === userId) {   
                     userBallArray.push(ballArray[i])
                     }
                 }
@@ -149,9 +149,9 @@ const GameContainer = (props) => {
                     track: null
             }
         }
-            if (checkOpacity == 0.5) {
+            if (checkOpacity === 0.5) {
                 return currTarget.style.opacity = 1   
-            } else if (checkOpacity == 1 || checkOpacity == "") {
+            } else if (checkOpacity === 1 || checkOpacity === "") {
                 return currTarget.style.opacity = 0.5
             }
         }

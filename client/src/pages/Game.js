@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { GameContainer, GameSidebar } from '../components/Game/Gamecomponents';
+import { GameContainer } from '../components/Game/Gamecomponents';
 // import { useParams } from "react-router-dom"
 // import BallList from '../components/BallList/BallList';
 // import BallArray from '../utils/ballArray'
-import { Container, Button, Modal } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { LEAVE_GAME } from '../utils/mutations';
-import { QUERY_SINGLE_GAME, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
+import { QUERY_SINGLE_GAME, QUERY_SINGLE_USER } from '../utils/queries';
 import { Link, useParams } from 'react-router-dom';
 import JoinedUsers from '../components/Lobby/JoinedUsers'
 
@@ -19,7 +19,6 @@ let gametype = "";
 const { gameId } = useParams();
 const [leaveGame] = useMutation(LEAVE_GAME)
 
-const [showModal, setShowModal] = useState(false);
 const userId = Auth.getUser().data._id;
 let status = "";
 
