@@ -159,6 +159,19 @@ mutation selectBallStyle($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
   }
 }`
 
+export const FINAL_BALL_ASSIGNMENT = gql`
+mutation assignFinalBall($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
+  assignFinalBall(gameId: $gameId, ball: $ball, users: $users) {
+    _id
+      balls {
+      type
+      number
+      assigneduser
+    }
+    users
+  }
+}`
+
 export const CLOSE_GAME = gql`
 mutation closeGame($gameId: ID!, $status: String!) {
   closeGame(gameId: $gameId, status: $status) {

@@ -9,7 +9,6 @@ import { Navbar } from '../NavBar/NavBar';
 
 const GameContainer = (props) => {
     const gameId = useParams();
-    console.log(props)
     const userId = Auth.getUser().data._id
     let userArray = props.users;
     // let ballArray = props?.balls;
@@ -48,7 +47,6 @@ const GameContainer = (props) => {
                 setShowEndButton()
             });
         }, [props, showEightBall, showEndButton, endGame]);
-        console.log(endGame)
         if (userArray !== undefined) {
             if (gametype === 'standard') {
                 for (let i = 0; i< ballArray.length; i++) {
@@ -215,33 +213,52 @@ const GameContainer = (props) => {
 
         const handleEndGame = async (ev) => {
             let newStatus = "closed";
-            if (gametype === 'standard') {
-            ev.preventDefault();
-            let currTarget = ev.currentTarget;
-            let selectedBall;
-            selectedBall = ballArray.find((currentValue) => {
-                return currentValue.number == 8
-            })
-            let selectAssigneduser = selectedBall.assigneduser;
-            let newBallObject = {status: selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
-            let newUserBallArray = [];
-            newUserBallArray.push(newBallObject)
-            if (selectAssigneduser == 0) {
-                try {
-                    const mutationResponse = await updateBallStyleSelection({
-                        variables: { gameId: gameId.gameId, users: userId, ball: newUserBallArray } 
-                    })
-                  
-                } catch (e) {
-                    console.log(e)
-                    return {
-                        code: e.extensions.response.status,
-                        success: false,
-                        message: e.extensions.response.body,
-                        track: null
-                    };
-                }}
-            }
+                if (gametype === 'standard') {
+                ev.preventDefault();
+                let currTarget = ev.currentTarget;
+                let selectedBall;
+                selectedBall = ballArray.find((currentValue) => {
+                    return currentValue.number == 8
+                })
+                let selectAssigneduser = selectedBall.assigneduser;
+                console.log()
+                console.log("truthy: " + selectedBall.status)
+                console.log("falsy: " + !selectedBall.status)
+                let newBallObject = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
+                let newUserBallArray = [];
+                newUserBallArray.push(newBallObject)
+        
+                    try {
+                        const mutationResponse = await changeStatus({
+                            variables: { gameId: gameId.gameId, users: userId, ball: newBallObject } 
+                        })
+                    console.log(mutationResponse)
+                    } catch (e) {
+                        console.log(e)
+                        return {
+                            code: e.extensions.response.status,
+                            success: false,
+                            message: e.extensions.response.body,
+                            track: null
+                        };
+                    }
+                    try {
+                        const mutationResponse = await updateBallStyleSelection({
+                            variables: { gameId: gameId.gameId, users: userId, ball: newUserBallArray } 
+                        })
+                        // console.log(mutationResponse)
+                    } catch (e) {
+                        console.log(e)
+                        return {
+                            code: e.extensions.response.status,
+                            success: false,
+                            message: e.extensions.response.body,
+                            track: null
+                        };
+                    }
+                }
+
+           
 
             try {
                 const mutationResponse = await closeGame({
@@ -259,9 +276,49 @@ const GameContainer = (props) => {
             }
             setShowEndModal(false)
         }
-        const handleEightBallClick = () => {
+        const handleEightBallClick = async () => {
             console.log('click')
+            console.log(!eightBall.status)
+          
+            
+            let newEightBallObject = {status: !eightBall.status, number: eightBall.number, color: eightBall.color, assigneduser: userId, type: eightBall.type};
+            let eightArray = [];
+            eightArray.push(newEightBallObject)
             setShowEndModal(true)
+            // console.log(newEightBallObject)
+            // handleEndGame()
+
+            // try {
+            //     const mutationResponse = await changeStatus({
+            //         variables: { gameId: gameId.gameId, users: userId, ball: newEightBallObject }
+            //     })
+               
+            // } catch (error) {
+            //     console.error(error)
+            //     return {
+            //         code: error.extensions.response.status,
+            //         success: false,
+            //         message: error.extensions.response.body,
+            //         track: null
+            // }
+        // }
+
+        // try {
+        //     const secondMutationResponse = await updateBallStyleSelection({
+        //         variables: { gameId: gameId.gameId, users: userId, ball: eightArray } 
+        //     })
+        //     // console.log(mutationResponse)
+        // } catch (e) {
+        //     console.log(e)
+        //     return {
+        //         code: e.extensions.response.status,
+        //         success: false,
+        //         message: e.extensions.response.body,
+        //         track: null
+        //     };
+        // }
+            // setShowEightBall(true)
+
         }
 
             return (
