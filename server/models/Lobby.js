@@ -10,7 +10,7 @@ const lobbySchema = new Schema(
     ],
         gametype: {
             type: String,
-            required: true,
+            required: false,
         },
         maxsize: {
             type: Number,

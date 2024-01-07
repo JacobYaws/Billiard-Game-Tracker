@@ -57,6 +57,8 @@ type Query {
   me: User
   game(gameId: ID!): Game
   lobby(lobbyId: ID!): Lobby
+  inGame(userId: ID): Game
+  multipleGames(userId: ID!): [Game]
   }
 
 type User {
@@ -76,6 +78,7 @@ type User {
     users: [ID!]
     balls: [Ball!]
     gametype: String!
+    status: String!
   }
 
   type Lobby {
@@ -110,6 +113,10 @@ type User {
     joinLobby(users: ID!, lobbyId: ID!): Lobby
     leaveGame(users: ID!, gameId: ID!): Game
     leaveLobby(users: ID!, lobbyId: ID!): Lobby
+    removeAllUsersLobby(lobbyId: ID!, users: [ID!]): Lobby
+    changeBallStatus(gameId: ID!, ball: Ballinput): Game
+    selectBallStyle(gameId: ID!, ball: [Ballinput], users: ID!): Game
+    closeGame(gameId: ID!, status: String!): Game
   }
 `;
 

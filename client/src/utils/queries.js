@@ -11,6 +11,13 @@ export const QUERY_ME = gql`
   }
 `;
 
+export const QUERY_STATUS = gql`
+query inGame($userId: ID) {
+  inGame(userId: $userId) {
+    _id
+  }
+}`
+
 export const QUERY_USERS = gql`
   query allUsers {
     users {
@@ -55,12 +62,24 @@ query singleGame($gameId: ID!) {
     users
     balls {
       number
-        type
-        status
-        assigneduser
-        color
+      type
+      status
+      assigneduser
+      color
       }
-    
+    gametype
+    status
+  }
+}`
+
+export const QUERY_MULTIPLE_GAMES = gql`
+query multipleGames($userId: ID!) {
+  multipleGames(userId: $userId) {
+    _id
+    balls {
+      status
+      assigneduser
+    }
     gametype
   }
 }`

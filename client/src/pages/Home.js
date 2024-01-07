@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import Auth from '../utils/auth';
 import { Container, Modal, Button } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
+// import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
+// import LoginForm from './Login'
+// import SignUpForm from './Signup'
 // import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {
@@ -20,8 +22,6 @@ const Home = () => {
   const [joinGame] = useMutation(JOIN_GAME);
   const joinAGame = 'joingame';
   const joinALobby = 'joinlobby'
-
-  
 
   // const [formState, setFormState] = useState({
   //   lobbyId: '',
@@ -40,14 +40,18 @@ const Home = () => {
 
   const createLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
-    let gametype = "cutthroat";
+    let gametype = "";
     const users = [userId];
 
     console.log(users)
+    // try {
+    //     const  mutationResponse  = await createLobby({
+    //         variables: { users: users, gametype: gametype }
+    //     })
     try {
-        const  mutationResponse  = await createLobby({
-            variables: { users: users, gametype: gametype }
-        })
+      const  mutationResponse  = await createLobby({
+          variables: { users: users, gametype: gametype }
+      })
 
         let newLobby = mutationResponse.data;
         let newLobbyId = newLobby.createLobby._id
@@ -74,6 +78,9 @@ const Home = () => {
       });
     console.log(data)
     setGameId('')
+    window.location.href = (window.location.origin + "/game/" + gameId)
+
+    // window.location.href = "/game/" + gameId
     
     } catch (e) {
       console.error(e);
@@ -88,7 +95,9 @@ const Home = () => {
         variables: { users, lobbyId },
       });
     console.log(data)
-    window.location.href = "/lobby/" + lobbyId
+    window.location.href = (window.location.origin + "/lobby/" + lobbyId)
+
+    // window.location.href = "/lobby/" + lobbyId
     } catch (e) {
       console.error(e);
     }
@@ -101,67 +110,23 @@ const Home = () => {
       <>
       {Auth.loggedIn() ? (
       <Container fluid>
-      {/* <div class="container px-4 text-center p-3">
-        <Button variant="success" onClick={createLobbySubmit}>Start a New Game</Button>
-          <div class="p-3">
-            <div class="m-3">
-              <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
-                <Modal
-                size='lg'
-                show={showModal === joinALobby}
-                onHide={() => handleClose()}
-                aria-labelledby='join-lobby'>
-                  <Modal.Header closeButton>
-                  </Modal.Header>
-                    <div className="col-12 col-lg-9">
-                      <input
-                        placeholder="Enter your lobby invite code"
-                        value={lobbyId}
-                        className="form-input w-100"
-                        onChange={(event) => setLobbyId(event.target.value)}
-                      />
-                        <Button variant="success" onClick={joinLobbySubmit}>Join</Button>
-                    </div>
-                </Modal>
-            </div>
-              <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
-                <Modal
-                size='lg'
-                show={showModal === joinAGame}
-                onHide={() => handleClose()}
-                aria-labelledby='join-game'>
-                  <Modal.Header closeButton>
-                  </Modal.Header>
-                    <div className="col-12 col-lg-9">
-                      <input
-                        placeholder="Enter your game invite code"
-                        value={gameId}
-                        className="form-input w-100"
-                        onChange={(event) => setGameId(event.target.value)}
-                      />
-                        <Button variant="success" onClick={joinGameSubmit}>Join</Button>
-                    </div>
-                </Modal>
-          </div>
-      </div>
-               */}
-
-  <div class="col">
-    <div class="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Create a New Game</h5>
-          <p class="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
+  <div className="col">
+    <div className="col-sm-6 mb-3 mb-sm-0 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Create a New Game</h5>
+          <p className="card-text">Click below to go to the create game page. You'll be placed in a lobby where you can choose which game
           you would like to play. Once the enough people have joined for your game type, you can start tracking your score!</p>
           <Button variant="success" onClick={createLobbySubmit}>Start a Lobby</Button>
+          
         </div>
       </div>
     </div>
-    <div class="col-sm-6 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Join a Lobby</h5>
-          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the lobby.</p>
+    <div className="col-sm-6 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Join a Lobby</h5>
+          <p className="card-text">If you have a lobby invite, click below to join and you will be placed in the lobby.</p>
           <Button onClick={() => handleShow(joinALobby)} key="joinlobby">Join a Lobby</Button>
           <Modal
           size='lg'
@@ -169,7 +134,7 @@ const Home = () => {
           onHide={() => handleClose()}
           aria-labelledby='join-lobby'>
             <Modal.Header closeButton>
-              <h2 class="mx-5">Join a Lobby</h2>
+              <h2 className="mx-5">Join a Lobby</h2>
             </Modal.Header>
             <div className="col-12 col-lg-9 mx-auto text-center">
                 <input
@@ -185,11 +150,11 @@ const Home = () => {
       </div>
     </div>
 
-    <div class="col-sm-6 p-3 text-center mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Join a Game</h5>
-          <p class="card-text">If you have a lobby invite, click below to join and you will be placed in the game.</p>
+    <div className="col-sm-6 p-3 text-center mx-auto">
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Join a Game</h5>
+          <p className="card-text">If you have a lobby invite, click below to join and you will be placed in the game.</p>
           <Button onClick={() => handleShow(joinAGame)} key="joingame">Join a Game</Button>
             <Modal
             size='lg'
@@ -197,7 +162,7 @@ const Home = () => {
             onHide={() => handleClose()}
             aria-labelledby='join-game'>
               <Modal.Header closeButton>
-                <h2 class="mx-5">Join a Game</h2>
+                <h2 className="mx-5">Join a Game</h2>
               </Modal.Header>
             <div className="col-12 col-lg-9 mx-auto text-center" >
                   <input
@@ -216,20 +181,53 @@ const Home = () => {
           </Container>
       ) : (
         <Container fluid className="p-5">
-          <div class="card text-center mx-auto col-sm-6 p-3">
-            <div class="card-body">
+          <div className="card text-center mx-auto col-sm-6 p-3">
+            <div className="card-body">
           Welcome to cutthroat. Please login or signup to start playing.
             </div>
-            {/* <div class="col-sm-6 text-center mx-auto">
-              <div class="col">
-                <Button onClick={() => setShowModal(true)} className="mx-3">Login</Button>
-                <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button>
+            <div className="col-sm-6 text-center mx-auto">
+              <div className="col">
+                <Button onClick={() => setShowModal(true)} className="mx-3">Login or Sign Up</Button>
+                {/* <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button> */}
               </div>
-            </div> */}
+            </div>
           </div>
          
         </Container>
       )}
+       {/* <Modal
+        size='lg'
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        aria-labelledby='signup-modal'>
+
+        tab container to do either signup or login component
+        
+        <Tab.Container defaultActiveKey='login'>
+          <Modal.Header closeButton>
+            <Modal.Title id='signup-modal'>
+              <Nav variant='pills'>
+                <Nav.Item>
+                  <Nav.Link eventKey='login'>Login</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Tab.Content>
+              <Tab.Pane eventKey='login'>
+                <LoginForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+              <Tab.Pane eventKey='signup'>
+                <SignUpForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+            </Tab.Content>
+          </Modal.Body>
+        </Tab.Container>
+      </Modal> */}
       </>
   );
 };

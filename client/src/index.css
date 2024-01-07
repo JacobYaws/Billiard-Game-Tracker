@@ -11,4 +11,64 @@ height: 100vh;
 min-height: 100vh;
 }
 
+.ball {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1%;
+  padding: 1%;
+  /* width: 100px;
+  height: 100px; */
+  width: 10vh;
+  height: 10vh;
+  border-radius: 50%;
+  opacity: 1;
+}
+
+.stripe {
+  display: flex;
+  background-color: white;
+  flex-grow: inherit;
+  width: 10vh;
+  min-width: 0;
+  /* border-radius: 1vh; */
+  /* height: 30px;  */
+  /* width: 100%; */
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.ballNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+.solid, .eight-ball-standard {
+/* background-color: white; */
+
+}
+.endModalTitle {
+  margin-left: 5%;
+}
+
+.endModalBody {
+  font-size: 18px;
+  margin: 2% 5% 2% 5%;
+}
+
+.endGameButton {
+  
+  border: none;
+  border-radius: 1vh;
+  border-color: var(--continue);
+  background-color: var(--continue);
+  padding: 2%;
+}
+
 

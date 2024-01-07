@@ -125,6 +125,62 @@ export const LEAVE_LOBBY = gql`
 }
 `
 
+export const REMOVE_LOBBY_USERS = gql`
+mutation removeAllUsersLobby($users: [ID!], $lobbyId: ID!) {
+  removeAllUsersLobby(users: $users, lobbyId: $lobbyId) {
+    _id
+    users
+  }
+}
+`
+
+export const CHANGE_BALL_STATUS = gql`
+mutation changeBallStatus($gameId: ID!, $ball: Ballinput) {
+  changeBallStatus(gameId: $gameId, ball: $ball) {
+    _id
+    balls {
+      number
+      status
+    }
+  }
+}
+`
+
+export const BALL_TYPE_SELECTION = gql`
+mutation selectBallStyle($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
+  selectBallStyle(gameId: $gameId, ball: $ball, users: $users) {
+    _id
+      balls {
+      type
+      number
+      assigneduser
+    }
+    users
+  }
+}`
+
+// Maybe an unnecessary mutation. Remove when the app is running.
+export const FINAL_BALL_ASSIGNMENT = gql`
+mutation assignFinalBall($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
+  assignFinalBall(gameId: $gameId, ball: $ball, users: $users) {
+    _id
+      balls {
+      type
+      number
+      assigneduser
+    }
+    users
+  }
+}`
+
+export const CLOSE_GAME = gql`
+mutation closeGame($gameId: ID!, $status: String!) {
+  closeGame(gameId: $gameId, status: $status) {
+    _id
+    status
+  }
+}`
+
 
 
 // This block belongs in the ADD_USER mutation, placed below email (user)

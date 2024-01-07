@@ -14,6 +14,13 @@ const resolvers = {
           // console.log(userId)
           return User.findOne({ _id: userId});
         },
+        multipleGames: async(parent, { userId }) => {
+          console.log("MultipleGames passthrough")
+          return Game.find({"balls.assigneduser": userId } )
+          // return Game.find({"balls.$[].assigneduser": userId } )
+          // return Game.find()
+
+        },
 
         me: async (parent, args, context) => {
           if (context.user) {
@@ -28,6 +35,13 @@ const resolvers = {
         game: async(parent, { gameId }) => {
           return Game.findOne({ _id: gameId })
         },
+        inGame: async(parent, { userId }) => {
+          // console.log("inGame: " + userId)
+          if (userId === null) {
+            return {}
+          }
+          return Game.findOne({ users: { $all: [userId] }, status: "inProgress" })
+        }
         },
 
 Mutation: {
@@ -61,8 +75,6 @@ Mutation: {
           new: true,
           runValidators: true,
         });
-       
-
     },
     leaveLobby: async (parent, { users, lobbyId }) => {
       return await Lobby.findOneAndUpdate(
@@ -87,9 +99,7 @@ Mutation: {
          runValidators: true,
        },
        );
-       
    },
-
    leaveGame: async (parent, { users, gameId }) => {
      return await Game.findOneAndUpdate(
        { _id: gameId, users: { $elemMatch: { $eq: users } } },
@@ -108,6 +118,20 @@ Mutation: {
       }
       return await Lobby.create({ users, gametype, maxsize })
     },
+    removeAllUsersLobby: async (parent, { lobbyId, users }) => {
+      console.log(lobbyId, users)
+
+      return await Lobby.findOneAndUpdate(
+        { _id: lobbyId, users: users },
+        {
+         $set: {users: []},
+       },
+       {
+         new: true,
+         runValidators: true,
+       }
+      )
+    },
     // inLobby: async(parent, { some, thing }) => {
     //   let lobbyCount = 0;
       
@@ -120,9 +144,7 @@ Mutation: {
     //   }
     // }
     createGame: async(parent, { users, gametype }) => {
-
-      
-      const ballCount = 16;
+      let ballCount = 16;
       const balls = [];
       let numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
       let index = 0;
@@ -134,11 +156,11 @@ Mutation: {
 
       if (gametype == 'nineball') {
         ballCount = 10;
-        numArr.slice(9)
+        numArr = numArr.slice(0, 9)
         console.log("Nineball Array: " + numArr)
       }
       
-      let ballsPerUser = ballCount/userCount
+      let ballsPerUser = (ballCount - 1)/userCount
 
       if (gametype == 'cutthroat') {
         cutThroatRandomize = true
@@ -155,23 +177,51 @@ Mutation: {
 
             
             if (iterations % ballsPerUser == 0) {
+              console.log("running")
+              console.log(iterations);
+              console.log(ballsPerUser)
               let assignedUser = await User.findById(users[assignedUserIndex])// assumes users at assignedUserIndex is being passed in as the id of the user
               assignedUserId = assignedUser._id
               assignedUserIndex += 1
             }
           }
-
+            ballValue = numArr[index]
+            let color = "";
+            // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
           } else if (ballValue == 8) {
-            type = "solid" // can change if desired in the future 8 ball
+            type = "special" // can change if desired in the future 8 ball: changed from solid to special
           } else {
             type = "solid"
           }
 
-          ballValue = numArr[index]
+          if (ballValue == 8) {
+            color = "#000000"
+          }
+          if (ballValue == 1 || ballValue == 9) {
+            color = "#ffff00"
+          }
+          if (ballValue == 2 || ballValue == 10) {
+            color = "#291dec"
+          }
+          if (ballValue == 3 || ballValue == 11) {
+            color = "#fd0f10"
+          }
+          if (ballValue == 4 || ballValue == 12) {
+            color = "#4c4976"
+          } 
+          if (ballValue == 5 || ballValue == 13) {
+            color = "#f7931e"
+          }
+          if (ballValue == 6 || ballValue == 14) {
+            color = "#36594a"
+          }
+          if (ballValue == 7 || ballValue == 15) {
+            color = "#a2402c"
+          }
           
-          balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId});
+          balls.push({ number: ballValue, type: type, status: false, assigneduser: assignedUserId, color: color});
           numArr.splice(index, 1)
           iterations++
         }
@@ -179,15 +229,71 @@ Mutation: {
         // if (trackCue) {
         //   balls.push({number: 16, type: "Cue", status: false, assigneduser: null})
         // }
-
-        let game = await Game.create({ users, balls, gametype })
+        let status = "inProgress"
+        let game = await Game.create({ users, balls, gametype, status })
+        return game
+    },
+    changeBallStatus: async (parent, { ball, gameId }) => {
+        console.log("GameId: " + gameId);
+        let number = ball.number;
+        let status = ball.status;
         
-          return game
-        
+        if (status == true) {
+          console.log('true')
+        } else if (status == false) {
+          console.log('false')
+        }
+   
+        return await Game.findOneAndUpdate(
+          { _id: gameId, "balls.number": ball.number },
+          {
+           $set: {"balls.$.status": status},
+         },
+         {
+           new: true,
+           runValidators: true,
+         }
+        )
+      },
+    selectBallStyle: async (parent, { ball, gameId, users }) => {
+      
+      let ballType = ball[0].type;
+      console.log(ballType);
+        // try {
+        return await Game.findOneAndUpdate(
+        { _id: gameId },
+        {
+          $set: {"balls.$[type].assigneduser": users},
+        }, 
+        {
+          arrayFilters: [ 
+            { 
+              "type.type": ballType,
+              "type.assigneduser": 0,
+            },
+         ], 
+          new: true,
+          runValidators: true,
+        }
+      )
+    // } catch (error) {
+    //     console.log(error)
+    //   }
+    },
+    closeGame: async (parent, { gameId, status }) => {
+      console.log("GameId: " + gameId)
+      return await Game.findOneAndUpdate(
+        { _id: gameId },
+        {
+         $set: {status: status},
+       },
+       {
+         new: true,
+         runValidators: true,
+       }
+      )
     }
-  
 },
-
 };
 
 module.exports = resolvers;
