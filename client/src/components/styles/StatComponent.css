@@ -1,0 +1,31 @@
+/* style={{width: "20rem", marginTop: '1rem', textAlign: 'center'}} */
+
+.card {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+   
+}
+
+.flex-container {
+    max-width:50%;
+    margin-left: 25%;
+    text-align: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    display: flex
+}
+
+.total-stats {
+    text-align: center;
+    /* height: 100%;
+    width: 15rem;
+    position: fixed;
+    margin-top: 15px; */
+    /* z-index: 1; Stay on top */
+  /* top: 0; Stay at the top */
+  /* left: 0; */
+  /* background-color: #111; Black */
+  /* overflow-x: hidden; Disable horizontal scroll */
+  /* padding-top: 20px; */
+}
