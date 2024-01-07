@@ -1,6 +1,6 @@
 // import { LobbyContainer, LobbySidebar } from '../components/Lobby/JoinedUsers';
 import JoinedUsers from '../components/Lobby/JoinedUsers';
-import GameSelect from '../components/Lobby/GameSelect';
+// import GameSelect from '../components/Lobby/GameSelect';
 import React, { useState, useEffect } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
@@ -10,7 +10,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
 import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS } from '../utils/mutations';
-import { handleError } from '@apollo/client/link/http/parseAndCheckHttpResponse';
+// import { handleError } from '@apollo/client/link/http/parseAndCheckHttpResponse';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Lobby = () => {
@@ -57,16 +57,16 @@ const [users, setUsers] = useState(data?.lobby.users);
     }
     const getGametype = (event) => {
         event.persist();
-        // event.preventDefault();
-        console.log(users.length)
-        console.log(lobbySize)
-        console.log(lobbyGametype)
-        let text = (event.target.id)
+        console.log("click");
+        console.log(users.length);
+        console.log(lobbySize);
+        console.log(lobbyGametype);
+        let text = (event.target.id);
         gametype = text.toString();
-        setLobbySize(users.length)
-        setGametype(gametype)
-        console.log(lobbySize)
-        console.log(gametype)
+        setLobbySize(users.length);
+        setGametype(gametype);
+        console.log(lobbySize);
+        console.log(gametype);
         
 
         if (lobbySize !== "") {
@@ -93,64 +93,31 @@ console.log(lobbySize)
 console.log(disableButton)
         
     }
-    // console.log(lobbySize)
-// if (gametype == "cutthroat" && lobbySize !== 0) {
-//     console.log(lobbySize)
-//     console.log("working")
-//     if (lobbySize == 3 || lobbySize == 5) {
-//         setDisableButton(true)
-//     } else {
-//         setDisableButton(false)
-//     }
-// }
-        // if (users.length == 3 || users.length == 5) {
-        //     console.log(users)
-        //     console.log("valid cutthroat lobby")
-            
-        //     console.log(startButton)
-        //     startButton.removeAttribute("disabled")
 
-        // } else {
-        //     startButton.addAttribute("disabled", "");
-        // }
-
-
-    // }
     let gametypeUpper = (lobbyGametype.slice(0, 1).toUpperCase() + lobbyGametype.slice(1));
+
     const leaveLobbySubmit = async (event) => {
-    const userId = Auth.getUser().data._id;
-    console.log(userId);
-    try {
-        const mutationResponse = await leaveLobby({
-            variables: { users: userId, lobbyId: lobbyId}
-        })
-        console.log(mutationResponse)
-        
-    } catch (e) {
-        console.error(e)
-        return {
-            code: e.extensions.response.status,
-            success: false,
-            message: e.extensions.response.body,
-            track: null
-        };
+        const userId = Auth.getUser().data._id;
+        console.log(userId);
+        try {
+            const mutationResponse = await leaveLobby({
+                variables: { users: userId, lobbyId: lobbyId}
+            })
+            console.log(mutationResponse)
+            
+        } catch (e) {
+            console.error(e)
+            return {
+                code: e.extensions.response.status,
+                success: false,
+                message: e.extensions.response.body,
+                track: null
+            };
+        }
     }
-}
 
 
-// Potential fix for the disabled button issue
-// const validate = () => {
-//     if (gametype == "cutthroat" && users !== undefined) {
-//         console.log(lobbySize)
-//         console.log("working")
-//         if (lobbySize == 3 || lobbySize == 5) {
-//             setDisableButton(true)
-//         } else {
-//             setDisableButton(false)
-//         }
-//     }
-//     return false
-// }
+
 
 const createGameSubmit = async (event) => {
     // console.log(gametype)
@@ -196,9 +163,9 @@ const createGameSubmit = async (event) => {
             };
     }
  
-    const checkGametype = (event) => {
-        console.log(gametype)
-    }
+    // const checkGametype = (event) => {
+    //     console.log(gametype)
+    // }
 }
 return (
   
@@ -206,64 +173,68 @@ return (
         {loading ? (
             <div>Loading.....................</div>
         ) : (   
-        <div class="container px-4 text-center">
+        <div className="container px-4 text-center">
         {/* <div>{`${lobbyGametype}`}</div> */}
             {/* <GameSelect /> */}
             {/* </GameSelect> */}
-            <div class="row">
-        <div class="col">
-            <div class="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#cutthroat-select" aria-expanded="false" aria-controls="collapseExample">
+            <div className="row">
+        <div className="col">
+            <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
+                <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#cutthroat-select" aria-expanded="false" aria-controls="collapseExample">
                     Cutthroat
                 </button>
-                <div class="collapse" id="cutthroat-select">
-                    <div class="card card-body">
+                <div className="collapse" id="cutthroat-select">
+                    <div className="card card-body">
                         A 3 or 5 player game where each user will get a group of balls (5 for 3 players, 3 for 5 players). 
                         Pocket your opponents balls before yours are pocketed. 
                     </div>
-                    <Button onClick={(e) => getGametype(e)} id="cutthroat">Select</Button>
+                <Button onClick={(event) => getGametype(event)} id="cutthroat">Select</Button>
+                    {/* <Button onClick={getGametype} id="cutthroat">Select</Button> */}
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div className="col">
 
-            <div class="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
-                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#standard-select" aria-expanded="false" aria-controls="collapseExample">
+            <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
+                <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#standard-select" aria-expanded="false" aria-controls="collapseExample">
                     Standard
                 </button>
 
-                <div class="collapse" id="standard-select">
-                    <div class="card card-body">
+                <div className="collapse" id="standard-select">
+                    <div className="card card-body">
                         A two-player game where each player has to pocket their set of balls (solid or striped). 
                         The game ends once a player pockets their set of balls and then the 8 ball.
                     </div>
-                    <Button onClick={(e) => getGametype(e)} id="standard">Select</Button>
+                    {/* <Button onClick={getGametype} id="standard">Select</Button> */}
+                <Button onClick={(event) => getGametype(event)} id="standard">Select</Button>
+
                 </div>
             </div>
         </div>
-        <div class="col">
-        <div class="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#nineball-select" aria-expanded="false" aria-controls="collapseExample">
+        <div className="col">
+        <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
+            <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#nineball-select" aria-expanded="false" aria-controls="collapseExample">
                 Nine-Ball
             </button>
-            <div class="collapse" id="nineball-select">
-                <div class="card card-body">
+            <div className="collapse" id="nineball-select">
+                <div className="card card-body">
                     A two-player game where the objective is to pocket each ball in numerical order. 
                 </div>
-                <Button onClick={(e) => getGametype(e)} id="nineball">Select</Button>
+                {/* <Button onClick={getGametype} id="nineball">Select</Button> */}
+                <Button onClick={(event) => getGametype(event)} id="nineball">Select</Button>
             </div>
         </div>
         </div>
     </div>
-    <div class="col-md-3 p-3">
+    <div className="col-md-3 p-3">
     <JoinedUsers users={users} />
     </div> 
     {/* <Button onClick={(checkGametype)}>Test</Button> */}
-    <div class="row gx-5">
-        <div class="col-md-3 p-3">
+    <div className="row gx-5">
+        <div className="col-md-3 p-3">
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
         </div>
-        <div class = "col-md-3 p-3">
+        <div className = "col-md-3 p-3">
             <Button onClick={createGameSubmit} className="start-button" disabled={disableButton}>Start game
             <div>
              <strong>{`${gametypeUpper}`}</strong>

@@ -185,8 +185,8 @@ const Home = () => {
             <div className="card-body">
           Welcome to cutthroat. Please login or signup to start playing.
             </div>
-            <div class="col-sm-6 text-center mx-auto">
-              <div class="col">
+            <div className="col-sm-6 text-center mx-auto">
+              <div className="col">
                 <Button onClick={() => setShowModal(true)} className="mx-3">Login or Sign Up</Button>
                 {/* <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button> */}
               </div>

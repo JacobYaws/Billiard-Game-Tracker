@@ -47,7 +47,6 @@ function App() {
     <ApolloProvider client={client}>
     <Router>
       <>
-      {/* <main> */}
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
@@ -59,7 +58,7 @@ function App() {
           <Route path="/users/:userId"/>
           <Route render={() => <h1 className='display-2'>Wrong Page!</h1>} />
           </Switch>
-    {/* </main> */}
+  
 
       </>
     </Router>

@@ -48,7 +48,6 @@ if (loading) return "Loading.........................."
 if (error) return `Error  ${error.message}`
 // if (loading) return "Loading.........................."
 // if (error) return `Error  ${error.message}`
-console.log(gameStatus)
 
 // useEffect(() => {
 //     if (data) {
