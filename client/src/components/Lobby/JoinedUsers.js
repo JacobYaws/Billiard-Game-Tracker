@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client';
 import { QUERY_MULTIPLE_USERS, QUERY_SINGLE_USER } from '../../utils/queries';
-import '../Styles/JoinedUsers.css'
+import '../styles/JoinedUsers.css'
 
 
 function JoinedUsers(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Auth from '../../utils/auth';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../Styles/StatComponent.css'
+import '../styles/StatComponent.css'
 
 
 const StatComponent = (props) => {

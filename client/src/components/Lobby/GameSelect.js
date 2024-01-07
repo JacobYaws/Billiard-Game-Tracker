@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../Styles/GameSelect.css'
+import '../styles/GameSelect.css'
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 
 function GameSelect() {
