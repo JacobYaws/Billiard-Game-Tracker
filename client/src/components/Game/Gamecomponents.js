@@ -285,39 +285,6 @@ const GameContainer = (props) => {
             let eightArray = [];
             eightArray.push(newEightBallObject)
             setShowEndModal(true)
-            // console.log(newEightBallObject)
-            // handleEndGame()
-
-            // try {
-            //     const mutationResponse = await changeStatus({
-            //         variables: { gameId: gameId.gameId, users: userId, ball: newEightBallObject }
-            //     })
-               
-            // } catch (error) {
-            //     console.error(error)
-            //     return {
-            //         code: error.extensions.response.status,
-            //         success: false,
-            //         message: error.extensions.response.body,
-            //         track: null
-            // }
-        // }
-
-        // try {
-        //     const secondMutationResponse = await updateBallStyleSelection({
-        //         variables: { gameId: gameId.gameId, users: userId, ball: eightArray } 
-        //     })
-        //     // console.log(mutationResponse)
-        // } catch (e) {
-        //     console.log(e)
-        //     return {
-        //         code: e.extensions.response.status,
-        //         success: false,
-        //         message: e.extensions.response.body,
-        //         track: null
-        //     };
-        // }
-            // setShowEightBall(true)
 
         }
 
@@ -343,7 +310,7 @@ const GameContainer = (props) => {
                             : (
                             <>
                             <div>{(gametype === 'standard') ? <>
-                            <button className={'card ball eight-ball-standard'}  disabled={!newShowEightBall} key={eightBall.number} style={{backgroundColor: eightBall.color,  opacity: eightBall.status ? 0.5 : 1, display: hideEightBall ? "flex" : "none" }}  onClick={handleEightBallClick}> 
+                            <button className={'card ball eight-ball-standard'}  key={eightBall.number} style={{backgroundColor: eightBall.color,  opacity: eightBall.status ? 0.5 : 1, display: hideEightBall ? "flex" : "none" }}  onClick={handleEightBallClick}> 
                             <div className={`${eightBall.type}`}> 
                                         <div className="ballNumber" style={{backgroundColor: eightBall.color}}> 
                                             {`${eightBall.number}`} 

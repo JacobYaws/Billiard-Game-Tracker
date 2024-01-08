@@ -18,6 +18,13 @@ query inGame($userId: ID) {
   }
 }`
 
+export const QUERY_LOBBY_STATUS = gql`
+query inLobby($userId: ID) {
+  inLobby(userId: $userId) {
+    _id
+  }
+}`
+
 export const QUERY_USERS = gql`
   query allUsers {
     users {

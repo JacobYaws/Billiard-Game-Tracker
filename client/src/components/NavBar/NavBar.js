@@ -3,41 +3,89 @@ import { Link, useLocation } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from '../../pages/Signup';
 import LoginForm from '../../pages/Login';
-import { QUERY_STATUS } from '../../utils/queries';
+import { QUERY_STATUS, QUERY_LOBBY_STATUS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
 
 
 import Auth from '../../utils/auth';
 let GameId = null;
+let LobbyId = null;
 let inGameStatus = false;
+let inLobbyStatus = false;
+let gameDataArray = [];
+let lobbyDataArray = [];
+
 
 const AppNavbar = () => {
   console.log("ping")
  
   const [showModal, setShowModal] = useState(false);
   const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
-  
-    const { loading, error, data } = useQuery(
-      QUERY_STATUS,
+
+ 
+const QueryMultiple = () => {
+  const data = useQuery(QUERY_STATUS, 
+    {
+        variables: {userId: userId},
+        pollInterval: 500,
+        fetchPolicy: "network-only",
+        refectOnWindowFocus: true,
+        onCompleted: (data) => {
+          let pathName = window.location.pathname;
+          let gameId = (data.inGame._id);
+        if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
+          console.log("inGame")
+          //  window.location.href = (window.location.origin + "/game/" + gameId);
+          GameId = gameId
+          
+          inGameStatus = true
+        }
+        }
+    },);
+    console.log(data.data)
+    const data2 = useQuery(QUERY_LOBBY_STATUS, 
       {
           variables: {userId: userId},
           pollInterval: 500,
           fetchPolicy: "network-only",
           refectOnWindowFocus: true,
           onCompleted: (data) => {
+            
+            console.log("complete")
             let pathName = window.location.pathname;
-            let gameId = (data.inGame._id);
-          if (gameId !== undefined && !pathName.includes("game") && gameId !== null) {
-            console.log("inGame")
-            //  window.location.href = (window.location.origin + "/game/" + gameId);
-            GameId = gameId
-            inGameStatus = true
+            let lobbyId = (data.inLobby._id);
+          if (lobbyId !== undefined && !pathName.includes("lobby") && lobbyId !== null) {
+            console.log("inLobby")
+            LobbyId = lobbyId
+            // console.log(LobbyId)
+            inLobbyStatus = true
           }
           }
-      },
-      );
+      },)
+      const newData = data.data;
+      const newData2 = data2.data;
+      // console.log(newData, newData2)
+      return gameDataArray.push(data), lobbyDataArray.push(data2)
+}
+  console.log(gameDataArray)
+  console.log(lobbyDataArray)
+  let data = gameDataArray.find((element) => element?.data)?.data
+  // let data = dataArray.find((element) => element?.data)?.data
+  let data2 = lobbyDataArray.find((element) => element?.data)?.data
+  QueryMultiple();
+  console.log(data)
+  console.log(data2)
 
-      const [inGameStatus2, setInGameStatus] = useState(data?.inGame?._id != undefined && data?.inGame?._id != null ? true : false);
+ 
+  
+
+ 
+  const [inLobbyStatus, setInLobbyStatus] = useState(data2?.inLobby?._id != undefined && data2?.inLobby?._id != null ? true : false);
+  const [LobbyId, setLobbyId] = useState(data2?.inLobby?._id)
+  const [currentlyOnLobbyPage, setCurrentlyOnLobbyPage] = useState(!window.location.pathname.includes("lobby"))
+console.log(LobbyId)
+
+  const [inGameStatus2, setInGameStatus] = useState(data?.inGame?._id != undefined && data?.inGame?._id != null ? true : false);
   const [GameId2, setGameId] = useState(data?.inGame?._id)
   const [currentlyOnGamePage, setCurrentlyOnGamePage] = useState(!window.location.pathname.includes("game"))
     useEffect(() => {
@@ -45,6 +93,11 @@ const AppNavbar = () => {
         setInGameStatus(data?.inGame?._id != undefined && data?.inGame?._id != null ? true : false)
         setGameId(data?.inGame?._id)
         setCurrentlyOnGamePage(!window.location.pathname.includes("game"))
+      }
+      if (data2) {
+        setInLobbyStatus(data2?.inLobby?._id != undefined && data2?.inLobby?._id != null ? true : false)
+        setLobbyId(data2?.inLobby?._id)
+        setCurrentlyOnLobbyPage(!window.location.pathname.includes("lobby"))
       }
     })
 
@@ -56,18 +109,18 @@ const AppNavbar = () => {
         window.location.href = (window.location.origin + "/game/" + GameId2)
       }
     }
-    const pagePath = useLocation()
-    console.log(pagePath)
-      // let inGame = data?.inGame?._id;
-      // console.log(inGame)
-      // const checkInGameStatus = () => {
-      //   console.log("click")
-      //   if (inGame !== undefined) {
-      //     console.log('click')
-      //     window.location.reload()
-      //   }
-      
 
+    const inLobbyRedirectCheck = () => {
+      if(inLobbyStatus) {
+        console.log("redirecting to lobby: ")
+        console.log(LobbyId)
+        console.log(inLobbyStatus)
+        window.location.href = (window.location.origin + "/lobby/" + LobbyId)
+      }
+    }
+    const pagePath = useLocation()
+
+      
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
@@ -83,6 +136,12 @@ const AppNavbar = () => {
             {inGameStatus2 && !pagePath.pathname.includes("game") ? ( 
               <>
               <Nav.Link as={Link} to={`/game/${GameId2}`}>Back to Game</Nav.Link>
+              </>
+              
+            ) : <></>}
+            {inGameStatus2 && !pagePath.pathname.includes("lobby") ? ( 
+              <>
+              <Nav.Link as={Link} to={`/lobby/${LobbyId}`}>Back to Lobby</Nav.Link>
               </>
               
             ) : <></>}

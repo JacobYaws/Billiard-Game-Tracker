@@ -41,6 +41,13 @@ const resolvers = {
             return {}
           }
           return Game.findOne({ users: { $all: [userId] }, status: "inProgress" })
+        },
+        inLobby: async(parent, { userId }) => {
+          // console.log("userId " + userId)
+          if (userId === null) {
+            return {}
+          }
+          return Lobby.findOne({ users: { $all: [userId] } })
         }
         },
 
@@ -132,17 +139,7 @@ Mutation: {
        }
       )
     },
-    // inLobby: async(parent, { some, thing }) => {
-    //   let lobbyCount = 0;
-      
-    //   if (gametype == "cutthroat") {
-    //     if (lobbyCount == 3 || lobbyCount == 5) {
-    //       return Lobby.create({ users, gametype })
-    //     }
-    //   } else {
-    //     return "Cannot start game"
-    //   }
-    // }
+    
     createGame: async(parent, { users, gametype }) => {
       let ballCount = 16;
       const balls = [];
@@ -259,7 +256,6 @@ Mutation: {
       
       let ballType = ball[0].type;
       console.log(ballType);
-        // try {
         return await Game.findOneAndUpdate(
         { _id: gameId },
         {
@@ -276,9 +272,7 @@ Mutation: {
           runValidators: true,
         }
       )
-    // } catch (error) {
-    //     console.log(error)
-    //   }
+
     },
     closeGame: async (parent, { gameId, status }) => {
       console.log("GameId: " + gameId)
