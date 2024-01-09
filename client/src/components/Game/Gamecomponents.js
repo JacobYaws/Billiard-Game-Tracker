@@ -87,13 +87,15 @@ const GameContainer = (props) => {
 
 
         const handleClick = async (e) => {
-            e.preventDefault();
+            // e.preventDefault();
             e.persist()
             let currTarget = e.currentTarget;
             console.log(currTarget);
             let checkOpacity;
             let number = currTarget.innerText;
             checkOpacity = currTarget.style.opacity;
+            console.log(checkOpacity);
+            console.log(currTarget.status)
             let selectedBall;
                 if (number == 8 && gametype === 'standard') {
                     selectedBall = ballArray.find((currentValue) => {
@@ -149,11 +151,16 @@ const GameContainer = (props) => {
                     track: null
             }
         }
-            if (checkOpacity === 0.5) {
+        
+            if (checkOpacity == 0.5) {
+                console.log("check 1")
+
                 return currTarget.style.opacity = 1   
-            } else if (checkOpacity === 1 || checkOpacity === "") {
+            } else if (checkOpacity == 1 || checkOpacity === "") {
+                console.log("check 2")
                 return currTarget.style.opacity = 0.5
             }
+            console.log(currTarget.style.opacity)
         }
 
         const selectUserArray = async (event) => {
@@ -328,7 +335,6 @@ const GameContainer = (props) => {
                                         <div className="ballNumber" style={{backgroundColor: ball.color}}> 
                                             {`${ball.number}`} 
                                         </div>
-                                        
                                     </div>
                                 </button>
                                     )
