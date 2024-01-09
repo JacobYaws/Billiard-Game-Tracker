@@ -1,10 +1,10 @@
 // import { LobbyContainer, LobbySidebar } from '../components/Lobby/JoinedUsers';
 import JoinedUsers from '../components/Lobby/JoinedUsers';
 // import GameSelect from '../components/Lobby/GameSelect';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Container, Modal, Button, Row, Col } from 'react-bootstrap';
+import { Container, Modal, Button, Row, Col, Overlay, OverlayTrigger, Popover } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
@@ -16,6 +16,7 @@ import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS } from '../utils/mutations
 const Lobby = () => {
 let gametype = "";
 const { lobbyId } = useParams();
+const [show, setShow] = useState(false);
 const [createGame] = useMutation(CREATE_GAME);
 const [leaveLobby] = useMutation(LEAVE_LOBBY);
 const [removeUsers] = useMutation(REMOVE_LOBBY_USERS)
@@ -89,11 +90,10 @@ const [users, setUsers] = useState(data?.lobby.users);
 }
    
 
-console.log(lobbySize)
-console.log(disableButton)
+
         
     }
-
+    
     let gametypeUpper = (lobbyGametype.slice(0, 1).toUpperCase() + lobbyGametype.slice(1));
 
     const leaveLobbySubmit = async (event) => {
@@ -161,12 +161,20 @@ const createGameSubmit = async (event) => {
                 message: e.extensions.response.body,
                 track: null
             };
-    }
- 
-    // const checkGametype = (event) => {
-    //     console.log(gametype)
-    // }
+    };
+    
 }
+const inviteCode = () => {
+        navigator.clipboard.writeText(lobbyId);
+        setShow(!show)
+        return 
+}
+
+const copied = (
+    <Popover id="popover-basic">
+        <Popover.Body>Copied</Popover.Body>
+    </Popover>
+)
 return (
   
     <div className="flex-row justify-center">
@@ -207,7 +215,7 @@ return (
                     </div>
                     {/* <Button onClick={getGametype} id="standard">Select</Button> */}
                 <Button onClick={(event) => getGametype(event)} id="standard">Select</Button>
-
+                
                 </div>
             </div>
         </div>
@@ -220,7 +228,6 @@ return (
                 <div className="card card-body">
                     A two-player game where the objective is to pocket each ball in numerical order. 
                 </div>
-                {/* <Button onClick={getGametype} id="nineball">Select</Button> */}
                 <Button onClick={(event) => getGametype(event)} id="nineball">Select</Button>
             </div>
         </div>
@@ -229,7 +236,6 @@ return (
     <div className="col-md-3 p-3">
     <JoinedUsers users={users} />
     </div> 
-    {/* <Button onClick={(checkGametype)}>Test</Button> */}
     <div className="row gx-5">
         <div className="col-md-3 p-3">
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
@@ -239,6 +245,13 @@ return (
             <div>
              <strong>{`${gametypeUpper}`}</strong>
             </div></Button>
+        </div>
+        <div className = "col-md-3 p-3">
+            <OverlayTrigger trigger="click" placement="top" overlay={copied} rootClose>
+            <Button onClick={inviteCode}>
+                Copy Lobby Invite Code
+            </Button>
+            </OverlayTrigger>
         </div>
     </div>
 </div>

@@ -22,6 +22,7 @@ export const QUERY_LOBBY_STATUS = gql`
 query inLobby($userId: ID) {
   inLobby(userId: $userId) {
     _id
+    users
   }
 }`
 

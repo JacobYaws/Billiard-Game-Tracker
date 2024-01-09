@@ -41,7 +41,7 @@ function JoinedUsers(props) {
 
         <div>
             <h2>Joined Users</h2>
-        <ul className="list-group">
+        <ul className="list-group " id="joined-users">
         {users.map((user) => (
             <li className="list-group-item" key={user.username}>
                 {`${user.username}`}
