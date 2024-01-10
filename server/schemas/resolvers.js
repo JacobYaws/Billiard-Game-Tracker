@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express')
 const { User, Ball, Game, Lobby } = require('../models');
 const { signToken } = require('../utils/auth');
+const mongo = require('mongodb')
 
 const resolvers = {
     Query: {
@@ -15,10 +16,14 @@ const resolvers = {
           return User.findOne({ _id: userId});
         },
         multipleGames: async(parent, { userId }) => {
-          console.log("MultipleGames passthrough")
-          return Game.find({"balls.assigneduser": userId } )
-          // return Game.find({"balls.$[].assigneduser": userId } )
-          // return Game.find()
+          // console.log("MultipleGames passthrough")
+          let userId2 = "ObjectId('" + userId + "')"
+          console.log("2 " + userId2)
+          console.log(typeof userId2)
+          let userId3 = new mongo.ObjectId(userId);
+          console.log("3 " + userId3)
+          // return Game.find({$or: [{"balls.assigneduser": userId}, {"balls.assigneduser": "ObjectId('" + userId + "')"}]})
+          return Game.find({$or: [{"balls.assigneduser": userId}, {"balls.assigneduser": userId3}]})
 
         },
 
@@ -178,6 +183,7 @@ Mutation: {
               console.log(iterations);
               console.log(ballsPerUser)
               let assignedUser = await User.findById(users[assignedUserIndex])// assumes users at assignedUserIndex is being passed in as the id of the user
+              console.log(assignedUser)
               assignedUserId = assignedUser._id
               assignedUserIndex += 1
             }

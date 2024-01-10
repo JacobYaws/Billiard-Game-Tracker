@@ -11,7 +11,7 @@ const StatPage = () => {
         userId ? QUERY_MULTIPLE_GAMES : QUERY_SINGLE_GAME,
         { variables: {userId: userId} }
     ) 
-        
+        console.log(data)
         console.log(data?.multipleGames)
         let gamedata = data?.multipleGames;
         console.log(loading)

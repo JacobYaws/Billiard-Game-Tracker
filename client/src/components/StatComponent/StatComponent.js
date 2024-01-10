@@ -5,6 +5,7 @@ import '../styles/StatComponent.css'
 
 
 const StatComponent = (props) => {
+    console.log(props)
     const userId = Auth.getUser().data._id
     let gamedata = props?.gamedata;
     let gameIdArray = [];
@@ -21,6 +22,7 @@ const StatComponent = (props) => {
 
     const cleanGameData = () => {
         gamedata.forEach((value) => {
+            console.log(value)
             let gametype = value.gametype;
             let gameId = value._id;
             gameIdArray.push(value._id);
@@ -31,6 +33,10 @@ const StatComponent = (props) => {
             let inPocket = 0;
             let onTable = 0;
             let percent;
+
+            if (gametype === "cutthroat") {
+                console.log("cutthroat")
+            }
 
             if (gametype === "nineball") {
                 let nineballStart = gametype.slice(1, 4);
@@ -60,11 +66,13 @@ const StatComponent = (props) => {
             })
             
             if (onTable === 0) {
-                
                 gameChamp = true;
             }
             
             percent = (inPocket / (inPocket + onTable) * 100)
+            if (gametype === "standard") {
+                percent = (inPocket / 8 ) * 100
+            }
             let singleGameObject = {gametype: newGametype, gameId: gameId, inPocket: inPocket, onTable: onTable, percent: percent, gameChamp: gameChamp }
             inPocket = 0;
             onTable = 0;

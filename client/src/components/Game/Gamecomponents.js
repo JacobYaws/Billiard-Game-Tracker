@@ -50,7 +50,7 @@ const GameContainer = (props) => {
                 })
 
                 setCutthroatEnd(() => {
-                    if (otherUsersOnTable === 0) {
+                    if (otherUsersOnTable === 0 && otherUsersPocketed === 10) {
                         setCutthroatEnd(true);
                     } else {
                         setCutthroatEnd(false);

@@ -84,10 +84,11 @@ export const QUERY_MULTIPLE_GAMES = gql`
 query multipleGames($userId: ID!) {
   multipleGames(userId: $userId) {
     _id
+    gametype
     balls {
       status
       assigneduser
     }
-    gametype
+    
   }
 }`
