@@ -64,7 +64,7 @@ const QueryMultiple = () => {
           }
       },)
       const newData = data?.data;
-      console.log(newData)
+      // console.log(newData)
       const newData2 = data2?.data?._id;
       // console.log(newData, newData2)
       newInGameStatus = data?.inGame?._id !== undefined || data?.inGame?._id !== null ? true : false
@@ -74,16 +74,16 @@ const QueryMultiple = () => {
       return gameDataArray.push(data), lobbyDataArray.push(data2)
 }
 QueryMultiple();
-console.log("NewDataUsers Length: " + newDataUsers)
-console.log("newInGameStatus: " + newInGameStatus)
-console.log("newGameId: " + newGameId)
+// console.log("NewDataUsers Length: " + newDataUsers)
+// console.log("newInGameStatus: " + newInGameStatus)
+// console.log("newGameId: " + newGameId)
 // if (lobbyUserList !== lobbyUserList) {
 //   console.log("somehow it works")
 // }
   let data = gameDataArray.find((element) => element?.data)?.data
   // let data = dataArray.find((element) => element?.data)?.data
   let data2 = lobbyDataArray.find((element) => element?.data)?.data
-  console.log(data2)
+  // console.log(data2)
   // const [lobbySize, setLobbySize] = useState(0);
   let lobbySize = data2?.inLobby?.users?.length
   const newLobbySize = lobbySize;
@@ -106,23 +106,23 @@ console.log("newGameId: " + newGameId)
         setCurrentlyOnLobbyPage(window.location.pathname.includes("lobby"));
         // setLobbySize(data2?.inLobby?.users?.length);
       }
-      console.log("lobbySize: " + lobbySize);
-      console.log("newLobbySize: " + newLobbySize)
+      // console.log("lobbySize: " + lobbySize);
+      // console.log("newLobbySize: " + newLobbySize)
       
       // console.log(currentlyOnLobbyPage)
     })
-    console.log(inGameStatus2)
-    console.log(pathName.includes("lobby"))
+    // console.log(inGameStatus2)
+    // console.log(pathName.includes("lobby"))
     // if ( inGameStatus2 && lobbySize !== newDataUsers) {
       if (newInGameStatus && window.location.pathname.includes("lobby") && newGameId !== undefined) {
-      console.log("sucess")
+      // console.log("sucess")
       window.location.href = (window.location.origin + "/game/" + newGameId);
       // setCurrentlyOnLobbyPage(false);
       // QueryMultiple();
 
     }
   
-    console.log("lobbySize2: " + lobbySize);
+    // console.log("lobbySize2: " + lobbySize);
     
 
     // if(inGameStatus2 && currentlyOnLobbyPage && !currentlyOnGamePage) {

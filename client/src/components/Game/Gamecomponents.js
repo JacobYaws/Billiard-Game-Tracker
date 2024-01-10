@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react";
-import { Modal, Tab } from "react-bootstrap"
+import { Modal, Tab, Button } from "react-bootstrap"
 import { useMutation } from '@apollo/client';
 // import { QUERY_SINGLE_GAME } from "../../utils/queries";
 import { CHANGE_BALL_STATUS, BALL_TYPE_SELECTION, CLOSE_GAME } from "../../utils/mutations";
@@ -10,15 +10,18 @@ import { useParams } from 'react-router-dom';
 const GameContainer = (props) => {
     const gameId = useParams();
     const userId = Auth.getUser().data._id
-    let userArray = props.users;
+    let userArray = props?.users;
+    // console.log(props)
     // let ballArray = props?.balls;
-    let ballArray = props.balls;
-    let gametype = props.gametype;
-    const eightBall = props.balls ? props.balls[7] : {}
+    let ballArray = props?.balls;
+    let gametype = props?.gametype;
+    const eightBall = props?.balls ? props.balls[7] : {}
     // const nineBall = props.balls ? props.balls[8] : {}
-    const gameStatus = props.status;
+    const gameStatus = props?.status;
     let gameBallArray = [];
     let userBallArray = [];
+    let otherUsersPocketed = 0;
+    let otherUsersOnTable = 0;
     const [changeStatus] = useMutation(CHANGE_BALL_STATUS);
     const [closeGame] = useMutation(CLOSE_GAME);
     const [updateBallStyleSelection] = useMutation(BALL_TYPE_SELECTION); // requires gameId, userId, ball number array
@@ -27,7 +30,8 @@ const GameContainer = (props) => {
     const [selectUserBallArray, setSelectUserBallArray] = useState([]);
     const [showEightBall, setShowEightBall] = useState(false)
     const [showEndModal, setShowEndModal] = useState(false);
-    const [endGame, setEndGame] = useState(false)
+    const [endGame, setEndGame] = useState(false);
+    const [cutthroatEnd, setCutthroatEnd] = useState(false);
     let showStatusCheckArr = [];
         useEffect(() => {
             setShowUserBalls(() => {
@@ -36,6 +40,7 @@ const GameContainer = (props) => {
                 } else {
                     setShowUserBalls(true)
                 }
+
                 setEndGame(() => {
                     if (gameStatus === 'inProgress') {
                         setEndGame(false)
@@ -43,10 +48,20 @@ const GameContainer = (props) => {
                         setEndGame(true)
                     }
                 })
-                setShowEightBall()
-                setShowEndButton()
+
+                setCutthroatEnd(() => {
+                    if (otherUsersOnTable === 0) {
+                        setCutthroatEnd(true);
+                    } else {
+                        setCutthroatEnd(false);
+                    }
+                });
+                setShowEightBall();
+                setShowEndButton();
+                
+                
             });
-        }, [props, showEightBall, showEndButton, endGame]);
+        }, [props, showEightBall, showEndButton, endGame, cutthroatEnd]);
         if (userArray !== undefined) {
             if (gametype === 'standard') {
                 for (let i = 0; i< ballArray.length; i++) {
@@ -70,20 +85,9 @@ const GameContainer = (props) => {
             }
         }
         
-        // let eightBallCheck = userBallArray.find(elem => elem.number == 8)
-
-
-        // if (gametype === 'standard' && eightBallCheck.assigneduser !== 0) {
-        //     setShowEndButton(true)
-        // }
-
-
-        // console.log(eightBallCheck)
-
-
-        // console.log(userBallArray.filter(e => e.status === false).length)
         let checkStatusFalseLength = userBallArray.filter(e => e.status === false).length;
         let newShowEightBall;
+
 
 
         const handleClick = async (e) => {
@@ -110,14 +114,13 @@ const GameContainer = (props) => {
             let newBallObject = {status: selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
             let newUserBallArray = [];
             newUserBallArray.push(newBallObject)
-            if (gametype === 'cutthroat' && checkStatusFalseLength === 1) {
-                setShowEndModal(true);
-            }
+            // if (gametype === 'cutthroat' && checkStatusFalseLength === 1) {
+            //     setShowEndModal(true);
+            // }
             if (selectAssigneduser == 0) {
                 console.log(newUserBallArray)
                 console.log(newBallObject)
                 try {
-               
                     const mutationResponse = await updateBallStyleSelection({
                         variables: { gameId: gameId.gameId, users: userId, ball: newUserBallArray } 
                     })
@@ -134,9 +137,13 @@ const GameContainer = (props) => {
             }
             
            
+
+
             let newGameId = gameId.gameId // See if this can be set to a global variable without breaking everything.
             // Removing __typename from the ball object. The mutation response will error out if it is not removed.
             let newSelectedBall = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
+            
+            
             try {
                 const mutationResponse = await changeStatus({
                     variables: { gameId: newGameId, ball: newSelectedBall }
@@ -151,17 +158,20 @@ const GameContainer = (props) => {
                     track: null
             }
         }
+          
         
             if (checkOpacity == 0.5) {
-                console.log("check 1")
+                    console.log("check 1")
 
-                return currTarget.style.opacity = 1   
-            } else if (checkOpacity == 1 || checkOpacity === "") {
-                console.log("check 2")
-                return currTarget.style.opacity = 0.5
-            }
-            console.log(currTarget.style.opacity)
+                    return currTarget.style.opacity = 1   
+                } else if (checkOpacity == 1 || checkOpacity === "") {
+                    console.log("check 2")
+                    return currTarget.style.opacity = 0.5
+                }
+                console.log(currTarget.style.opacity)
         }
+
+
 
         const selectUserArray = async (event) => {
             event.preventDefault()
@@ -174,23 +184,19 @@ const GameContainer = (props) => {
                 userBallArray.push(solids[i]);
             }
             } else {
-                
                 for (let i = 0; i < stripes.length; i++) {
                     userBallArray.push(stripes[i]);
                 }        
             }
-        
             let newUserBallArray = [];
             userBallArray.forEach((userBallArray) => {
                 let newBallObject = {status: userBallArray.status, number: userBallArray.number, color: userBallArray.color, assigneduser: userBallArray.assigneduser, type: userBallArray.type}
                 newUserBallArray.push(newBallObject)
             })
-            
             try {
                 const mutationResponse = await updateBallStyleSelection({
                     variables: { gameId: newGameId, users: userId, ball: newUserBallArray } 
                 })
-                // console.log(mutationResponse)
             } catch (e) {
                 console.log(e)
                 return {
@@ -200,78 +206,78 @@ const GameContainer = (props) => {
                     track: null
                 };
             }
-
             setSelectUserBallArray(userBallArray)
         }
+
+
+
         if (selectUserBallArray.length !== 0 && gametype === 'standard') {
             userBallArray = selectUserBallArray
         }
-      
-        // console.log(userBallArray.filter(e => e.status === false).length)
-        // let checkStatusFalseLength = userBallArray.filter(e => e.status === false).length;
+
         let hideEightBall =  userBallArray.find(ball => ball.number == 8) == undefined
-        // let newShowEightBall 
         if (checkStatusFalseLength === 0 && gametype === 'standard') {
-            // console.log("success")
             newShowEightBall = true
         } else {
             newShowEightBall = false
         }
-
+        // console.log(userArray)
+        // let showCutthroatEnd = false;
         const handleEndGame = async (ev) => {
             let newStatus = "closed";
                 if (gametype === 'standard') {
-                ev.preventDefault();
-                let currTarget = ev.currentTarget;
-                let selectedBall;
-                selectedBall = ballArray.find((currentValue) => {
-                    return currentValue.number == 8
-                })
-                let selectAssigneduser = selectedBall.assigneduser;
-                console.log()
-                console.log("truthy: " + selectedBall.status)
-                console.log("falsy: " + !selectedBall.status)
-                let newBallObject = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
-                let newUserBallArray = [];
-                newUserBallArray.push(newBallObject)
-        
-                    try {
-                        const mutationResponse = await changeStatus({
-                            variables: { gameId: gameId.gameId, users: userId, ball: newBallObject } 
-                        })
-                    console.log(mutationResponse)
-                    } catch (e) {
-                        console.log(e)
-                        return {
-                            code: e.extensions.response.status,
-                            success: false,
-                            message: e.extensions.response.body,
-                            track: null
-                        };
+                    ev.preventDefault();
+                    let currTarget = ev.currentTarget;
+                    let selectedBall;
+                    selectedBall = ballArray.find((currentValue) => {
+                        return currentValue.number == 8
+                    })
+                    let selectAssigneduser = selectedBall.assigneduser;
+                    console.log()
+                    console.log("truthy: " + selectedBall.status)
+                    console.log("falsy: " + !selectedBall.status)
+                    let newBallObject = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
+                    let newUserBallArray = [];
+                    newUserBallArray.push(newBallObject)
+            
+                        try {
+                            const mutationResponse = await changeStatus({
+                                variables: { gameId: gameId.gameId, users: userId, ball: newBallObject } 
+                            })
+                        console.log(mutationResponse)
+                        } catch (e) {
+                            console.log(e)
+                            return {
+                                code: e.extensions.response.status,
+                                success: false,
+                                message: e.extensions.response.body,
+                                track: null
+                            };
+                        }
+                        try {
+                            const mutationResponse = await updateBallStyleSelection({
+                                variables: { gameId: gameId.gameId, users: userId, ball: newUserBallArray } 
+                            })
+                        } catch (e) {
+                            console.log(e)
+                            return {
+                                code: e.extensions.response.status,
+                                success: false,
+                                message: e.extensions.response.body,
+                                track: null
+                            };
+                        }
                     }
-                    try {
-                        const mutationResponse = await updateBallStyleSelection({
-                            variables: { gameId: gameId.gameId, users: userId, ball: newUserBallArray } 
-                        })
-                        // console.log(mutationResponse)
-                    } catch (e) {
-                        console.log(e)
-                        return {
-                            code: e.extensions.response.status,
-                            success: false,
-                            message: e.extensions.response.body,
-                            track: null
-                        };
-                    }
-                }
 
-           
+                if (gametype === 'cutthroat') {
+                    // When the other users' ball arrays are all set to true, show and endgame button that will show the endgame modal.
+                    console.log(userBallArray)
+                }
 
             try {
                 const mutationResponse = await closeGame({
                     variables: { gameId: gameId.gameId, status: newStatus } 
                 })
-                // console.log(mutationResponse)
             } catch (e) {
                 console.log(e)
                 return {
@@ -283,6 +289,44 @@ const GameContainer = (props) => {
             }
             setShowEndModal(false)
         }
+
+        
+
+        if (gametype === "cutthroat" && ballArray !== undefined) {
+            
+            let searchArrayStatus = ballArray.find((element) => {
+                // console.log(element)
+                let elemassigneduser = element.assigneduser
+                let elemstatus = element.status
+                let userCheck = elemassigneduser != userId ? false : true;
+                // console.log(userCheck)
+                // console.log(element)
+                // console.log(assigneduser)
+                // console.log(userId)
+                if (!userCheck) {
+                if (elemstatus) {
+                    // console.log("Hit")
+                    otherUsersPocketed++;
+                } else {
+                    otherUsersOnTable++;
+                }
+            }
+
+            })
+            
+            // console.log(searchArrayStatus)
+        }
+
+        const startEndGameProcess = () => {
+            setShowEndModal(true);
+        }
+
+        console.log(cutthroatEnd)
+        // if (gametype === "cutthroat" && otherUsersOnTable === 0) {
+        //     console.log("End of game");
+        // }
+        console.log("On Table: " + otherUsersOnTable);
+            console.log("Pocketed: " + otherUsersPocketed);
         const handleEightBallClick = async () => {
             console.log('click')
             console.log(!eightBall.status)
@@ -294,6 +338,8 @@ const GameContainer = (props) => {
             setShowEndModal(true)
 
         }
+
+        
 
             return (
                 <>
@@ -345,7 +391,8 @@ const GameContainer = (props) => {
                         )
                         }
                             </div> 
-                            <button hidden={!showEndButton}>EndGame</button>
+                            <Button style={{width: "50%", alignItems: "center", justifyContent: "center", textAlign: "center", display: "flex"}} display="flex" hidden={!cutthroatEnd} onClick={startEndGameProcess}>End Game</Button>
+                            
                             {/* </div> */}
                         </div>
                     </div>
@@ -385,35 +432,36 @@ const GameContainer = (props) => {
 }      
                         
 
-const GameSidebar = (props) => {
-//     let gametype = props.gametype
-//     console.log(props)
-// return (<>
-// {gametype === 'standard' ? (
-//     <div>Standard ball set</div>
-// ) : <div>Failed to load the game ball set</div>}
-// <div>Hello</div>
-// </>)
-}
-// class GameContainer extends Component {
-//     constructor(props) {
-//         super(props);
-
-//         this._joinGame = (game) => {
-//             console.log(`TODO: Join game ${game.gametype}`)
-//         }
-//     }
-//     render() {
-//         // const games = [];
-
-//         return (
-//             <div className="c-game">
-//                 <p>Game</p>
-//                 {/* <GameList games={games} joinGame={this._joinGame} /> */}
-//             </div>
-//     )
+// const GameSidebar = (props) => {
+// //     let gametype = props.gametype
+// //     console.log(props)
+// // return (<>
+// // {gametype === 'standard' ? (
+// //     <div>Standard ball set</div>
+// // ) : <div>Failed to load the game ball set</div>}
+// // <div>Hello</div>
+// // </>)
 // }
-// }
+// // class GameContainer extends Component {
+// //     constructor(props) {
+// //         super(props);
+
+// //         this._joinGame = (game) => {
+// //             console.log(`TODO: Join game ${game.gametype}`)
+// //         }
+// //     }
+// //     render() {
+// //         // const games = [];
+
+// //         return (
+// //             <div className="c-game">
+// //                 <p>Game</p>
+// //                 {/* <GameList games={games} joinGame={this._joinGame} /> */}
+// //             </div>
+// //     )
+// // }
+// // }
 
 
-export { GameContainer, GameSidebar }
+export { GameContainer}
+// export { GameContainer, GameSidebar }
