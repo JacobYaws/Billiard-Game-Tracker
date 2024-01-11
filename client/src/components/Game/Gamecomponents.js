@@ -18,6 +18,7 @@ const GameContainer = (props) => {
     const eightBall = props?.balls ? props.balls[7] : {}
     // const nineBall = props.balls ? props.balls[8] : {}
     const gameStatus = props?.status;
+    console.log(gameStatus)
     let gameBallArray = [];
     let userBallArray = [];
     let otherUsersPocketed = 0;
@@ -55,9 +56,11 @@ const GameContainer = (props) => {
                     } else {
                         setCutthroatEnd(false);
                     }
+                    if (gametype === "cutthroat" && gameStatus == "closed") {
+                        setCutthroatEnd(false)
+                    }
                 });
                 setShowEightBall();
-                setShowEndButton();
                 
                 
             });
@@ -338,6 +341,8 @@ const GameContainer = (props) => {
             setShowEndModal(true)
 
         }
+
+        
 
         
 

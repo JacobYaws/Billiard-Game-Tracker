@@ -74,16 +74,19 @@ const StatComponent = (props) => {
             
             if (gametype === "standard" && inPocket === 8) {
                 gameChamp = true;
-            }
+            };
 
             if (gametype === "cutthroat" && onTable !== 0) {
                 gameChamp = true;
-            }
+            };
             
             percent = (inPocket / (inPocket + onTable) * 100);
+            if (gametype === "cutthroat") {
+                percent = (onTable / 5) * 100
+            };
 
             if (gametype === "standard") {
-                percent = (inPocket / 8 ) * 100
+                percent = (inPocket / 8) * 100
             }
 
             let singleGameObject = {gametype: newGametype, gameId: gameId, inPocket: inPocket, onTable: onTable, percent: percent, gameChamp: gameChamp };
