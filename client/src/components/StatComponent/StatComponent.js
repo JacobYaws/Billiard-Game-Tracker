@@ -10,8 +10,6 @@ const StatComponent = (props) => {
     let gamedata = props?.gamedata;
     let gameIdArray = [];
     let gametypeArray = [];
-    // let gameballArray = [];
-    // let cleanDataArray = [];
     let totalPocketedCount = 0;
     let totalOnTableCount = 0;
     let totalBallCount = 0;
@@ -33,13 +31,7 @@ const StatComponent = (props) => {
             let inPocket = 0;
             let onTable = 0;
             let percent;
-            console.log(value)
             
-
-            // if (gametype === "cutthroat") {
-            //     console.log("cutthroat")
-            // }
-
             if (gametype === "nineball") {
                 let nineballStart = gametype.slice(1, 4);
                 let nineballEnd = gametype.slice(5, 8);
@@ -50,12 +42,9 @@ const StatComponent = (props) => {
                 newGametype = gametypeUpper + gametypeEnd;
             }
 
-
             gametypeArray.push(newGametype);
             
             value.balls.forEach((ball) => {
-                console.log(ball)
-               
                 if (ball.assigneduser === userId) {
                     userBallStatsGame.push(ball);
                     totalBallCount++;
@@ -94,7 +83,6 @@ const StatComponent = (props) => {
             onTable = 0;
             percent = 0;
             singleGameData.push(singleGameObject);
-            console.log(singleGameObject);
             gameChamp = false;
         });
         

@@ -69,6 +69,7 @@ type User {
     changeBallStatus(gameId: ID!, ball: Ballinput): Game
     selectBallStyle(gameId: ID!, ball: [Ballinput], users: ID!): Game
     closeGame(gameId: ID!, status: String!): Game
+    updateGameType(lobbyId: ID!, gametype: String!): Lobby
   }
 `;
 

@@ -9,7 +9,7 @@ import { Container, Modal, Button, Row, Col, Overlay, OverlayTrigger, Popover } 
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
-import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS } from '../utils/mutations';
+import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS, UPDATE_LOBBY_GAMETYPE } from '../utils/mutations';
 // import { handleError } from '@apollo/client/link/http/parseAndCheckHttpResponse';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -19,7 +19,8 @@ const { lobbyId } = useParams();
 const [show, setShow] = useState(false);
 const [createGame] = useMutation(CREATE_GAME);
 const [leaveLobby] = useMutation(LEAVE_LOBBY);
-const [removeUsers] = useMutation(REMOVE_LOBBY_USERS)
+const [removeUsers] = useMutation(REMOVE_LOBBY_USERS);
+const [updateGametype] = useMutation(UPDATE_LOBBY_GAMETYPE);
 const { loading, error, data } = useQuery(
     lobbyId ? QUERY_SINGLE_LOBBY : QUERY_SINGLE_USER,
     {
@@ -28,18 +29,30 @@ const { loading, error, data } = useQuery(
     }
     );
 
-const [lobbySize, setLobbySize] = useState(data?.lobby.users);
-const [lobbyGametype, setGametype] = useState("cutthroat")
+const [lobbySize, setLobbySize] = useState(data?.lobby?.users?.length);
+const [lobbyGametype, setGametype] = useState("")
 const [disableButton, setDisableButton] = useState(true);
-const [users, setUsers] = useState(data?.lobby.users);
+const [users, setUsers] = useState(data?.lobby?.users);
+console.log(lobbySize)
     useEffect(() => {
         if (data) {
-            setUsers(data.lobby.users)
-            setLobbySize(data.lobby.users.length)
+            console.log(data)
+            setLobbySize(data?.lobby?.users?.length);
+            setUsers(data?.lobby?.users);
+            console.log("lobbySize: " + lobbySize);
+            console.log("users.length" + data?.lobby?.users?.length);
+            setGametype(data?.lobby?.gametype);
+            // setDisableButton(() => {
+            //     console.log(!checkGameReadyStatus())
+            //     return !checkGameReadyStatus();
+            // })
+            setDisableButton(!checkGameReadyStatus(data?.lobby?.users?.length));
+            console.log("disablebutton: " + disableButton);
         }
+        
         // setLobbySize(lobbySize)
     // }, [])
-    }, [loading, data])
+    }, [loading, data, disableButton])
     if (loading) return "Loading.........................."
     if (error) return `Error  ${error.message}`
     // console.log(typeof lobbySize)
@@ -52,11 +65,11 @@ const [users, setUsers] = useState(data?.lobby.users);
     //     console.log(gametype)
     //     return gametype = gametype
     // }
-
-    function check() {
-        console.log('check')
-    }
-    const getGametype = (event) => {
+    console.log(users)
+    console.log(disableButton)
+    console.log(lobbySize)
+    
+    const getGametype = async (event) => {
         event.persist();
         console.log("click");
         console.log(users.length);
@@ -64,31 +77,71 @@ const [users, setUsers] = useState(data?.lobby.users);
         console.log(lobbyGametype);
         let text = (event.target.id);
         gametype = text.toString();
-        setLobbySize(users.length);
+        // setLobbySize(users.length);
+        // setUsers(users)
         setGametype(gametype);
         console.log(lobbySize);
         console.log(gametype);
         
+        console.log(lobbyId)
+        // checkGameReadyStatus();
 
-        if (lobbySize !== "") {
-            console.log("lobbysize empty")
-        if (gametype == "cutthroat") {
-            console.log(lobbySize)
-            console.log("working")
-            if (lobbySize == 3 || lobbySize == 5) {
-                setDisableButton(false);
-            } else {
-                setDisableButton(true)
-            }
+        try {
+            const mutationResponse = await updateGametype({
+                variables: { lobbyId: lobbyId, gametype: gametype}
+            })
+            
+            
+            console.log(mutationResponse);
+            
+        } catch (e) {
+            console.log(gametype)
+            console.error(e)
+            return {
+                code: e.extensions.response.status,
+                success: false,
+                message: e.extensions.response.body,
+                track: null
+            };
+        }
+    //     if (lobbySize !== "") {
+    //         console.log(gametype)
+    //     if (gametype == "cutthroat") {
+    //         console.log(lobbySize)
+    //         console.log("working")
+    //         if (lobbySize == 3 || lobbySize == 5) {
+    //             setDisableButton(false);
+    //         } else {
+    //             setDisableButton(true)
+    //         }
 
-        
-    } else if (gametype !== "cutthroat" && lobbySize === 2) {
-        setDisableButton(false) 
-    } else {
-        setDisableButton(true)
-    }
+    // } else if (gametype !== "cutthroat" && lobbySize === 2) {
+    //     setDisableButton(false) 
+    // } else {
+    //     setDisableButton(true)
+    // }
 }
-   
+
+const checkGameReadyStatus = (lobbySize2) => {
+if (lobbySize2 !== "") {
+    console.log(lobbyGametype)
+    console.log(lobbySize2)
+if (lobbyGametype == "cutthroat") {
+    console.log(lobbySize2)
+    console.log("working")
+    if (lobbySize2 == 3 || lobbySize2 == 5) {
+        return false;
+    } else {
+        return true;
+
+    }
+
+} else if (lobbyGametype !== "cutthroat" && lobbySize2 == 2) {
+    return false;
+} else {
+    return true;
+}
+}
 
 
         
@@ -241,7 +294,7 @@ return (
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
         </div>
         <div className = "col-md-3 p-3">
-            <Button onClick={createGameSubmit} className="start-button" disabled={disableButton}>Start game
+            <Button onClick={createGameSubmit} className="start-button" disabled={!disableButton}>Start game
             <div>
              <strong>{`${gametypeUpper}`}</strong>
             </div></Button>
