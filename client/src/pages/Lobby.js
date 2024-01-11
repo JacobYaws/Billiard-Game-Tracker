@@ -55,6 +55,7 @@ console.log(lobbySize)
     }, [loading, data, disableButton])
     if (loading) return "Loading.........................."
     if (error) return `Error  ${error.message}`
+    console.log(data)
     // console.log(typeof lobbySize)
 
     // let startButton = document.getElementsByClassName("start-button");
@@ -136,7 +137,7 @@ if (lobbyGametype == "cutthroat") {
 
     }
 
-} else if (lobbyGametype !== "cutthroat" && lobbySize2 == 2) {
+} else if ((lobbyGametype === "nineball" || lobbyGametype === "standard")  && lobbySize2 == 2) {
     return false;
 } else {
     return true;
