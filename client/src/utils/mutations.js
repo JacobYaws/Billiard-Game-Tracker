@@ -181,6 +181,14 @@ mutation closeGame($gameId: ID!, $status: String!) {
   }
 }`
 
+export const UPDATE_LOBBY_GAMETYPE = gql`
+mutation updateGameType($lobbyId: ID!, $gametype: String!) {
+  updateGameType(lobbyId: $lobbyId, gametype: $gametype) {
+    _id
+    gametype
+  }
+}`
+
 
 
 // This block belongs in the ADD_USER mutation, placed below email (user)

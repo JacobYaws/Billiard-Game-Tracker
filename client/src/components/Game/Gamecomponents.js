@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { CHANGE_BALL_STATUS, BALL_TYPE_SELECTION, CLOSE_GAME } from "../../utils/mutations";
 import Auth from '../../utils/auth'
 import { useParams } from 'react-router-dom';
+import JoinedUsers from "../Lobby/JoinedUsers";
 
 
 const GameContainer = (props) => {
@@ -21,6 +22,7 @@ const GameContainer = (props) => {
     console.log(gameStatus)
     let gameBallArray = [];
     let userBallArray = [];
+    let targetBallArray = [];
     let otherUsersPocketed = 0;
     let otherUsersOnTable = 0;
     const [changeStatus] = useMutation(CHANGE_BALL_STATUS);
@@ -57,11 +59,10 @@ const GameContainer = (props) => {
                         setCutthroatEnd(false);
                     }
                     if (gametype === "cutthroat" && gameStatus == "closed") {
-                        setCutthroatEnd(false)
+                        setCutthroatEnd(false);
                     }
                 });
                 setShowEightBall();
-                
                 
             });
         }, [props, showEightBall, showEndButton, endGame, cutthroatEnd]);
@@ -80,19 +81,20 @@ const GameContainer = (props) => {
                 }
             }
             if (gametype === 'cutthroat') {
+
                 for (let i = 0; i < ballArray.length; i++) {
                     if (ballArray[i].assigneduser === userId) {   
                     userBallArray.push(ballArray[i])
+                    } else {
+                    targetBallArray.push(ballArray[i])
                     }
                 }
+                
             }
         }
-        
+        console.log(targetBallArray)
         let checkStatusFalseLength = userBallArray.filter(e => e.status === false).length;
         let newShowEightBall;
-
-
-
         const handleClick = async (e) => {
             // e.preventDefault();
             e.persist()
@@ -138,14 +140,10 @@ const GameContainer = (props) => {
                     };
                 }
             }
-            
-           
-
 
             let newGameId = gameId.gameId // See if this can be set to a global variable without breaking everything.
             // Removing __typename from the ball object. The mutation response will error out if it is not removed.
             let newSelectedBall = {status: !selectedBall.status, number: selectedBall.number, color: selectedBall.color, assigneduser: selectedBall.assigneduser, type: selectedBall.type}
-            
             
             try {
                 const mutationResponse = await changeStatus({
@@ -161,8 +159,7 @@ const GameContainer = (props) => {
                     track: null
             }
         }
-          
-        
+
             if (checkOpacity == 0.5) {
                     console.log("check 1")
 
@@ -181,24 +178,59 @@ const GameContainer = (props) => {
             let ballStyle = event.target.innerText.toLowerCase();
             let solids = ballArray.filter(ball => ball.type === "solid");
             let stripes = ballArray.filter(ball => ball.type === "stripe");
+            let otherUserBallArray = []
             let newGameId = gameId.gameId // See if this can be set to a global variable without breaking everything.
             if (ballStyle === 'solid') {
             for (let i = 0; i < solids.length; i++) {
                 userBallArray.push(solids[i]);
             }
+            for (let i = 0; i < stripes.length; i++) {
+                otherUserBallArray.push(stripes[i])
+            }
             } else {
                 for (let i = 0; i < stripes.length; i++) {
                     userBallArray.push(stripes[i]);
-                }        
+                }
+                for (let i = 0; i < solids.length; i++) {
+                    otherUserBallArray.push(solids[i])
+                }    
             }
             let newUserBallArray = [];
+            let newOtherUserBallArray = [];
             userBallArray.forEach((userBallArray) => {
                 let newBallObject = {status: userBallArray.status, number: userBallArray.number, color: userBallArray.color, assigneduser: userBallArray.assigneduser, type: userBallArray.type}
                 newUserBallArray.push(newBallObject)
             })
+            console.log(newUserBallArray)
+            
+            let otherUserId;
             try {
                 const mutationResponse = await updateBallStyleSelection({
                     variables: { gameId: newGameId, users: userId, ball: newUserBallArray } 
+                })
+                // otherUserId = mutationResponse?.data?.selectBallStyle?.users[1]
+                otherUserId = mutationResponse?.data?.selectBallStyle?.users[0] == userId ? mutationResponse?.data?.selectBallStyle?.users[1] : mutationResponse?.data?.selectBallStyle?.users[0]
+                // otherUserId.forEach((value) => {
+                //     if value
+                // })
+
+            } catch (e) {
+                console.log(e)
+                return {
+                    code: e.extensions.response.status,
+                    success: false,
+                    message: e.extensions.response.body,
+                    track: null
+                };
+            }
+            otherUserBallArray.forEach((ball) => {
+                let newBall = {status: ball.status, number: ball.number, color: ball.color, assigneduser: ball.assigneduser, type: ball.type}
+                newOtherUserBallArray.push(newBall)
+            })
+            console.log(otherUserBallArray)
+            try {
+                const mutationResponse1 = await updateBallStyleSelection({
+                    variables: { gameId: newGameId, users: otherUserId, ball: newOtherUserBallArray } 
                 })
             } catch (e) {
                 console.log(e)
@@ -209,10 +241,10 @@ const GameContainer = (props) => {
                     track: null
                 };
             }
+            
+            
             setSelectUserBallArray(userBallArray)
         }
-
-
 
         if (selectUserBallArray.length !== 0 && gametype === 'standard') {
             userBallArray = selectUserBallArray
@@ -271,12 +303,10 @@ const GameContainer = (props) => {
                             };
                         }
                     }
-
                 if (gametype === 'cutthroat') {
                     // When the other users' ball arrays are all set to true, show and endgame button that will show the endgame modal.
                     console.log(userBallArray)
                 }
-
             try {
                 const mutationResponse = await closeGame({
                     variables: { gameId: gameId.gameId, status: newStatus } 
@@ -297,44 +327,27 @@ const GameContainer = (props) => {
 
         if (gametype === "cutthroat" && ballArray !== undefined) {
             
-            let searchArrayStatus = ballArray.find((element) => {
-                // console.log(element)
+            // let searchArrayStatus = ballArray.find((element) => {
+                ballArray.find((element) => {
                 let elemassigneduser = element.assigneduser
                 let elemstatus = element.status
                 let userCheck = elemassigneduser != userId ? false : true;
-                // console.log(userCheck)
-                // console.log(element)
-                // console.log(assigneduser)
-                // console.log(userId)
+
                 if (!userCheck) {
                 if (elemstatus) {
-                    // console.log("Hit")
                     otherUsersPocketed++;
                 } else {
                     otherUsersOnTable++;
                 }
             }
-
             })
-            
-            // console.log(searchArrayStatus)
         }
 
         const startEndGameProcess = () => {
             setShowEndModal(true);
         }
 
-        console.log(cutthroatEnd)
-        // if (gametype === "cutthroat" && otherUsersOnTable === 0) {
-        //     console.log("End of game");
-        // }
-        console.log("On Table: " + otherUsersOnTable);
-            console.log("Pocketed: " + otherUsersPocketed);
         const handleEightBallClick = async () => {
-            console.log('click')
-            console.log(!eightBall.status)
-          
-            
             let newEightBallObject = {status: !eightBall.status, number: eightBall.number, color: eightBall.color, assigneduser: userId, type: eightBall.type};
             let eightArray = [];
             eightArray.push(newEightBallObject)
@@ -344,20 +357,38 @@ const GameContainer = (props) => {
 
         
 
-        
+        console.log(targetBallArray)
 
             return (
                 <>
                 <div className="flex-row justify-center">
-            
+                    <div className="row">
+                        
+                        {gametype === "cutthroat" ? <>
+                        <h1>Target Balls</h1>
+                             {targetBallArray.map((targets) => (         
+                                <button className={`card ball`} key={targets.number} disabled={true} style={{backgroundColor: targets.color, opacity: targets.status ? 0.5 : 1 }}  onClick={handleClick}> 
+                                    <div className={`${targets.type}`}> 
+                                        <div className="ballNumber" style={{backgroundColor: targets.color}}> 
+                                            {`${targets.number}`} 
+                                        </div>
+                                    </div>
+                                </button>
+                                    )
+                                )
+                            }</>
+                            : (<></>)}
+                    </div>
                         {props.balls === undefined ? (
                             <div>Loading...</div>
                         ) : (
                         <div>
-                        <h1>Ball Array</h1>
+                        <h1>Your Ball Array</h1>
                         <div className="row" style={{maxWidth: '50%'}}>
                         {/* <div> */}
                             <div className="row"> 
+
+                            
                             
                             {(!showUserBalls && selectUserBallArray.length === 0 && userBallArray.length === 0) ? <>
 
@@ -379,7 +410,9 @@ const GameContainer = (props) => {
                             Success
                         </div> */}
                         </button></> : (
-                        <div></div>)}</div>
+                        <div></div>)}
+                        </div>
+
                             {userBallArray.map((ball) => (         
                                 <button className={`card ball`} key={ball.number} disabled={endGame} style={{backgroundColor: ball.color, opacity: ball.status ? 0.5 : 1 }}  onClick={handleClick}> 
                                     <div className={`${ball.type}`}> 
@@ -437,36 +470,6 @@ const GameContainer = (props) => {
 }      
                         
 
-// const GameSidebar = (props) => {
-// //     let gametype = props.gametype
-// //     console.log(props)
-// // return (<>
-// // {gametype === 'standard' ? (
-// //     <div>Standard ball set</div>
-// // ) : <div>Failed to load the game ball set</div>}
-// // <div>Hello</div>
-// // </>)
-// }
-// // class GameContainer extends Component {
-// //     constructor(props) {
-// //         super(props);
-
-// //         this._joinGame = (game) => {
-// //             console.log(`TODO: Join game ${game.gametype}`)
-// //         }
-// //     }
-// //     render() {
-// //         // const games = [];
-
-// //         return (
-// //             <div className="c-game">
-// //                 <p>Game</p>
-// //                 {/* <GameList games={games} joinGame={this._joinGame} /> */}
-// //             </div>
-// //     )
-// // }
-// // }
 
 
-export { GameContainer}
-// export { GameContainer, GameSidebar }
+export { GameContainer }

@@ -292,6 +292,19 @@ Mutation: {
          runValidators: true,
        }
       )
+    },
+    updateGameType: async (parent, { lobbyId, gametype }) => {
+      console.log(lobbyId, " : ", + gametype)
+      return await Lobby.findOneAndUpdate(
+        { _id: lobbyId },
+        {
+          $set: {gametype: gametype},
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      )
     }
 },
 };
