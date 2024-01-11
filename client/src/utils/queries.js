@@ -86,6 +86,7 @@ query multipleGames($userId: ID!) {
     _id
     gametype
     balls {
+      number
       status
       assigneduser
     }

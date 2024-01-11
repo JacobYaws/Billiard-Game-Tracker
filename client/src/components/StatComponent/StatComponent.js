@@ -54,6 +54,8 @@ const StatComponent = (props) => {
             gametypeArray.push(newGametype);
             
             value.balls.forEach((ball) => {
+                console.log(ball)
+               
                 if (ball.assigneduser === userId) {
                     userBallStatsGame.push(ball);
                     totalBallCount++;
@@ -64,12 +66,12 @@ const StatComponent = (props) => {
                         totalOnTableCount++;
                         onTable++;
                     }
-
-                    
+                    if (gametype === "standard" && ball.assigneduser === userId && ball.status && ball.number == 8) {
+                        gameChamp = true;
+                    }
                 }
             })
-            console.log(userBallStatsGame)
-            console.log(newGametype)
+            
             if (gametype === "standard" && inPocket === 8) {
                 gameChamp = true;
             }
@@ -78,20 +80,22 @@ const StatComponent = (props) => {
                 gameChamp = true;
             }
             
-            percent = (inPocket / (inPocket + onTable) * 100)
+            percent = (inPocket / (inPocket + onTable) * 100);
+
             if (gametype === "standard") {
                 percent = (inPocket / 8 ) * 100
             }
-            let singleGameObject = {gametype: newGametype, gameId: gameId, inPocket: inPocket, onTable: onTable, percent: percent, gameChamp: gameChamp }
+
+            let singleGameObject = {gametype: newGametype, gameId: gameId, inPocket: inPocket, onTable: onTable, percent: percent, gameChamp: gameChamp };
             inPocket = 0;
             onTable = 0;
             percent = 0;
-            singleGameData.push(singleGameObject)
-            console.log(singleGameObject)
+            singleGameData.push(singleGameObject);
+            console.log(singleGameObject);
             gameChamp = false;
         });
         
-        totalBallPercent = Math.floor((totalPocketedCount / totalBallCount) * 100)
+        totalBallPercent = Math.floor((totalPocketedCount / totalBallCount) * 100);
     };
    
     cleanGameData();
