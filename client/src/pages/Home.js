@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 // import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { Container, Modal, Button } from 'react-bootstrap';
+import { Container, Modal, Button, Tab, Nav } from 'react-bootstrap';
 // import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
-// import LoginForm from './Login'
-// import SignUpForm from './Signup'
+import LoginForm from './Login'
+import SignUpForm from './Signup'
 // import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {
@@ -22,21 +22,6 @@ const Home = () => {
   const [joinGame] = useMutation(JOIN_GAME);
   const joinAGame = 'joingame';
   const joinALobby = 'joinlobby'
-
-  // const [formState, setFormState] = useState({
-  //   lobbyId: '',
-  // });
-
-  // const handleChange = (event) => {
-  //   const { lobbyId, value } = event.target;
-
-  //   setFormState({
-  //     ...formState,
-  //     [lobbyId]: value,
-  //   });
-  // };
-
-
 
   const createLobbySubmit = async (event) => {
     const userId = Auth.getUser().data._id;
@@ -188,21 +173,12 @@ const Home = () => {
             <div className="col-sm-6 text-center mx-auto">
               <div className="col">
                 <Button onClick={() => setShowModal(true)} className="mx-3">Login or Sign Up</Button>
-                {/* <Button onClick={() => setShowModal(true)} className="mx-3">Sign Up</Button> */}
-              </div>
-            </div>
-          </div>
-         
-        </Container>
-      )}
-       {/* <Modal
+                <Modal
         size='lg'
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
-
-        tab container to do either signup or login component
-        
+        {/* tab container to do either signup or login component */}
         <Tab.Container defaultActiveKey='login'>
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>
@@ -227,7 +203,13 @@ const Home = () => {
             </Tab.Content>
           </Modal.Body>
         </Tab.Container>
-      </Modal> */}
+      </Modal>
+              </div>
+            </div>
+          </div>
+         
+        </Container>
+      )}
       </>
   );
 };

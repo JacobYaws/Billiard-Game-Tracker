@@ -5,6 +5,7 @@ import '../styles/StatComponent.css'
 
 
 const StatComponent = (props) => {
+    console.log(props)
     const userId = Auth.getUser().data._id
     let gamedata = props?.gamedata;
     let gameIdArray = [];
@@ -20,6 +21,7 @@ const StatComponent = (props) => {
     let gameChamp = false;
 
     const cleanGameData = () => {
+        
         gamedata.forEach((value) => {
             let gametype = value.gametype;
             let gameId = value._id;
@@ -31,6 +33,12 @@ const StatComponent = (props) => {
             let inPocket = 0;
             let onTable = 0;
             let percent;
+            console.log(value)
+            
+
+            // if (gametype === "cutthroat") {
+            //     console.log("cutthroat")
+            // }
 
             if (gametype === "nineball") {
                 let nineballStart = gametype.slice(1, 4);
@@ -56,28 +64,36 @@ const StatComponent = (props) => {
                         totalOnTableCount++;
                         onTable++;
                     }
+
+                    
                 }
             })
-            
-            if (onTable === 0) {
-                
+            console.log(userBallStatsGame)
+            console.log(newGametype)
+            if (gametype === "standard" && inPocket === 8) {
+                gameChamp = true;
+            }
+
+            if (gametype === "cutthroat" && onTable !== 0) {
                 gameChamp = true;
             }
             
             percent = (inPocket / (inPocket + onTable) * 100)
+            if (gametype === "standard") {
+                percent = (inPocket / 8 ) * 100
+            }
             let singleGameObject = {gametype: newGametype, gameId: gameId, inPocket: inPocket, onTable: onTable, percent: percent, gameChamp: gameChamp }
             inPocket = 0;
             onTable = 0;
             percent = 0;
             singleGameData.push(singleGameObject)
-            
-           
+            console.log(singleGameObject)
+            gameChamp = false;
         });
         
         totalBallPercent = Math.floor((totalPocketedCount / totalBallCount) * 100)
     };
    
-
     cleanGameData();
     return(
         <>
@@ -99,11 +115,21 @@ const StatComponent = (props) => {
         <div className="card-body">
             <h5 className="card-title">{game.gametype}</h5>
             <p className="card-text">{game.gameId}</p>
-            <p className="card-text">Pocketed balls: {game.inPocket}</p>
+            {game.gametype === "Cutthroat" ? (<div> 
+                <p className="card-text">Balls pocketed by opponents: {game.inPocket}</p>
+                <p className="card-text">Balls left on the table: {game.onTable}</p>
+                <p className="card-text">Remaining: {game.percent}%</p></div>) 
+                : (
+                <> 
+                <p className="card-text">Pocketed balls: {game.inPocket}</p>
+                <p className="card-text">Balls left on the table: {game.onTable}</p>
+                <p className="card-text">Pocketed performance: {game.percent}%</p></>
+                )}
+            {/* <p className="card-text">Pocketed balls: {game.inPocket}</p>
             <p className="card-text">Balls left on the table: {game.onTable}</p>
-            <p className="card-text">Pocketed performance: {game.percent}%</p>
+            <p className="card-text">Pocketed performance: {game.percent}%</p> */}
             {game.gameChamp ? ( <><div>Winner</div></> ) : ( <></> )}
-            <p className="card-text">{game.gameChamp}</p>
+            {/* <p className="card-text">{game.gameChamp}</p> */}
             {/* <a href="#" class="btn btn-primary">{game.balls.number}</a> */}
         </div>
     </div>

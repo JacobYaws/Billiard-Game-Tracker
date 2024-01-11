@@ -18,6 +18,14 @@ query inGame($userId: ID) {
   }
 }`
 
+export const QUERY_LOBBY_STATUS = gql`
+query inLobby($userId: ID) {
+  inLobby(userId: $userId) {
+    _id
+    users
+  }
+}`
+
 export const QUERY_USERS = gql`
   query allUsers {
     users {
@@ -76,10 +84,11 @@ export const QUERY_MULTIPLE_GAMES = gql`
 query multipleGames($userId: ID!) {
   multipleGames(userId: $userId) {
     _id
+    gametype
     balls {
       status
       assigneduser
     }
-    gametype
+    
   }
 }`

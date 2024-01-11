@@ -6,10 +6,11 @@ import '../styles/JoinedUsers.css'
 
 function JoinedUsers(props) {
     const userData = useQuery(
-            props.users?.length > 0 ? QUERY_MULTIPLE_USERS : QUERY_SINGLE_USER,
+            // props.users?.length > 0 ? QUERY_MULTIPLE_USERS : undefined, 
+            QUERY_MULTIPLE_USERS,
             {
                 variables: {userId: props.users},
-                
+                enabled: props.users?.length > 0,
                 // fetchPolicy: 'network-only'
             }
             ); 
@@ -41,7 +42,7 @@ function JoinedUsers(props) {
 
         <div>
             <h2>Joined Users</h2>
-        <ul className="list-group">
+        <ul className="list-group " id="joined-users">
         {users.map((user) => (
             <li className="list-group-item" key={user.username}>
                 {`${user.username}`}

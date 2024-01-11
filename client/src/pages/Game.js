@@ -30,17 +30,17 @@ const { loading, error, data } = useQuery(
     }
     );
 // console.log(data)
-const [users, setUsers] = useState(data?.game.users);
+const [users, setUsers] = useState(data?.game?.users);
 // console.log(data)
-const [balls, setBalls] = useState(data?.game.balls);
-const [gametypeData, setGametype] = useState(data?.game.gametype)
-const [gameStatus, setGameStatus] = useState(data?.game.status)
+const [balls, setBalls] = useState(data?.game?.balls);
+const [gametypeData, setGametype] = useState(data?.game?.gametype)
+const [gameStatus, setGameStatus] = useState(data?.game?.status)
 useEffect(() => {
     if (data) {
-        setUsers(data.game.users);
-        setBalls(data.game.balls);
-        setGametype(data.game.gametype);
-        setGameStatus(data.game.status);
+        setUsers(data?.game?.users);
+        setBalls(data?.game?.balls);
+        setGametype(data?.game?.gametype);
+        setGameStatus(data?.game?.status);
     }
 }, [loading, data])
 
@@ -80,7 +80,7 @@ return(
     <>
     <Container>
         <div>
-                Gametype: {data.game.gametype}
+                Gametype: {data?.game?.gametype}
             </div>
             {/* <GameSidebar balls={balls} gametype={gametypeData}/> */}
             <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData} status={gameStatus}/>
