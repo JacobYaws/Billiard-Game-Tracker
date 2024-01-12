@@ -32,7 +32,7 @@ function JoinedUsers(props) {
     // let userArray = userData.data.multipleUsers
     return (
         <>
-    <div className="flex-row justify-center">
+    <div className="flex-row">
 
             {users.length === 0 ? (
             // {userData !== undefined && userData.data !== undefined && userData.data.multipleUsers !== undefined ? (

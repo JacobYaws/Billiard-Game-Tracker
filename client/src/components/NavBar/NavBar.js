@@ -104,56 +104,20 @@ QueryMultiple();
         setInLobbyStatus(data2?.inLobby?._id != undefined && data2?.inLobby?._id != null ? true : false)
         setLobbyId(data2?.inLobby?._id)
         setCurrentlyOnLobbyPage(window.location.pathname.includes("lobby"));
-        // setLobbySize(data2?.inLobby?.users?.length);
       }
-      // console.log("lobbySize: " + lobbySize);
-      // console.log("newLobbySize: " + newLobbySize)
-      
-      // console.log(currentlyOnLobbyPage)
     })
-    // console.log(inGameStatus2)
-    // console.log(pathName.includes("lobby"))
-    // if ( inGameStatus2 && lobbySize !== newDataUsers) {
-      if (newInGameStatus && window.location.pathname.includes("lobby") && newGameId !== undefined) {
-      // console.log("sucess")
-      window.location.href = (window.location.origin + "/game/" + newGameId);
-      // setCurrentlyOnLobbyPage(false);
-      // QueryMultiple();
 
+      if (newInGameStatus && window.location.pathname.includes("lobby") && newGameId !== undefined) {
+            window.location.href = (window.location.origin + "/game/" + newGameId);
     }
   
-    // console.log("lobbySize2: " + lobbySize);
-    
-
-    // if(inGameStatus2 && currentlyOnLobbyPage && !currentlyOnGamePage) {
-
-    // // const inGameRedirectCheck = () => {
-    // //     console.log("redirecting to game: ")
-    // //     console.log(GameId2)
-    // //     console.log(inGameStatus2)
-    // //     window.location.href = (window.location.origin + "/game/" + GameId2)
-    // //   }
-    // //   // inGameRedirectCheck();
-    // // }
-
-    // // const inLobbyRedirectCheck = () => {
-    // //   if(inLobbyStatus) {
-    // //     console.log("redirecting to lobby: ")
-    // //     console.log(LobbyId)
-    // //     console.log(inLobbyStatus)
-    // //     window.location.href = (window.location.origin + "/lobby/" + LobbyId)
-    // //   }
-    // }
     const pagePath = useLocation()
    
-      
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
         <Container fluid>
-          {/* <Navbar.Brand as={Link} to='/' className="p-3"> */}
           <Navbar.Brand as={Link} to='/' className="p-3">
-          {/* <Navbar.Brand as={Link} to='/' onClick={() => window.location.reload()} className="p-3"> */}
             Cutthroat
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbar' />
@@ -195,8 +159,9 @@ QueryMultiple();
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
+          
         {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey='login'>
+        <Tab.Container defaultActiveKey='login' >
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>
               <Nav variant='pills'>

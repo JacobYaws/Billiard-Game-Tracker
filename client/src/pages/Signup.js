@@ -33,11 +33,13 @@ function Signup(props) {
   };
 
   return (
-    <div className="container my-1">
+    <div className="container my-1 " >
       <Link to="/login">← Go to Login</Link>
-
       <h2>Signup</h2>
+    <div className='signupModal'>
+
       <form onSubmit={handleFormSubmit}>
+        <div className="signupForm">
         <div className="flex-row space-between my-2">
           <label htmlFor="firstName">Name: </label>
           <input
@@ -78,10 +80,13 @@ function Signup(props) {
             onChange={handleChange}
           />
         </div>
-        <div className="flex-row flex-end">
+        </div>
+        <div className="flex-row flex-end submitButton">
           <button type="submit">Submit</button>
         </div>
       </form>
+      </div>
+
     </div>
   );
 }

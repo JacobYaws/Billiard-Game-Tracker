@@ -34,7 +34,9 @@ function Login(props) {
           <Link to="/signup">← Go to Signup</Link>
     
           <h2>Login</h2>
+          <div className='loginModal'>
           <form onSubmit={handleFormSubmit}>
+            <div className="loginForm">
             <div className="flex-row space-between my-2">
               <label htmlFor="email">Email address:</label>
               <input
@@ -60,10 +62,12 @@ function Login(props) {
                 <p className="error-text">The provided credentials are incorrect</p>
               </div>
             ) : null}
-            <div className="flex-row flex-end">
+            <div className="flex-row flex-end submitButton">
               <button type="submit">Submit</button>
             </div>
+            </div>
           </form>
+          </div>
         </div>
       );
 }

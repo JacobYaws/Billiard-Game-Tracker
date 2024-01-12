@@ -1,16 +1,21 @@
 :root{
   --continue: #15E650;
-  --leave: #E60101
+  --leave: #E60101;
+  --lobbyButtonMargin: 2em
 }
 
 main {
 /* background-color: #277714; */
+display: flex;
 background-color: #DBDBDB;
-margin: auto;
+margin: 0 auto;
 height: 100vh;
 min-height: 100vh;
 }
 
+
+
+/* GAME PAGE AND COMPONENTS */
 .ball {
   display: flex;
   align-items: center;
@@ -72,3 +77,70 @@ min-height: 100vh;
 }
 
 
+/* LGOIN AND SIGNUP PAGE/MODAL */
+.signupModal, .loginModal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.signupForm, .loginForm {
+  text-align: end;
+}
+
+.submitButton {
+  text-align: center;
+}
+
+input {
+  margin-left: 0.2em;
+}
+
+
+/* ??? */
+/* .container {
+  margin: auto;
+} */
+
+
+/* LOBBY PAGE AND COMPONENTS */
+.lobbyContainer {
+  margin: 0 auto;
+}
+
+.gameSelect {
+  display: flex;
+  flex-direction: column;
+}
+.joinedUsers, .lobbyButtonGroup {
+  /* display: flex; */
+  flex-direction: row;
+  justify-content: center;
+  padding: 2em;
+  text-align: center;
+  width:fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+  
+
+.lobby-invite {
+  margin: var(--lobbyButtonMargin);
+
+}
+
+.start-button {
+  background-color: var(--continue);
+  border-color: var(--continue);
+  opacity: 80%;
+  margin: var(--lobbyButtonMargin);
+}
+
+.leave-button {
+  background-color: var(--leave);
+  border-color: var(--leave);
+  opacity: 80%;
+  margin-bottom:  10%;
+  margin: var(--lobbyButtonMargin);
+
+}

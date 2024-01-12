@@ -231,11 +231,11 @@ const copied = (
 )
 return (
   
-    <div className="flex-row justify-center">
+    <div className="flex-row justify-center lobbyContainer">
         {loading ? (
             <div>Loading.....................</div>
         ) : (   
-        <div className="container px-4 text-center">
+        <div className="col px-4 text-center gameSelect">
         {/* <div>{`${lobbyGametype}`}</div> */}
             {/* <GameSelect /> */}
             {/* </GameSelect> */}
@@ -247,10 +247,11 @@ return (
                 </button>
                 <div className="collapse" id="cutthroat-select">
                     <div className="card card-body">
-                        A 3 or 5 player game where each user will get a group of balls (5 for 3 players, 3 for 5 players). 
+                        A 3 player game where each user will get a group of balls (5 per player). 
                         Pocket your opponents balls before yours are pocketed. 
-                    </div>
+
                 <Button onClick={(event) => getGametype(event)} id="cutthroat">Select</Button>
+                    </div>
                     {/* <Button onClick={getGametype} id="cutthroat">Select</Button> */}
                 </div>
             </div>
@@ -266,47 +267,50 @@ return (
                     <div className="card card-body">
                         A two-player game where each player has to pocket their set of balls (solid or striped). 
                         The game ends once a player pockets their set of balls and then the 8 ball.
+                <Button onClick={(event) => getGametype(event)} id="standard">Select</Button>
                     </div>
                     {/* <Button onClick={getGametype} id="standard">Select</Button> */}
-                <Button onClick={(event) => getGametype(event)} id="standard">Select</Button>
                 
                 </div>
             </div>
         </div>
         <div className="col">
         <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
-            <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#nineball-select" aria-expanded="false" aria-controls="collapseExample">
-                Nine-Ball
+            <button className="btn btn-secondary" disabled="true" type="button" data-bs-toggle="collapse" data-bs-target="#nineball-select" aria-expanded="false" aria-controls="collapseExample">
+                Nine-Ball 
             </button>
+            <h6 style={{fontSize: "10px"}}>In Progress</h6>
             <div className="collapse" id="nineball-select">
                 <div className="card card-body">
                     A two-player game where the objective is to pocket each ball in numerical order. 
-                </div>
                 <Button onClick={(event) => getGametype(event)} id="nineball">Select</Button>
+                </div>
             </div>
         </div>
         </div>
     </div>
-    <div className="col-md-3 p-3">
+    <div className="col-md-12 p-3 joinedUsers">
     <JoinedUsers users={users} />
     </div> 
-    <div className="row gx-5">
-        <div className="col-md-3 p-3">
-            <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
-        </div>
-        <div className = "col-md-3 p-3">
-            <Button onClick={createGameSubmit} className="start-button" disabled={!disableButton}>Start game
-            <div>
-             <strong>{`${gametypeUpper}`}</strong>
-            </div></Button>
-        </div>
-        <div className = "col-md-3 p-3">
+    <div className="col gx-5 lobbyButtonGroup">
+        
+        <div className="lobby-invite">
             <OverlayTrigger trigger="click" placement="top" overlay={copied} rootClose>
             <Button onClick={inviteCode}>
                 Copy Lobby Invite Code
             </Button>
             </OverlayTrigger>
         </div>
+        <div >
+            <Button onClick={createGameSubmit} className="start-button" disabled={!disableButton}>Start game
+            <div>
+             <strong>{`${gametypeUpper}`}</strong>
+            </div></Button>
+        </div>
+        <div >
+            <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
+        </div>
+       
     </div>
 </div>
 
