@@ -120,7 +120,7 @@ QueryMultiple();
           <Navbar.Brand as={Link} to='/' className="p-3">
             Cutthroat
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls='navbar' />
+          <Navbar.Toggle aria-controls='navbar' className="navBarMenu"/>
           <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
             {inGameStatus2 && !pagePath.pathname.includes("game") ? ( 

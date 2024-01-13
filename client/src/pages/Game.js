@@ -79,17 +79,15 @@ const leaveGameSubmit = async (event) => {
 return(
     <>
     <Container>
-        <div>
-                Gametype: {data?.game?.gametype}
-            </div>
             {/* <GameSidebar balls={balls} gametype={gametypeData}/> */}
             <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData} status={gameStatus}/>
 
             {/* </GameContainer> */}
-    <div className="col-md-3 p-3">
+    <div className="col">
+        <div className="joinedUsers">
                     <JoinedUsers users={users} />
             </div>
-            
+            </div>
         {/* <Button onClick={() => setShowModal(true)}>Start a new game</Button>
         <Modal
         size='lg'
@@ -104,8 +102,9 @@ return(
             <div className='mb2' id="select-ball">
             </div>
         </Modal> */}
-
-        <Button onClick={leaveGameSubmit}>Leave Game</Button>
+        <div className="col">
+        <Button className="leave-button" onClick={leaveGameSubmit}>Leave Game</Button>
+        </div>
         </Container>
         {error && (
             <div className="col-12 my-3 bg-danger text-white p-3">

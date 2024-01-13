@@ -240,7 +240,7 @@ return (
             {/* <GameSelect /> */}
             {/* </GameSelect> */}
             <div className="row">
-        <div className="col">
+        <div className="col gameSelectButton">
             <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
                 <button className="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#cutthroat-select" aria-expanded="false" aria-controls="collapseExample">
                     Cutthroat
@@ -292,7 +292,7 @@ return (
     <div className="col-md-12 p-3 joinedUsers">
     <JoinedUsers users={users} />
     </div> 
-    <div className="col gx-5 lobbyButtonGroup">
+    <div className="lobbyButtonGroup">
         
         <div className="lobby-invite">
             <OverlayTrigger trigger="click" placement="top" overlay={copied} rootClose>
@@ -307,9 +307,9 @@ return (
              <strong>{`${gametypeUpper}`}</strong>
             </div></Button>
         </div>
-        <div >
-            <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave lobby</Button> 
-        </div>
+        {/* <div > */}
+            <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave Lobby</Button> 
+        {/* </div> */}
        
     </div>
 </div>

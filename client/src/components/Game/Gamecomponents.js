@@ -361,32 +361,35 @@ const GameContainer = (props) => {
 
             return (
                 <>
-                <div className="flex-row justify-center">
+                <div className="flex-row">
                     <div className="row">
                         
                         {gametype === "cutthroat" ? <>
-                        <h1>Target Balls</h1>
+                        <h1 className="arrayHeader">Target Balls</h1>
+                        <div className="ballArray">
                              {targetBallArray.map((targets) => (         
-                                <button className={`card ball`} key={targets.number} disabled={true} style={{backgroundColor: targets.color, opacity: targets.status ? 0.5 : 1 }}  onClick={handleClick}> 
-                                    <div className={`${targets.type}`}> 
-                                        <div className="ballNumber" style={{backgroundColor: targets.color}}> 
+                                <button className={`card ball`} key={targets.number} disabled={true} style={{backgroundColor: targets.type === 'solid' || targets.type === 'special' ? targets.color : '#ffffff', opacity: targets.status ? 0.5 : 1 }}  onClick={handleClick}> 
+                                    <div className={`${targets.type}`} style={{backgroundColor: targets.color}}> 
+                                        {/* <div style={{backgroundColor: targets.color}}>  */}
+                                        <div className="ballNumber" >
                                             {`${targets.number}`} 
+                                            </div>
                                         </div>
-                                    </div>
+                                    {/* </div> */}
                                 </button>
                                     )
                                 )
-                            }</>
+                            } </div> </>
                             : (<></>)}
                     </div>
                         {props.balls === undefined ? (
                             <div>Loading...</div>
                         ) : (
-                        <div>
-                        <h1>Your Ball Array</h1>
-                        <div className="row" style={{maxWidth: '50%'}}>
+                        <div className="gameContainer">
+                        <h1 className="arrayHeader">Your Ball Array</h1>
+                        <div className="row">
                         {/* <div> */}
-                            <div className="row"> 
+                            {/* <div className="ballArray">  */}
 
                             
                             
@@ -399,36 +402,39 @@ const GameContainer = (props) => {
                             : (
                             <>
                             <div>{(gametype === 'standard') ? <>
-                            <button className={'card ball eight-ball-standard'}  key={eightBall.number} style={{backgroundColor: eightBall.color,  opacity: eightBall.status ? 0.5 : 1, display: hideEightBall ? "flex" : "none" }}  onClick={handleEightBallClick}> 
+                            <button className={'card ball'}  key={eightBall.number} style={{backgroundColor: eightBall.color,  opacity: eightBall.status ? 0.5 : 1, display: hideEightBall ? "flex" : "none" }}  onClick={handleEightBallClick}> 
+                            <div className="ballNumber">
                             <div className={`${eightBall.type}`}> 
-                                        <div className="ballNumber" style={{backgroundColor: eightBall.color}}> 
+                                        {/* <div style={{backgroundColor: eightBall.color}}>  */}
+                                        
                                             {`${eightBall.number}`} 
+                                            {/* </div> */}
                                         </div>
                                         
                                     </div>
-                        {/* <div>
-                            Success
-                        </div> */}
                         </button></> : (
                         <div></div>)}
                         </div>
-
+                            <div className="ballArray">
                             {userBallArray.map((ball) => (         
-                                <button className={`card ball`} key={ball.number} disabled={endGame} style={{backgroundColor: ball.color, opacity: ball.status ? 0.5 : 1 }}  onClick={handleClick}> 
-                                    <div className={`${ball.type}`}> 
-                                        <div className="ballNumber" style={{backgroundColor: ball.color}}> 
+                                <button className={`card ball`} key={ball.number} disabled={endGame} style={{backgroundColor: ball.type === 'solid' || ball.type === 'special' ? ball.color : "#ffffff", opacity: ball.status ? 0.5 : 1 }}  onClick={handleClick}> 
+                                    <div className={`${ball.type}`} style={{backgroundColor: ball.color}}> 
+                                        {/* <div style={{backgroundColor: ball.color}}>  */}
+                                        <div className="ballNumber">
                                             {`${ball.number}`} 
-                                        </div>
+                                            </div>
+                                        {/* </div> */}
                                     </div>
                                 </button>
                                     )
                                 )
                             }
+                            </div>
                             </>
                     
                         )
                         }
-                            </div> 
+                            {/* </div>  */}
                             <Button style={{width: "50%", alignItems: "center", justifyContent: "center", textAlign: "center", display: "flex"}} display="flex" hidden={!cutthroatEnd} onClick={startEndGameProcess}>End Game</Button>
                             
                             {/* </div> */}
