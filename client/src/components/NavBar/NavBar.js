@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from '../../pages/Signup';
 import LoginForm from '../../pages/Login';
 import { QUERY_STATUS, QUERY_LOBBY_STATUS } from '../../utils/queries';
@@ -21,6 +21,7 @@ let newGameId;
 const AppNavbar = () => {
   const pathName = window.location.pathname;
   const [showModal, setShowModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false)
   const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
  
 const QueryMultiple = () => {
@@ -80,6 +81,8 @@ QueryMultiple();
 // if (lobbyUserList !== lobbyUserList) {
 //   console.log("somehow it works")
 // }
+console.log(window.screen.availWidth)
+let screenWidth = window.screen.availWidth;
   let data = gameDataArray.find((element) => element?.data)?.data
   // let data = dataArray.find((element) => element?.data)?.data
   let data2 = lobbyDataArray.find((element) => element?.data)?.data
@@ -110,50 +113,53 @@ QueryMultiple();
       if (newInGameStatus && window.location.pathname.includes("lobby") && newGameId !== undefined) {
             window.location.href = (window.location.origin + "/game/" + newGameId);
     }
-  
+    let newShowMenu = screenWidth >= 576 ? false : !showMenu;
     const pagePath = useLocation()
    
   return (
     <>
-      <Navbar bg='dark' variant='dark' expand='lg'>
+      <Navbar bg='dark' variant='dark' expand='sm' collapseOnSelect>
         <Container fluid>
           <Navbar.Brand as={Link} to='/' className="p-3">
             Cutthroat
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls='navbar' className="navBarMenu"/>
-          <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' onClick={() => setShowMenu(showMenu => !showMenu)}/>
+          <Navbar.Collapse id='responsive-navbar-nav navbar-collapse' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
+              {/* <NavItem> */}
+            <Nav.Link hidden={newShowMenu} className="nav-a" as={Link} to='/'>
+                Home
+              </Nav.Link>
+              {/* </NavItem> */}
             {inGameStatus2 && !pagePath.pathname.includes("game") ? ( 
               <>
-              <Nav.Link as={Link} to={`/game/${GameId2}`}>Back to Game</Nav.Link>
+              <Nav.Link hidden={newShowMenu} as={Link} to={`/game/${GameId2}`}>Back to Game</Nav.Link>
               </>
               
             ) : <></>}
             {inLobbyStatus && !pagePath.pathname.includes("lobby") ? ( 
               <>
-              <Nav.Link as={Link} to={`/lobby/${LobbyId}`}>Back to Lobby</Nav.Link>
+              <Nav.Link hidden={newShowMenu} as={Link} to={`/lobby/${LobbyId}`}>Back to Lobby</Nav.Link>
               </>
               
             ) : <></>}
-              <Nav.Link as={Link} to='/'>
-                Home
-              </Nav.Link>
-              {/* if user is logged in show saved games and logout */}
+              
+              
               {Auth.loggedIn() ? (
                 <>
-                  <Nav.Link as={Link} to='/stats'>
+                  <Nav.Link hidden={newShowMenu} as={Link} to='/stats'>
                     See Your Stats
                   </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                  <Nav.Link hidden={newShowMenu} onClick={Auth.logout}>Logout</Nav.Link>
                 </>
               ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                <Nav.Link hidden={newShowMenu} onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* set modal data up */}
+      
       <Modal
         size='lg'
         show={showModal}
@@ -186,6 +192,7 @@ QueryMultiple();
           </Modal.Body>
         </Tab.Container>
       </Modal>
+      
     </>
   );
   
