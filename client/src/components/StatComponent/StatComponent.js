@@ -5,7 +5,6 @@ import '../styles/StatComponent.css'
 
 
 const StatComponent = (props) => {
-    console.log(props)
     const userId = Auth.getUser().data._id
     let gamedata = props?.gamedata;
     let gameIdArray = [];
@@ -120,12 +119,7 @@ const StatComponent = (props) => {
                 <p className="card-text">Balls left on the table: {game.onTable}</p>
                 <p className="card-text">Pocketed performance: {game.percent}%</p></>
                 )}
-            {/* <p className="card-text">Pocketed balls: {game.inPocket}</p>
-            <p className="card-text">Balls left on the table: {game.onTable}</p>
-            <p className="card-text">Pocketed performance: {game.percent}%</p> */}
             {game.gameChamp ? ( <><div>Winner</div></> ) : ( <></> )}
-            {/* <p className="card-text">{game.gameChamp}</p> */}
-            {/* <a href="#" class="btn btn-primary">{game.balls.number}</a> */}
         </div>
     </div>
     

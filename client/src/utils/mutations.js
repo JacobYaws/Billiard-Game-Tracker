@@ -29,20 +29,6 @@ export const ADD_USER = gql`
   }
 `;
 
-
-// Potential problem? 
-// export const CREATE_GAME = gql`
-//   mutation createGame($users: [ID!], $balls: [Ballinput!], $gametype: String!) {
-//     createGame(users: $users, balls: $balls, gametype: $gametype) {
-//       game {
-//         users
-//         balls
-//         gametype
-//       }
-//     }
-//   }
-// `
-
 export const CREATE_GAME = gql`
   mutation createGame($users: [ID!], $gametype: String!) {
     createGame(users: $users, gametype: $gametype) {
@@ -159,20 +145,6 @@ mutation selectBallStyle($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
   }
 }`
 
-// Maybe an unnecessary mutation. Remove when the app is running.
-export const FINAL_BALL_ASSIGNMENT = gql`
-mutation assignFinalBall($gameId: ID!, $ball: [Ballinput!], $users: ID!) {
-  assignFinalBall(gameId: $gameId, ball: $ball, users: $users) {
-    _id
-      balls {
-      type
-      number
-      assigneduser
-    }
-    users
-  }
-}`
-
 export const CLOSE_GAME = gql`
 mutation closeGame($gameId: ID!, $status: String!) {
   closeGame(gameId: $gameId, status: $status) {
@@ -188,55 +160,3 @@ mutation updateGameType($lobbyId: ID!, $gametype: String!) {
     gametype
   }
 }`
-
-
-
-// This block belongs in the ADD_USER mutation, placed below email (user)
-// bookCount
-        // savedBooks {
-        //   authors
-        //   bookId
-        //   image
-        //   link
-        //   title
-        //   description
-        // }
-
-// // Mutation used for saving a book. It is used to add a new bookId to the savedBooks array.
-// export const SAVE_BOOK = gql`
-//   mutation saveBook($newBook: SavedBookInput!) {
-//     saveBook(newBook: $newBook) {
-//       _id
-//       username
-//       email
-//       savedBooks {
-//             bookId
-//             authors
-//             description
-//             title
-//             image
-//             link
-//       }
-//     }
-//   }
-// `;
-
-// // Mutation used for deleting a book. It is used to remove a specific bookId from the savedBooks array.
-// export const REMOVE_BOOK = gql`
-//   mutation removeBook($bookId: ID!) {
-//     removeBook(bookId: $bookId) {
-//         _id
-//         username
-//         email
-//         bookCount
-//         savedBooks {
-//               bookId
-//               authors
-//               description
-//               title
-//               image
-//               link
-//         }
-//     }
-//   }
-// `;

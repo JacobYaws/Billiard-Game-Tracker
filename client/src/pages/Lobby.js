@@ -1,17 +1,11 @@
-// import { LobbyContainer, LobbySidebar } from '../components/Lobby/JoinedUsers';
 import JoinedUsers from '../components/Lobby/JoinedUsers';
-// import GameSelect from '../components/Lobby/GameSelect';
-import React, { useState, useEffect, useRef } from 'react';
-// import { useQuery } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
 import Auth from '../utils/auth';
-import { Container, Modal, Button, Row, Col, Overlay, OverlayTrigger, Popover } from 'react-bootstrap';
-// import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER, QUERY_USERS } from '../utils/queries';
+import { QUERY_SINGLE_LOBBY, QUERY_SINGLE_USER } from '../utils/queries';
 import { CREATE_GAME, LEAVE_LOBBY, REMOVE_LOBBY_USERS, UPDATE_LOBBY_GAMETYPE } from '../utils/mutations';
-// import { handleError } from '@apollo/client/link/http/parseAndCheckHttpResponse';
-// import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Lobby = () => {
 let gametype = "";
@@ -33,70 +27,29 @@ const [lobbySize, setLobbySize] = useState(data?.lobby?.users?.length);
 const [lobbyGametype, setGametype] = useState("")
 const [disableButton, setDisableButton] = useState(true);
 const [users, setUsers] = useState(data?.lobby?.users);
-console.log(lobbySize)
     useEffect(() => {
         if (data) {
-            console.log(data)
             setLobbySize(data?.lobby?.users?.length);
             setUsers(data?.lobby?.users);
-            console.log("lobbySize: " + lobbySize);
-            console.log("users.length" + data?.lobby?.users?.length);
             setGametype(data?.lobby?.gametype);
-            // setDisableButton(() => {
-            //     console.log(!checkGameReadyStatus())
-            //     return !checkGameReadyStatus();
-            // })
             setDisableButton(!checkGameReadyStatus(data?.lobby?.users?.length));
-            console.log("disablebutton: " + disableButton);
         }
-        
-        // setLobbySize(lobbySize)
-    // }, [])
     }, [loading, data, disableButton])
     if (loading) return "Loading.........................."
     if (error) return `Error  ${error.message}`
-    console.log(data)
-    // console.log(typeof lobbySize)
-
-    // let startButton = document.getElementsByClassName("start-button");
-    // const getGametype = (event) => {
-    //     event.preventDefault();
-    //     let text = (event.target.id)
-    //     gametype = text.toString();
-    //     console.log(gametype)
-    //     return gametype = gametype
-    // }
-    console.log(users)
-    console.log(disableButton)
-    console.log(lobbySize)
+ 
     
     const getGametype = async (event) => {
         event.persist();
-        console.log("click");
-        console.log(users.length);
-        console.log(lobbySize);
-        console.log(lobbyGametype);
         let text = (event.target.id);
         gametype = text.toString();
-        // setLobbySize(users.length);
-        // setUsers(users)
         setGametype(gametype);
-        console.log(lobbySize);
-        console.log(gametype);
-        
-        console.log(lobbyId)
-        // checkGameReadyStatus();
-
         try {
             const mutationResponse = await updateGametype({
                 variables: { lobbyId: lobbyId, gametype: gametype}
             })
             
-            
-            console.log(mutationResponse);
-            
         } catch (e) {
-            console.log(gametype)
             console.error(e)
             return {
                 code: e.extensions.response.status,
@@ -105,31 +58,11 @@ console.log(lobbySize)
                 track: null
             };
         }
-    //     if (lobbySize !== "") {
-    //         console.log(gametype)
-    //     if (gametype == "cutthroat") {
-    //         console.log(lobbySize)
-    //         console.log("working")
-    //         if (lobbySize == 3 || lobbySize == 5) {
-    //             setDisableButton(false);
-    //         } else {
-    //             setDisableButton(true)
-    //         }
-
-    // } else if (gametype !== "cutthroat" && lobbySize === 2) {
-    //     setDisableButton(false) 
-    // } else {
-    //     setDisableButton(true)
-    // }
 }
 
 const checkGameReadyStatus = (lobbySize2) => {
 if (lobbySize2 !== "") {
-    console.log(lobbyGametype)
-    console.log(lobbySize2)
 if (lobbyGametype == "cutthroat") {
-    console.log(lobbySize2)
-    console.log("working")
     if (lobbySize2 == 3 || lobbySize2 == 5) {
         return false;
     } else {
@@ -152,12 +85,10 @@ if (lobbyGametype == "cutthroat") {
 
     const leaveLobbySubmit = async (event) => {
         const userId = Auth.getUser().data._id;
-        console.log(userId);
         try {
             const mutationResponse = await leaveLobby({
                 variables: { users: userId, lobbyId: lobbyId}
             })
-            console.log(mutationResponse)
             
         } catch (e) {
             console.error(e)
@@ -174,10 +105,7 @@ if (lobbyGametype == "cutthroat") {
 
 
 const createGameSubmit = async (event) => {
-    // console.log(gametype)
         const userId = Auth.getUser().data._id;
-        // const gametype = getGameType
-        console.log(gametype)
         const userIds = users;
         try {
             const mutationResponse = await createGame({
@@ -186,12 +114,9 @@ const createGameSubmit = async (event) => {
             
             let newGame = mutationResponse.data;
             let newGameId = newGame.createGame._id;
-            // console.log(mutationResponse);
-            // console.log(newGameId)
             window.location.href = (window.location.origin + "/game/" + newGameId)
             
         } catch (e) {
-            console.log(gametype)
             console.error(e)
             return {
                 code: e.extensions.response.status,
@@ -204,10 +129,7 @@ const createGameSubmit = async (event) => {
             const mutationResponse = await removeUsers({
                 variables: { users: userIds, lobbyId: lobbyId}
             })
-
-            console.log(mutationResponse)
         } catch (e) {
-            console.log(gametype)
             console.error(e)
             return {
                 code: e.extensions.response.status,
@@ -236,9 +158,6 @@ return (
             <div>Loading.....................</div>
         ) : (   
         <div className="col px-4 text-center gameSelect">
-        {/* <div>{`${lobbyGametype}`}</div> */}
-            {/* <GameSelect /> */}
-            {/* </GameSelect> */}
             <div className="row">
         <div className="col gameSelectButton">
             <div className="card" style={{maxWidth: '20rem', minWidth: '5rem', marginTop: '1rem'}}>
@@ -252,7 +171,6 @@ return (
 
                 <Button onClick={(event) => getGametype(event)} id="cutthroat">Select</Button>
                     </div>
-                    {/* <Button onClick={getGametype} id="cutthroat">Select</Button> */}
                 </div>
             </div>
         </div>
@@ -269,8 +187,6 @@ return (
                         The game ends once a player pockets their set of balls and then the 8 ball.
                 <Button onClick={(event) => getGametype(event)} id="standard">Select</Button>
                     </div>
-                    {/* <Button onClick={getGametype} id="standard">Select</Button> */}
-                
                 </div>
             </div>
         </div>
@@ -307,9 +223,7 @@ return (
              <strong>{`${gametypeUpper}`}</strong>
             </div></Button>
         </div>
-        {/* <div > */}
             <Button as={Link} to="/" onClick={leaveLobbySubmit} className="leave-button">Leave Lobby</Button> 
-        {/* </div> */}
        
     </div>
 </div>

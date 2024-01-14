@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
-// import { useQuery } from '@apollo/client';
 import Auth from '../utils/auth';
 import { Container, Modal, Button, Tab, Nav } from 'react-bootstrap';
-// import { Navbar, Nav, Tab, Card } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { CREATE_LOBBY, JOIN_LOBBY, JOIN_GAME } from '../utils/mutations';
 import LoginForm from './Login'
 import SignUpForm from './Signup'
-// import { QUERY_SINGLE_LOBBY } from '../utils/queries'
 
 const Home = () => {
   
@@ -27,12 +23,6 @@ const Home = () => {
     const userId = Auth.getUser().data._id;
     let gametype = "";
     const users = [userId];
-
-    console.log(users)
-    // try {
-    //     const  mutationResponse  = await createLobby({
-    //         variables: { users: users, gametype: gametype }
-    //     })
     try {
       const  mutationResponse  = await createLobby({
           variables: { users: users, gametype: gametype }
@@ -40,8 +30,6 @@ const Home = () => {
 
         let newLobby = mutationResponse.data;
         let newLobbyId = newLobby.createLobby._id
-        console.log(mutationResponse)
-        console.log(newLobbyId)
         window.location.href = "lobby/" + newLobbyId
     } catch (e) {
         console.error(e)
@@ -56,17 +44,12 @@ const Home = () => {
 
   const joinGameSubmit = async (event) => {
     const users = Auth.getUser().data._id;
-    // event.preventDefault();
     try {
       const { data } = await joinGame({
         variables: { users, gameId },
       });
-    console.log(data)
     setGameId('')
     window.location.href = (window.location.origin + "/game/" + gameId)
-
-    // window.location.href = "/game/" + gameId
-    
     } catch (e) {
       console.error(e);
     }
@@ -74,23 +57,15 @@ const Home = () => {
 
   const joinLobbySubmit = async (event) => {
     const users = Auth.getUser().data._id;
-    // event.preventDefault();
     try {
       const { data } = await joinLobby({
         variables: { users, lobbyId },
       });
-    console.log(data)
     window.location.href = (window.location.origin + "/lobby/" + lobbyId)
-
-    // window.location.href = "/lobby/" + lobbyId
     } catch (e) {
       console.error(e);
     }
   }
-  // if (loading) {
-  //   return <div>Loading...</div>
-  // }
-
   return (
       <>
       {Auth.loggedIn() ? (
@@ -178,7 +153,6 @@ const Home = () => {
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
-        {/* tab container to do either signup or login component */}
         <Tab.Container defaultActiveKey='login'>
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>

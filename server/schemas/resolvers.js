@@ -12,17 +12,11 @@ const resolvers = {
           return User.find({ _id: userId })
         },
         user: async (parent, { userId }) => {
-          // console.log(userId)
           return User.findOne({ _id: userId});
         },
         multipleGames: async(parent, { userId }) => {
-          // console.log("MultipleGames passthrough")
           let userId2 = "ObjectId('" + userId + "')"
-          console.log("2 " + userId2)
-          console.log(typeof userId2)
           let userId3 = new mongo.ObjectId(userId);
-          console.log("3 " + userId3)
-          // return Game.find({$or: [{"balls.assigneduser": userId}, {"balls.assigneduser": "ObjectId('" + userId + "')"}]})
           return Game.find({$or: [{"balls.assigneduser": userId}, {"balls.assigneduser": userId3}]})
 
         },
@@ -34,21 +28,18 @@ const resolvers = {
           throw new AuthenticationError('You need to be logged in!');
         },
         lobby: async(parent, { lobbyId }) => {
-          // console.log(lobbyId)
           return Lobby.findOne({ _id: lobbyId })
         },
         game: async(parent, { gameId }) => {
           return Game.findOne({ _id: gameId })
         },
         inGame: async(parent, { userId }) => {
-          // console.log("inGame: " + userId)
           if (userId === null) {
             return {}
           }
           return Game.findOne({ users: { $all: [userId] }, status: "inProgress" })
         },
         inLobby: async(parent, { userId }) => {
-          // console.log("userId " + userId)
           if (userId === null) {
             return {}
           }
@@ -131,7 +122,6 @@ Mutation: {
       return await Lobby.create({ users, gametype, maxsize })
     },
     removeAllUsersLobby: async (parent, { lobbyId, users }) => {
-      console.log(lobbyId, users)
 
       return await Lobby.findOneAndUpdate(
         { _id: lobbyId, users: users },
@@ -159,7 +149,6 @@ Mutation: {
       if (gametype == 'nineball') {
         ballCount = 10;
         numArr = numArr.slice(0, 9)
-        console.log("Nineball Array: " + numArr)
       }
       
       let ballsPerUser = (ballCount - 1)/userCount
@@ -179,22 +168,17 @@ Mutation: {
 
             
             if (iterations % ballsPerUser == 0) {
-              console.log("running")
-              console.log(iterations);
-              console.log(ballsPerUser)
               let assignedUser = await User.findById(users[assignedUserIndex])// assumes users at assignedUserIndex is being passed in as the id of the user
-              console.log(assignedUser)
               assignedUserId = assignedUser._id
               assignedUserIndex += 1
             }
           }
             ballValue = numArr[index]
             let color = "";
-            // REFACTOR Ball types in the balls array (check in mongoDB) are incorrect. Ex: balls[0].number = 14, type "solid"; balls[0].number = 3, type "stripe"
           if (ballValue > 8 && ballValue <= 15) {
             type = "stripe"
           } else if (ballValue == 8) {
-            type = "special" // can change if desired in the future 8 ball: changed from solid to special
+            type = "special"
           } else {
             type = "solid"
           }
@@ -237,15 +221,8 @@ Mutation: {
         return game
     },
     changeBallStatus: async (parent, { ball, gameId }) => {
-        console.log("GameId: " + gameId);
-        let number = ball.number;
         let status = ball.status;
         
-        if (status == true) {
-          console.log('true')
-        } else if (status == false) {
-          console.log('false')
-        }
    
         return await Game.findOneAndUpdate(
           { _id: gameId, "balls.number": ball.number },
@@ -261,7 +238,6 @@ Mutation: {
     selectBallStyle: async (parent, { ball, gameId, users }) => {
       
       let ballType = ball[0].type;
-      console.log(ballType);
         return await Game.findOneAndUpdate(
         { _id: gameId },
         {
@@ -281,7 +257,6 @@ Mutation: {
 
     },
     closeGame: async (parent, { gameId, status }) => {
-      console.log("GameId: " + gameId)
       return await Game.findOneAndUpdate(
         { _id: gameId },
         {
@@ -294,7 +269,6 @@ Mutation: {
       )
     },
     updateGameType: async (parent, { lobbyId, gametype }) => {
-      console.log(lobbyId, " : ", + gametype)
       return await Lobby.findOneAndUpdate(
         { _id: lobbyId },
         {

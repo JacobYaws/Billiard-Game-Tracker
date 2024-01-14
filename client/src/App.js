@@ -14,7 +14,6 @@ import Signup from './pages/Signup';
 import Navbar from './components/NavBar/NavBar';
 import Home from './pages/Home';
 import Lobby from './pages/Lobby';
-// import {LobbyContainer, LobbySidebar} from './components/Lobby/Lobbycomponents';
 import Game from './pages/Game';
 import StatPage from './pages/Statpage'
 

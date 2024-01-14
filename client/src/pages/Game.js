@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { GameContainer } from '../components/Game/Gamecomponents';
-// import { useParams } from "react-router-dom"
-// import BallList from '../components/BallList/BallList';
-// import BallArray from '../utils/ballArray'
 import { Container, Button } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { LEAVE_GAME } from '../utils/mutations';
 import { QUERY_SINGLE_GAME, QUERY_SINGLE_USER } from '../utils/queries';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import JoinedUsers from '../components/Lobby/JoinedUsers'
 
 
@@ -29,9 +25,7 @@ const { loading, error, data } = useQuery(
         pollInterval: 500,
     }
     );
-// console.log(data)
 const [users, setUsers] = useState(data?.game?.users);
-// console.log(data)
 const [balls, setBalls] = useState(data?.game?.balls);
 const [gametypeData, setGametype] = useState(data?.game?.gametype)
 const [gameStatus, setGameStatus] = useState(data?.game?.status)
@@ -46,25 +40,14 @@ useEffect(() => {
 
 if (loading) return "Loading.........................."
 if (error) return `Error  ${error.message}`
-// if (loading) return "Loading.........................."
-// if (error) return `Error  ${error.message}`
-
-// useEffect(() => {
-//     if (data) {
-//         setUsers(data.game.users)
-//     }
-// // }, [])
-// }, [loading, data])
 
 
 const leaveGameSubmit = async (event) => {
-    console.log(userId)
     try {
         const mutationResponse = await leaveGame({
             variables: { users: userId, gameId: gameId }
         })
         window.location.href = "/"
-        console.log(mutationResponse)
     } catch (e) {
         console.log(e)
         return {
@@ -79,29 +62,12 @@ const leaveGameSubmit = async (event) => {
 return(
     <>
     <Container>
-            {/* <GameSidebar balls={balls} gametype={gametypeData}/> */}
             <GameContainer balls={balls} users={users} userId={userId} gametype={gametypeData} status={gameStatus}/>
-
-            {/* </GameContainer> */}
     <div className="col">
         <div className="joinedUsers">
                     <JoinedUsers users={users} />
             </div>
             </div>
-        {/* <Button onClick={() => setShowModal(true)}>Start a new game</Button>
-        <Modal
-        size='lg'
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        aria-labelledby='ball-select-modal'>
-            <Modal.Header closeButton>
-                <Modal.Title id='ball-select'>
-                  <Button onClick={startGameSubmit}>Start Game</Button>
-                </Modal.Title>
-            </Modal.Header>
-            <div className='mb2' id="select-ball">
-            </div>
-        </Modal> */}
         <div className="col">
         <Button className="leave-button" onClick={leaveGameSubmit}>Leave Game</Button>
         </div>

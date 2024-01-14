@@ -6,15 +6,11 @@ import Auth from '../utils/auth'
 
 const StatPage = () => {
     const userId = Auth.getUser().data._id
-    console.log(userId)
     const {loading, data, error} = useQuery(
         userId ? QUERY_MULTIPLE_GAMES : QUERY_SINGLE_GAME,
         { variables: {userId: userId} }
     ) 
-        console.log(data)
-        console.log(data?.multipleGames)
         let gamedata = data?.multipleGames;
-        console.log(loading)
         
     return(
         <>
@@ -26,11 +22,6 @@ const StatPage = () => {
         <div>
             <StatComponent gamedata={gamedata}>Div</StatComponent>
             </div>
-        // <div>
-        //     Hello World
-        // </div>
-
-
 )}
         </div>
         </>
