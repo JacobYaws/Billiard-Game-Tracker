@@ -1,3 +1,5 @@
+
+
 :root{
   --continue: #15E650;
   --leave: #E60101;
@@ -11,9 +13,14 @@ background-color: #DBDBDB;
 margin: 0 auto;
 height: 100vh;
 min-height: 100vh;
+
+
+
 }
 
-
+body{
+  font-family: 'Roboto', sans-serif;
+}
 
 /* GAME PAGE AND COMPONENTS */
 
@@ -171,6 +178,51 @@ input {
 /* .navBarMenu {
   display: none;
 } */
+
+/* STATS PAGE AND COMPONENT*/
+
+.total-stats {
+  border-radius: 0px;
+  padding: 1em;
+  /* background-color: #15E650; */
+}
+
+.stat-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 90vw;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* .stat-card {
+  display: flex;
+  align-items: baseline;
+  
+  margin: 10rem;
+} */
+
+.stat-card-body {
+  display: flex;
+  flex-direction: column;
+  width: initial;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+#stat-card-main {
+  display: flex;
+  align-items: baseline;
+  /* margin: 1em; */
+  margin: 1em auto 1em auto;
+  width: fit-content;
+  min-width: 25vw;
+}
+
 
 @media (max-width: 768px) {
   /* .navBarMenu {

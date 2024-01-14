@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 import { ADD_USER } from '../utils/mutations';
+import { Button } from 'react-bootstrap';
+
 
 function Signup(props) {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -34,7 +36,7 @@ function Signup(props) {
 
   return (
     <div className="container my-1 " >
-      <Link to="/login">← Go to Login</Link>
+      {/* <Link to="/login">← Go to Login</Link> */}
       <h2>Signup</h2>
     <div className='signupModal'>
 
@@ -82,7 +84,7 @@ function Signup(props) {
         </div>
         </div>
         <div className="flex-row flex-end submitButton">
-          <button type="submit">Submit</button>
+          <Button type="submit">Submit</Button>
         </div>
       </form>
       </div>

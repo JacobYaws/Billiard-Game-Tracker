@@ -81,7 +81,6 @@ QueryMultiple();
 // if (lobbyUserList !== lobbyUserList) {
 //   console.log("somehow it works")
 // }
-console.log(window.screen.availWidth)
 let screenWidth = window.screen.availWidth;
   let data = gameDataArray.find((element) => element?.data)?.data
   // let data = dataArray.find((element) => element?.data)?.data
