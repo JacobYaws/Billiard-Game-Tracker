@@ -94,20 +94,20 @@ const StatComponent = (props) => {
         <>
         <div className="total-stats card">
     <div>
-        Total Pocketed Count: {totalPocketedCount}
+        <h3>Total Pocketed Count: {totalPocketedCount}</h3>
     </div>
     <div>
-        Total Left on Table Count: {totalOnTableCount}
+        <h3>Total Left on Table Count: {totalOnTableCount}</h3>
     </div>
     <div>
-        Total Percent: {totalBallPercent}
+        <h3>Total Percent: {totalBallPercent}</h3>
     </div>
     </div>
-    <div className="flex-container">
+    <div className="stat-container">
     {singleGameData.map((game) => (
         
-    <div className="card" key={game.gameId}>
-        <div className="card-body">
+    <div className="card" id="stat-card-main" key={game.gameId}>
+        <div className="card-body stat-card-body">
             <h5 className="card-title">{game.gametype}</h5>
             <p className="card-text">{game.gameId}</p>
             {game.gametype === "Cutthroat" ? (<div> 

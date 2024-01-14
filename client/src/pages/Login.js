@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -31,10 +32,12 @@ function Login(props) {
     
       return (
         <div className="container my-1">
-          <Link to="/signup">← Go to Signup</Link>
+          {/* <Link to="/signup">← Go to Signup</Link> */}
     
           <h2>Login</h2>
+          <div className='loginModal'>
           <form onSubmit={handleFormSubmit}>
+            <div className="loginForm">
             <div className="flex-row space-between my-2">
               <label htmlFor="email">Email address:</label>
               <input
@@ -60,10 +63,12 @@ function Login(props) {
                 <p className="error-text">The provided credentials are incorrect</p>
               </div>
             ) : null}
-            <div className="flex-row flex-end">
-              <button type="submit">Submit</button>
+            <div className="flex-row flex-end submitButton">
+              <Button type="submit">Submit</Button>
+            </div>
             </div>
           </form>
+          </div>
         </div>
       );
 }

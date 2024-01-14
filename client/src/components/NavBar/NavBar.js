@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from '../../pages/Signup';
 import LoginForm from '../../pages/Login';
 import { QUERY_STATUS, QUERY_LOBBY_STATUS } from '../../utils/queries';
@@ -21,6 +21,7 @@ let newGameId;
 const AppNavbar = () => {
   const pathName = window.location.pathname;
   const [showModal, setShowModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false)
   const userId = Auth.loggedIn() ? Auth.getUser().data._id : null;
  
 const QueryMultiple = () => {
@@ -80,6 +81,7 @@ QueryMultiple();
 // if (lobbyUserList !== lobbyUserList) {
 //   console.log("somehow it works")
 // }
+let screenWidth = window.screen.availWidth;
   let data = gameDataArray.find((element) => element?.data)?.data
   // let data = dataArray.find((element) => element?.data)?.data
   let data2 = lobbyDataArray.find((element) => element?.data)?.data
@@ -104,99 +106,67 @@ QueryMultiple();
         setInLobbyStatus(data2?.inLobby?._id != undefined && data2?.inLobby?._id != null ? true : false)
         setLobbyId(data2?.inLobby?._id)
         setCurrentlyOnLobbyPage(window.location.pathname.includes("lobby"));
-        // setLobbySize(data2?.inLobby?.users?.length);
       }
-      // console.log("lobbySize: " + lobbySize);
-      // console.log("newLobbySize: " + newLobbySize)
-      
-      // console.log(currentlyOnLobbyPage)
     })
-    // console.log(inGameStatus2)
-    // console.log(pathName.includes("lobby"))
-    // if ( inGameStatus2 && lobbySize !== newDataUsers) {
+
       if (newInGameStatus && window.location.pathname.includes("lobby") && newGameId !== undefined) {
-      // console.log("sucess")
-      window.location.href = (window.location.origin + "/game/" + newGameId);
-      // setCurrentlyOnLobbyPage(false);
-      // QueryMultiple();
-
+            window.location.href = (window.location.origin + "/game/" + newGameId);
     }
-  
-    // console.log("lobbySize2: " + lobbySize);
-    
-
-    // if(inGameStatus2 && currentlyOnLobbyPage && !currentlyOnGamePage) {
-
-    // // const inGameRedirectCheck = () => {
-    // //     console.log("redirecting to game: ")
-    // //     console.log(GameId2)
-    // //     console.log(inGameStatus2)
-    // //     window.location.href = (window.location.origin + "/game/" + GameId2)
-    // //   }
-    // //   // inGameRedirectCheck();
-    // // }
-
-    // // const inLobbyRedirectCheck = () => {
-    // //   if(inLobbyStatus) {
-    // //     console.log("redirecting to lobby: ")
-    // //     console.log(LobbyId)
-    // //     console.log(inLobbyStatus)
-    // //     window.location.href = (window.location.origin + "/lobby/" + LobbyId)
-    // //   }
-    // }
+    let newShowMenu = screenWidth >= 576 ? false : !showMenu;
     const pagePath = useLocation()
    
-      
   return (
     <>
-      <Navbar bg='dark' variant='dark' expand='lg'>
+      <Navbar bg='dark' variant='dark' expand='sm' collapseOnSelect>
         <Container fluid>
-          {/* <Navbar.Brand as={Link} to='/' className="p-3"> */}
           <Navbar.Brand as={Link} to='/' className="p-3">
-          {/* <Navbar.Brand as={Link} to='/' onClick={() => window.location.reload()} className="p-3"> */}
             Cutthroat
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls='navbar' />
-          <Navbar.Collapse id='navbar' className='d-flex flex-row-reverse'>
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' onClick={() => setShowMenu(showMenu => !showMenu)}/>
+          <Navbar.Collapse id='responsive-navbar-nav navbar-collapse' className='d-flex flex-row-reverse'>
             <Nav className='ml-auto d-flex'>
+              {/* <NavItem> */}
+            <Nav.Link hidden={newShowMenu} className="nav-a" as={Link} to='/'>
+                Home
+              </Nav.Link>
+              {/* </NavItem> */}
             {inGameStatus2 && !pagePath.pathname.includes("game") ? ( 
               <>
-              <Nav.Link as={Link} to={`/game/${GameId2}`}>Back to Game</Nav.Link>
+              <Nav.Link hidden={newShowMenu} as={Link} to={`/game/${GameId2}`}>Back to Game</Nav.Link>
               </>
               
             ) : <></>}
             {inLobbyStatus && !pagePath.pathname.includes("lobby") ? ( 
               <>
-              <Nav.Link as={Link} to={`/lobby/${LobbyId}`}>Back to Lobby</Nav.Link>
+              <Nav.Link hidden={newShowMenu} as={Link} to={`/lobby/${LobbyId}`}>Back to Lobby</Nav.Link>
               </>
               
             ) : <></>}
-              <Nav.Link as={Link} to='/'>
-                Home
-              </Nav.Link>
-              {/* if user is logged in show saved games and logout */}
+              
+              
               {Auth.loggedIn() ? (
                 <>
-                  <Nav.Link as={Link} to='/stats'>
+                  <Nav.Link hidden={newShowMenu} as={Link} to='/stats'>
                     See Your Stats
                   </Nav.Link>
-                  <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
+                  <Nav.Link hidden={newShowMenu} onClick={Auth.logout}>Logout</Nav.Link>
                 </>
               ) : (
-                <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+                <Nav.Link hidden={newShowMenu} onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {/* set modal data up */}
+      
       <Modal
         size='lg'
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby='signup-modal'>
+          
         {/* tab container to do either signup or login component */}
-        <Tab.Container defaultActiveKey='login'>
+        <Tab.Container defaultActiveKey='login' >
           <Modal.Header closeButton>
             <Modal.Title id='signup-modal'>
               <Nav variant='pills'>
@@ -221,6 +191,7 @@ QueryMultiple();
           </Modal.Body>
         </Tab.Container>
       </Modal>
+      
     </>
   );
   

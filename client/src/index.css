@@ -1,58 +1,86 @@
+
+
 :root{
   --continue: #15E650;
-  --leave: #E60101
+  --leave: #E60101;
+  --lobbyButtonMargin: 2em;
 }
 
 main {
 /* background-color: #277714; */
+display: flex;
 background-color: #DBDBDB;
-margin: auto;
+margin: 0 auto;
 height: 100vh;
 min-height: 100vh;
+
+
+
+}
+
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
+/* GAME PAGE AND COMPONENTS */
+
+/* ??? */
+/* .container {
+  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+} */
+
+.arrayHeader {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.ballArray {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  margin-top: 2em;
 }
 
 .ball {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1%;
+  margin: 15%;
   padding: 1%;
-  /* width: 100px;
-  height: 100px; */
   width: 10vh;
   height: 10vh;
   border-radius: 50%;
+  border-color: #363434;
   opacity: 1;
+  overflow: hidden;
 }
 
 .stripe {
   display: flex;
   background-color: white;
   flex-grow: inherit;
-  width: 10vh;
-  min-width: 0;
-  /* border-radius: 1vh; */
-  /* height: 30px;  */
-  /* width: 100%; */
+  height: 5vh; 
+  width: inherit;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  
 }
 
 .ballNumber {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: blue;
+  background-color: #ffffff;
   border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  height: 3.5vh;
+  width: 3.5vh;
 }
 
-.solid, .eight-ball-standard {
-/* background-color: white; */
-
-}
 .endModalTitle {
   margin-left: 5%;
 }
@@ -72,3 +100,147 @@ min-height: 100vh;
 }
 
 
+/* LOGIN AND SIGNUP PAGE/MODAL */
+.signupModal, .loginModal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.signupForm, .loginForm {
+  text-align: end;
+}
+
+.submitButton {
+  text-align: center;
+}
+
+input {
+  margin-left: 0.2em;
+}
+
+
+/* LOBBY PAGE AND COMPONENTS */
+.lobbyContainer {
+  margin: 0 auto;
+}
+
+.gameSelect {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.list-group {
+  margin-top: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+.joinedUsers, .lobbyButtonGroup {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+}
+  
+
+.lobby-invite {
+  margin-top: var(--lobbyButtonMargin);
+  flex-wrap: wrap;
+}
+
+.start-button {
+  background-color: var(--continue);
+  border-color: var(--continue);
+  opacity: 80%;
+  margin-top: var(--lobbyButtonMargin);
+}
+
+.leave-button {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background-color: var(--leave);
+  border-color: var(--leave);
+  opacity: 80%;
+  margin-bottom:  10%;
+  margin-top: var(--lobbyButtonMargin);
+}
+
+/* .navBarMenu {
+  display: none;
+} */
+
+/* STATS PAGE AND COMPONENT*/
+
+.total-stats {
+  border-radius: 0px;
+  padding: 1em;
+  /* background-color: #15E650; */
+}
+
+.stat-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 90vw;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* .stat-card {
+  display: flex;
+  align-items: baseline;
+  
+  margin: 10rem;
+} */
+
+.stat-card-body {
+  display: flex;
+  flex-direction: column;
+  width: initial;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+#stat-card-main {
+  display: flex;
+  align-items: baseline;
+  /* margin: 1em; */
+  margin: 1em auto 1em auto;
+  width: fit-content;
+  min-width: 25vw;
+}
+
+
+@media (max-width: 768px) {
+  /* .navBarMenu {
+    display: fixed;
+    z-index: 10;
+    background-color: white;
+  } */
+}
+
+@media (max-width: 512px) {
+    .gameSelect {
+      flex-grow: 2;
+      /* flex-wrap: wrap; */
+      flex-direction: row;
+      margin-left: 25vw;  
+      margin-right: 25vw;
+    }
+    /* .gameSelectButton {
+      flex-grow: 1;
+    } */
+}
