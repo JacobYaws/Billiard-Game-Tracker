@@ -13,7 +13,7 @@ This application is made with the intentions of keeping track of a player's perf
 ## Install
 To run the application locally:
 1. Clone the repository from: git@github.com:JacobYaws/Billiard-Game-Tracker.git
-2. Install dependencies in the app root directory through a git CLI: 'npm install'
+2. Install dependencies in the app's root directory through a git CLI: 'npm install'
 3. Run 'npm start' in the git CLI
 
 ## Overview
